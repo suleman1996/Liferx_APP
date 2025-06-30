@@ -1,102 +1,100 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, Image } from 'react-native';
+import { SafeAreaView, Text, View, Image ,Pressable} from 'react-native';
 import styles from './style';
-import Header from '../../Components/Header/Header';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import Colors from '../../utils/Colors/Colors';
 import Button from '../../Components/Button/Button';
-import CustomDialog from '../../Components/CustomDialog/CustomDialog';
-import Toast from 'react-native-toast-message';
+import { FONTS } from '../../Assets/Fonts/Fonts';
+import { h } from '../../utils/Helper/Helper';
 
 const Login: React.FC<any> = () => {
   const [email, setEmail] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [openPopUp, setOpenPopUp] = useState(false);
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title={`Join Founder's Club`} />
-
-      <CustomDialog visible={openPopUp} onDismiss={() => setOpenPopUp(false)}>
-        <Image
-          source={require('../../Assets/Images/Thanks.png')}
-          style={styles.thanksLogo}
-        />
-        <Text style={styles.thanksText}>Thank You!</Text>
-        <Text style={styles.description}>
-          Thank you for joining the Founders Club!
-        </Text>
-        <Text style={styles.description2}>
-          Please check your email for the next steps in the joining process.
-        </Text>
-      </CustomDialog>
-
+      <Image
+        source={require('../../Assets/Images/logo.png')}
+        style={styles.logo}
+      />
       <View style={styles.mainContainer}>
+        <Text style={styles.title}>Hi, Welcome Back!</Text>
+        <Text style={styles.title1}>Hope you’re doing fine.</Text>
+
         <CustomTextInput
-          label="Email"
           customInputStyles={[
             styles.customInputStyle,
             {
-              borderColor: email?.length > 0 ? Colors?.APP_COLOR : Colors.GRAY,
+              borderColor:
+                error === 'email'
+                  ? Colors.error
+                  : email?.length > 0
+                  ? Colors.APP_COLOR
+                  : Colors.GRAY,
             },
           ]}
-          customLabelStyles={styles.customLabelStyle}
-          placeholder="Email"
+          placeholder="Enter your email address"
           value={email}
           onChangeText={text => {
             setEmail(text);
             setError('');
           }}
-          error={error === 'email' ? 'Please enter your email' : ''}
           customErrorStyles={styles.customErrorStyle}
+          placeholderTextColor={
+            error === 'email' ? Colors.error : Colors.APP_COLOR
+          }
+          selectionColor={Colors.APP_COLOR}
         />
 
         <CustomTextInput
-          label="Daraz Account Name"
           customInputStyles={[
             styles.customInputStyle,
             {
               borderColor:
-                accountName?.length > 0 ? Colors?.APP_COLOR : Colors.GRAY,
+                error === 'password'
+                  ? Colors.error
+                  : password?.length > 0
+                  ? Colors.APP_COLOR
+                  : Colors.GRAY,
+              marginTop: h(5),
             },
           ]}
-          customLabelStyles={styles.customLabelStyle}
-          placeholder="Daraz Account Name"
-          value={accountName}
+          placeholder="Enter your Password"
+          value={password}
           onChangeText={text => {
-            setAccountName(text);
+            setPassword(text);
             setError('');
           }}
-          error={
-            error === 'accountName' ? 'Please enter your account name' : ''
-          }
           customErrorStyles={styles.customErrorStyle}
+          placeholderTextColor={
+            error === 'password' ? Colors.error : Colors.APP_COLOR
+          }
+          selectionColor={Colors.APP_COLOR}
         />
 
         <Button
-          text="Join Founder's Club"
+          text="Sign Up"
           customButtonStyles={styles.button}
-          customTextStyles={[styles.googleText, { color: Colors.WHITE }]}
+          customTextStyles={styles.btnText}
           noShadow
           onPressHandler={() => {
             if (!email) {
               setError('email');
               return;
-            } else if (!accountName) {
-              setError('accountName');
+            } else if (!password) {
+              setError('password');
               return;
-            }
-            if (email && accountName) {
-              // setOpenPopUp(true);
-              Toast.show({
-                type: 'info',
-                text1: 'Coming Soon',
-              });
             }
           }}
         />
+
+        <Text style={styles.text}>
+          Already have an account?{' '}
+          <Text style={[styles.text, { fontFamily: FONTS.MONTSERRAT_BOLD }]}>
+            Sign up
+          </Text>
+        </Text>
       </View>
     </SafeAreaView>
   );

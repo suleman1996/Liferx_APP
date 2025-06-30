@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
   buttonView: {
     backgroundColor: Colors.APP_COLOR,
     width: w('50%'),
-    height: h('5%'),
-    borderRadius: 10,
+    height: h(60),
+    borderRadius: 16,
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',

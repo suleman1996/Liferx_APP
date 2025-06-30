@@ -17,11 +17,11 @@ const Stack: React.FC<any> = () => {
         component={Splash}
         options={{ headerShown: false }}
       />
-      {/* <stack.Screen
+      <stack.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
-      /> */}
+      />
       {/* <stack.Screen
         name="HomeScreen"
         component={HomeScreen}

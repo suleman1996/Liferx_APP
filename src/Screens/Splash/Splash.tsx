@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
-import { Image, SafeAreaView } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 import styles from './style';
 
 const Splash: React.FC<any> = ({ navigation }) => {
+  
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigation?.replace('HomeScreen');
+      navigation?.replace('Login');
     }, 2000);
     return () => clearTimeout(timeout);
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <Image
-        source={require('../../Assets/Images/Logo.png')}
+    <View style={styles.safeAreaView}>
+      <ImageBackground
+        source={require('../../Assets/Images/Splash.png')}
         style={styles.image}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 export default Splash;

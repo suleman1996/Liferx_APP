@@ -6,13 +6,15 @@ const Colors = {
   WHITE: '#FFFFFF',
   muted: '#B0B2B7',
   success: '#28a745',
-  error: '#dc3545',
-  APP_COLOR:'#FF7235',
+  error: '#B13838',
+  APP_COLOR:'#1F5D52',
   BLACK:'#000000',
   DARK_GREY: '#737272',
   GRAY:'#BDBDBD',
   LIGHT_WHITE : '#FBFBFB',
   LIGHT_ORANGE : '#FBE2D7'
+
+
 };
 
 export default Colors;
