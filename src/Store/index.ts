@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux';
-import exampleReducer from './reducers';
+import loginReducer from '../Screens/Login/reducer';
 
 const rootReducer = combineReducers({
-  example: exampleReducer,
+  login: loginReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

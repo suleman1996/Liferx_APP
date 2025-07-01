@@ -1,39 +1,47 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Splash from '../Screens/Splash/Splash';
-import { LogBox } from 'react-native';
-import Tabs from '../BottomTab/BottomTab';
 import Login from '../Screens/Login/Login';
-import HomeScreen from '../Components/Homescreen/Homescreen';
+import Register from '../Screens/Register/Register';
+import { LogBox } from 'react-native';
+import TwoStepVerifiction from '../Screens/2StepVerification/2StepVerification';
 
 LogBox.ignoreAllLogs();
-const Stack: React.FC<any> = () => {
-  const stack = createNativeStackNavigator();
 
+export type RootStackParamList = {
+  splash: undefined;
+  Login: undefined;
+  Register: undefined;
+  TwoStepVerifiction?:undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const AppStack: React.FC = () => {
   return (
-    <stack.Navigator initialRouteName="splash">
-      <stack.Screen
+    <Stack.Navigator initialRouteName="splash">
+      <Stack.Screen
         name="splash"
         component={Splash}
         options={{ headerShown: false }}
       />
-      <stack.Screen
+      <Stack.Screen
         name="Login"
         component={Login}
         options={{ headerShown: false }}
       />
-      {/* <stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+      <Stack.Screen
+        name="Register"
+        component={Register}
         options={{ headerShown: false }}
-      /> */}
-      {/* <stack.Screen
-        name="tab"
-        component={Tabs}
+      />
+      <Stack.Screen
+        name="TwoStepVerifiction"
+        component={TwoStepVerifiction}
         options={{ headerShown: false }}
-      /> */}
-    </stack.Navigator>
+      />
+    </Stack.Navigator>
   );
 };
 
-export default Stack;
+export default AppStack;

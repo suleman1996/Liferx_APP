@@ -32,30 +32,46 @@ const styles = StyleSheet.create({
     paddingLeft: w(20),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
   },
-  button: {
-    width: 'auto',
-    marginTop: h(5),
-  },
-  btnText: {
-    fontSize: h(14),
-    fontFamily: FONTS.MONTSERRAT_REGULAR,
-    color: Colors.WHITE,
-  },
-  customErrorStyle: {
-    marginLeft: w(20),
-  },
+
   logo: {
     height: h(53),
     width: w(160),
     alignSelf: 'center',
     marginTop: h(80),
   },
+  email: {
+    fontSize: w(14),
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    color: Colors.APP_COLOR,
+  },
+    button: {
+    width: 'auto',
+    marginTop: h(30),
+  },
+  btnText: {
+    fontSize: h(14),
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
+    color: Colors.WHITE,
+  },
   text:{
+    textAlign:'center',
+    fontSize:w(14),
+    fontFamily:FONTS.MONTSERRAT_REGULAR,
+    color:Colors.APP_COLOR,
+    marginTop:h(25)
+  },
+  resend:{
+    fontSize:w(14),
+    fontFamily:FONTS.MONTSERRAT_MEDIUM,
+    color:Colors.APP_COLOR,
+    textDecorationLine:'underline'
+  },
+  timerText:{
+    textAlign:'center',
+    fontSize:w(14),
     color:Colors.APP_COLOR,
     fontFamily:FONTS.MONTSERRAT_REGULAR,
-    fontSize:w(14),
-    textAlign:'center',
-    marginTop:h(25)
+    marginTop:h(15)
   }
 });
 export default styles;

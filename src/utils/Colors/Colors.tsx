@@ -12,7 +12,8 @@ const Colors = {
   DARK_GREY: '#737272',
   GRAY:'#BDBDBD',
   LIGHT_WHITE : '#FBFBFB',
-  LIGHT_ORANGE : '#FBE2D7'
+  LIGHT_ORANGE : '#FBE2D7',
+  BORDER_COLOR : '#E2E2E2'
 
 
 };

@@ -17,12 +17,14 @@ const styles = StyleSheet.create({
     fontSize: w(20),
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
     color: Colors.APP_COLOR,
+    maxWidth: w(317),
   },
   title1: {
     marginTop: h(10),
     fontSize: w(14),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     color: Colors.APP_COLOR,
+    maxWidth: w(317),
   },
   customInputStyle: {
     borderRadius: 16,
@@ -50,12 +52,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: h(80),
   },
-  text:{
-    color:Colors.APP_COLOR,
-    fontFamily:FONTS.MONTSERRAT_REGULAR,
-    fontSize:w(14),
-    textAlign:'center',
-    marginTop:h(25)
-  }
+  text: {
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
+    fontSize: w(14),
+    textAlign: 'center',
+    marginTop: h(25),
+  },
 });
 export default styles;

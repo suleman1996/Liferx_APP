@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
-import { FONTS } from '../../Assets/Fonts/Fonts';
 
 const styles = StyleSheet.create({
   buttonView: {
@@ -16,7 +15,6 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.WHITE,
     fontSize: w('4%'),
-    fontFamily: FONTS.HIND_SEMIBOLD,
   },
   shadow: {
     shadowColor: '#000',

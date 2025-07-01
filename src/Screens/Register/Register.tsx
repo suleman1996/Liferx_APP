@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './style';
 import CustomTextInput from '../../Components/TextInput/TextInput';
@@ -6,16 +6,12 @@ import Colors from '../../utils/Colors/Colors';
 import Button from '../../Components/Button/Button';
 import { FONTS } from '../../Assets/Fonts/Fonts';
 import { h, useTypedNavigation } from '../../utils/Helper/Helper';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../Store';
-import { setEmail, setError, setPassword } from './actions';
 
-const Login: React.FC<any> = () => {
-  const dispatch = useDispatch();
-  const { email, password, error } = useSelector(
-    (state: RootState) => state?.login,
-  );
+const Register: React.FC<any> = () => {
   const navigation = useTypedNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -24,8 +20,12 @@ const Login: React.FC<any> = () => {
         style={styles.logo}
       />
       <View style={styles.mainContainer}>
-        <Text style={styles.title}>Hi, Welcome Back!</Text>
-        <Text style={styles.title1}>Hope you’re doing fine.</Text>
+        <Text style={styles.title}>
+          Register Yourself for eligibility of treatment
+        </Text>
+        <Text style={styles.title1}>
+          See your personalized treatment options. Private and 100% online.ent
+        </Text>
 
         <CustomTextInput
           customInputStyles={[
@@ -42,8 +42,8 @@ const Login: React.FC<any> = () => {
           placeholder="Enter your email address"
           value={email}
           onChangeText={text => {
-            dispatch(setEmail(text));
-            dispatch(setError(''));
+            setEmail(text);
+            setError('');
           }}
           customErrorStyles={styles.customErrorStyle}
           placeholderTextColor={
@@ -52,64 +52,64 @@ const Login: React.FC<any> = () => {
           selectionColor={Colors.APP_COLOR}
         />
 
-        <CustomTextInput
-          customInputStyles={[
-            styles.customInputStyle,
-            {
-              borderColor:
-                error === 'password'
-                  ? Colors.error
-                  : password?.length > 0
-                  ? Colors.APP_COLOR
-                  : Colors.GRAY,
-              marginTop: h(5),
-            },
-          ]}
-          placeholder="Enter your Password"
-          value={password}
-          onChangeText={text => {
-            dispatch(setPassword(text));
-            dispatch(setError(''));
-          }}
-          customErrorStyles={styles.customErrorStyle}
-          placeholderTextColor={
-            error === 'password' ? Colors.error : Colors.APP_COLOR
-          }
-          selectionColor={Colors.APP_COLOR}
-        />
+        {email?.length > 0 && (
+          <CustomTextInput
+            customInputStyles={[
+              styles.customInputStyle,
+              {
+                borderColor:
+                  error === 'password'
+                    ? Colors.error
+                    : password?.length > 0
+                    ? Colors.APP_COLOR
+                    : Colors.GRAY,
+                marginTop: h(5),
+              },
+            ]}
+            placeholder="Enter your Password"
+            value={password}
+            onChangeText={text => {
+              setPassword(text);
+              setError('');
+            }}
+            customErrorStyles={styles.customErrorStyle}
+            placeholderTextColor={
+              error === 'password' ? Colors.error : Colors.APP_COLOR
+            }
+            selectionColor={Colors.APP_COLOR}
+          />
+        )}
 
         <Button
-          text="Sign In"
+          text="Sign Up"
           customButtonStyles={styles.button}
           customTextStyles={styles.btnText}
           noShadow
           onPressHandler={() => {
             if (!email) {
-              dispatch(setError('email'));
+              setError('email');
               return;
             } else if (!password) {
-              dispatch(setError('password'));
+              setError('password');
               return;
+            }
+            if (email && password) {
+              navigation.navigate('TwoStepVerifiction');
             }
           }}
         />
 
         <Text style={styles.text}>
-          If you don't have an account?{' '}
+          Already have an account?{' '}
           <Text
             style={[styles.text, { fontFamily: FONTS.MONTSERRAT_BOLD }]}
-            onPress={() => {
-              dispatch(setEmail(''));
-              dispatch(setPassword(''));
-              dispatch(setError(''))
-              navigation.navigate('Register');
-            }}
+            onPress={() => navigation.navigate('Login')}
           >
-            Sign up
+            Log in
           </Text>
         </Text>
       </View>
     </SafeAreaView>
   );
 };
-export default Login;
+export default Register;
