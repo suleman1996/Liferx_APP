@@ -7,15 +7,14 @@ const Colors = {
   muted: '#B0B2B7',
   success: '#28a745',
   error: '#B13838',
-  APP_COLOR:'#1F5D52',
-  BLACK:'#000000',
+  APP_COLOR: '#1F5D52',
+  BLACK: '#000000',
   DARK_GREY: '#737272',
-  GRAY:'#BDBDBD',
-  LIGHT_WHITE : '#FBFBFB',
-  LIGHT_ORANGE : '#FBE2D7',
-  BORDER_COLOR : '#E2E2E2'
-
-
+  GRAY: '#BDBDBD',
+  LIGHT_WHITE: '#FBFBFB',
+  LIGHT_ORANGE: '#FBE2D7',
+  BORDER_COLOR: '#E2E2E2',
+  TRANSPARENT_BLACK_COLOR: '#00000080',
 };
 
 export default Colors;

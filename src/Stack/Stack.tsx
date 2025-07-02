@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Splash from '../Screens/Splash/Splash';
-import Login from '../Screens/Login/Login';
-import Register from '../Screens/Register/Register';
+import Splash from '../Screens/Auth/Splash/Splash';
+import Login from '../Screens/Auth/Login/Login';
+import Register from '../Screens/Auth/Register/Register';
 import { LogBox } from 'react-native';
-import TwoStepVerifiction from '../Screens/2StepVerification/2StepVerification';
+import TwoStepVerifiction from '../Screens/Auth/2StepVerification/2StepVerification';
 
 LogBox.ignoreAllLogs();
 

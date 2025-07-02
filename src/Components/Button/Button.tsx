@@ -23,6 +23,7 @@ interface HeaderProps {
   onPressHandler?: () => void;
   noShadow?: boolean;
   loading?: boolean;
+  disabled?: boolean
 }
 
 const Button: React.FC<HeaderProps> = ({
@@ -34,6 +35,7 @@ const Button: React.FC<HeaderProps> = ({
   leftIconSource,
   noShadow,
   loading,
+  disabled,
   onPressHandler,
 }) => {
   return (
@@ -44,7 +46,7 @@ const Button: React.FC<HeaderProps> = ({
         customButtonStyles,
       ]}
       onPress={onPressHandler}
-      disabled={loading}
+      disabled={disabled}
     >
       {leftIconSource && !loading && (
         <Image source={leftIconSource} style={imageStyles} />

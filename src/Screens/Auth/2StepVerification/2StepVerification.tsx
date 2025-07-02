@@ -5,15 +5,24 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import styles from './style';
-import { formatTime, h, useTypedNavigation } from '../../utils/Helper/Helper';
-import OtpInputField from '../../Components/Otp/Otp';
-import Button from '../../Components/Button/Button';
-import Colors from '../../utils/Colors/Colors';
+import { formatTime, h, useTypedNavigation } from '../../../utils/Helper/Helper';
+import OtpInputField from '../../../Components/Otp/Otp';
+import Button from '../../../Components/Button/Button';
+import Colors from '../../../utils/Colors/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../Store';
+import { setCode } from './actions';
 
 const TwoStepVerifiction: React.FC<any> = () => {
+  const { code } = useSelector(
+    (state: RootState) => state?.twoStepVerification,
+  );
+  ``;
   const navigation = useTypedNavigation();
+  const dispatch = useDispatch();
   const [timer, setTimer] = useState(30);
 
   useEffect(() => {
@@ -27,7 +36,7 @@ const TwoStepVerifiction: React.FC<any> = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Image
-        source={require('../../Assets/Images/logo.png')}
+        source={require('../../../Assets/Images/logo.png')}
         style={styles.logo}
       />
       <View style={styles.mainContainer}>
@@ -37,13 +46,21 @@ const TwoStepVerifiction: React.FC<any> = () => {
           <Text style={styles.email}>suleman@codekhalaq.com</Text>
         </Text>
 
-        <OtpInputField />
+        <OtpInputField
+          onChange={(number: string) => dispatch(setCode(number))}
+        />
 
         <Button
           text="Continue"
           customButtonStyles={styles.button}
           customTextStyles={styles.btnText}
           noShadow
+          onPressHandler={() => {
+            if (code?.length < 6) {
+              Alert.alert('Please fill all numbers.');
+              return;
+            }
+          }}
         />
         <Text
           style={[
@@ -72,7 +89,7 @@ const TwoStepVerifiction: React.FC<any> = () => {
         </Text>
         <Text style={[styles.text, { marginTop: h(10) }]}>
           If you require any assistance, please feel free to{' '}
-          <Text style={styles.resend}> contact us.</Text>
+          <Text style={styles.resend}>contact us.</Text>
         </Text>
       </View>
     </SafeAreaView>

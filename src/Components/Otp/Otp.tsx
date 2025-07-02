@@ -5,8 +5,8 @@ import styles from './style';
 import Colors from '../../utils/Colors/Colors';
 
 interface Props {
-  onChange?: () => void;
-  onFilled?: () => void;
+  onChange?: (code: string) => void;
+  onFilled?: (code: string) => void;
   numberOfDigits?: number;
 }
 
@@ -32,5 +32,4 @@ const OtpInputField: React.FC<Props> = ({
     </View>
   );
 };
-
 export default OtpInputField;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './style';
-import CustomTextInput from '../../Components/TextInput/TextInput';
-import Colors from '../../utils/Colors/Colors';
-import Button from '../../Components/Button/Button';
-import { FONTS } from '../../Assets/Fonts/Fonts';
-import { h, useTypedNavigation } from '../../utils/Helper/Helper';
+import CustomTextInput from '../../../Components/TextInput/TextInput';
+import Colors from '../../../utils/Colors/Colors';
+import Button from '../../../Components/Button/Button';
+import { FONTS } from '../../../Assets/Fonts/Fonts';
+import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../Store';
+import { RootState } from '../../../Store';
 import { setEmail, setError, setPassword } from './actions';
 
 const Login: React.FC<any> = () => {
@@ -20,7 +20,7 @@ const Login: React.FC<any> = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Image
-        source={require('../../Assets/Images/logo.png')}
+        source={require('../../../Assets/Images/logo.png')}
         style={styles.logo}
       />
       <View style={styles.mainContainer}>
@@ -101,7 +101,7 @@ const Login: React.FC<any> = () => {
             onPress={() => {
               dispatch(setEmail(''));
               dispatch(setPassword(''));
-              dispatch(setError(''))
+              dispatch(setError(''));
               navigation.navigate('Register');
             }}
           >

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './style';
-import CustomTextInput from '../../Components/TextInput/TextInput';
-import Colors from '../../utils/Colors/Colors';
-import Button from '../../Components/Button/Button';
-import { FONTS } from '../../Assets/Fonts/Fonts';
-import { h, useTypedNavigation } from '../../utils/Helper/Helper';
+import CustomTextInput from '../../../Components/TextInput/TextInput';
+import Colors from '../../../utils/Colors/Colors';
+import Button from '../../../Components/Button/Button';
+import { FONTS } from '../../../Assets/Fonts/Fonts';
+import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 
 const Register: React.FC<any> = () => {
   const navigation = useTypedNavigation();
@@ -16,7 +16,7 @@ const Register: React.FC<any> = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Image
-        source={require('../../Assets/Images/logo.png')}
+        source={require('../../../Assets/Images/logo.png')}
         style={styles.logo}
       />
       <View style={styles.mainContainer}>

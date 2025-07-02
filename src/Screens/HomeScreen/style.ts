@@ -1,14 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { h, w } from '../../utils/Helper/Helper';
+import Colors from '../../utils/Colors/Colors';
 
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: Colors.WHITE,
   },
-  image: {
-    resizeMode: 'cover',
-    width: w('100%'),
-    height : h('100%')
-  },
+
 });
 export default styles;

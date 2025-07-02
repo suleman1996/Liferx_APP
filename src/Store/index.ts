@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from 'redux';
-import loginReducer from '../Screens/Login/reducer';
+import loginReducer from '../Screens/Auth/Login/reducer';
+import twoStepVerificationReducer from '../Screens/Auth/2StepVerification/reducer';
 
 const rootReducer = combineReducers({
   login: loginReducer,
+  twoStepVerification: twoStepVerificationReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

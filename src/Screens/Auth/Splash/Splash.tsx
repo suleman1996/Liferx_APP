@@ -14,7 +14,7 @@ const Splash: React.FC<any> = ({ navigation }) => {
   return (
     <View style={styles.safeAreaView}>
       <ImageBackground
-        source={require('../../Assets/Images/Splash.png')}
+        source={require('../../../Assets/Images/Splash.png')}
         style={styles.image}
       />
     </View>
