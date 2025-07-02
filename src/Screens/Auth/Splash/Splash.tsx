@@ -21,3 +21,4 @@ const Splash: React.FC<any> = ({ navigation }) => {
   );
 };
 export default Splash;
+

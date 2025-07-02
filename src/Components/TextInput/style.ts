@@ -12,11 +12,10 @@ const styles = StyleSheet.create({
     fontFamily: 'HindSiliguri-Regular',
   },
   input: {
+    flex: 1,
     height: h(50),
-    borderWidth: 1,
     borderColor: Colors.GRAY,
-    borderRadius: 10,
-    paddingHorizontal: w('3%'),
+    paddingLeft: w('2%'),
     fontSize: h(16),
     color: Colors.BLACK,
     backgroundColor: Colors.WHITE,
@@ -26,10 +25,23 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   error: {
-    color: 'red',
+    color: Colors.error,
     fontSize: h('1.5%'),
     marginTop: h('0.5%'),
     fontFamily: 'HindSiliguri-Regular',
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.GRAY,
+    borderRadius: 10,
+    paddingHorizontal: w('3%'),
+    backgroundColor: Colors.WHITE,
+  },
+  leftIcon: {
+    width: 20,
+    height: 20,
   },
 });
 

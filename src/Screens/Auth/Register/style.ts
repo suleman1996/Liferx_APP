@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
     maxWidth: w(317),
   },
   customInputStyle: {
-    borderRadius: 16,
     height: h(60),
-    marginTop: h(50),
     fontSize: w(14),
-    paddingLeft: w(20),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
+  },
+  inputContainer:{
+    marginTop: h(50),
   },
   button: {
     width: 'auto',

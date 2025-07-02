@@ -15,6 +15,8 @@ const Colors = {
   LIGHT_ORANGE: '#FBE2D7',
   BORDER_COLOR: '#E2E2E2',
   TRANSPARENT_BLACK_COLOR: '#00000080',
+  LIGHT_GRAY : '#F3F4F6',
+  PLACEHOLDER:'#9CA3AF'
 };
 
 export default Colors;

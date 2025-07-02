@@ -27,10 +27,12 @@ const styles = StyleSheet.create({
   customInputStyle: {
     borderRadius: 16,
     height: h(60),
-    marginTop: h(50),
     fontSize: w(14),
-    paddingLeft: w(20),
+    // paddingLeft: w(20),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
+  },
+  inputContainer: {
+    marginTop: h(50),
   },
   button: {
     width: 'auto',
@@ -50,12 +52,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: h(80),
   },
-  text:{
-    color:Colors.APP_COLOR,
-    fontFamily:FONTS.MONTSERRAT_REGULAR,
-    fontSize:w(14),
-    textAlign:'center',
-    marginTop:h(25)
-  }
+  text: {
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
+    fontSize: w(14),
+    textAlign: 'center',
+    marginTop: h(25),
+  },
 });
 export default styles;

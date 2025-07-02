@@ -28,7 +28,7 @@ const Register: React.FC<any> = () => {
         </Text>
 
         <CustomTextInput
-          customInputStyles={[
+          customInputWrapper={[
             styles.customInputStyle,
             {
               borderColor:
@@ -39,6 +39,7 @@ const Register: React.FC<any> = () => {
                   : Colors.GRAY,
             },
           ]}
+          containerStyle={styles.inputContainer}
           placeholder="Enter your email address"
           value={email}
           onChangeText={text => {
@@ -54,7 +55,7 @@ const Register: React.FC<any> = () => {
 
         {email?.length > 0 && (
           <CustomTextInput
-            customInputStyles={[
+            customInputWrapper={[
               styles.customInputStyle,
               {
                 borderColor:

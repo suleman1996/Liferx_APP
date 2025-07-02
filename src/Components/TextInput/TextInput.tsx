@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, TextInputProps } from 'react-native';
+import { TextInput, View, Text, TextInputProps, Image } from 'react-native';
 import styles from './style';
 import Colors from '../../utils/Colors/Colors';
 
@@ -7,9 +7,11 @@ interface Props extends TextInputProps {
   label?: string;
   error?: string;
   containerStyle?: object;
-  customInputStyles? : object;
-  customLabelStyles? : object;
-  customErrorStyles? : object;
+  customInputStyles?: object;
+  customLabelStyles?: object;
+  customErrorStyles?: object;
+  customInputWrapper?: object;
+  leftImage?: any;
 }
 
 const CustomTextInput: React.FC<Props> = ({
@@ -19,17 +21,36 @@ const CustomTextInput: React.FC<Props> = ({
   customInputStyles,
   customLabelStyles,
   customErrorStyles,
+  leftImage,
+  customInputWrapper,
   ...rest
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <Text style={[styles.label,customLabelStyles]}>{label}</Text>}
-      <TextInput
-        style={[styles.input,customInputStyles, error && styles.inputError]}
-        placeholderTextColor={Colors.GRAY}
-        {...rest}
-      />
-      {error && <Text style={[styles.error,customErrorStyles]}>{error}</Text>}
+      {label && <Text style={[styles.label, customLabelStyles]}>{label}</Text>}
+
+      <View
+        style={[
+          styles.inputWrapper,
+          customInputWrapper,
+          error && styles.inputError,
+        ]}
+      >
+        {leftImage && (
+          <Image
+            source={leftImage}
+            style={styles.leftIcon}
+            resizeMode="contain"
+          />
+        )}
+        <TextInput
+          style={[styles.input, customInputStyles]}
+          placeholderTextColor={Colors.GRAY}
+          {...rest}
+        />
+      </View>
+
+      {error && <Text style={[styles.error, customErrorStyles]}>{error}</Text>}
     </View>
   );
 };

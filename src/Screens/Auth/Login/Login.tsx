@@ -28,7 +28,7 @@ const Login: React.FC<any> = () => {
         <Text style={styles.title1}>Hope you’re doing fine.</Text>
 
         <CustomTextInput
-          customInputStyles={[
+          customInputWrapper={[
             styles.customInputStyle,
             {
               borderColor:
@@ -50,10 +50,11 @@ const Login: React.FC<any> = () => {
             error === 'email' ? Colors.error : Colors.APP_COLOR
           }
           selectionColor={Colors.APP_COLOR}
+          containerStyle={styles.inputContainer}
         />
 
         <CustomTextInput
-          customInputStyles={[
+          customInputWrapper={[
             styles.customInputStyle,
             {
               borderColor:
@@ -91,11 +92,11 @@ const Login: React.FC<any> = () => {
               dispatch(setError('password'));
               return;
             }
-            if(email && password){
-              navigation.navigate('HomeScreen')
+            if (email && password) {
+              navigation.navigate('DrawerStack');
+              // navigation.navigate('HomeScreen');
             }
           }}
-          
         />
 
         <Text style={styles.text}>
