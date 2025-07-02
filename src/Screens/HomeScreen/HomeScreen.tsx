@@ -1,12 +1,19 @@
 import React from 'react';
-import { SafeAreaView, Text, View, Image } from 'react-native';
+import { SafeAreaView, Text, View, Image, Alert } from 'react-native';
 import styles from './style';
+import DrawerHeaderBar from '../../Components/DrawerHeader/DrawerHeader';
 
-const Login: React.FC<any> = () => {
+const HomeScreen: React.FC<any> = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Text>HomeScreen</Text>
+      <View style={styles.mainContainer}>
+        <DrawerHeaderBar
+          name="Suleman Amjad"
+          country="USA"
+          handleMenuPress={() => Alert.alert('djkjdkjdkjd')}
+        />
+      </View>
     </SafeAreaView>
   );
 };
-export default Login;
+export default HomeScreen;

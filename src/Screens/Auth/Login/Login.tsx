@@ -91,7 +91,11 @@ const Login: React.FC<any> = () => {
               dispatch(setError('password'));
               return;
             }
+            if(email && password){
+              navigation.navigate('HomeScreen')
+            }
           }}
+          
         />
 
         <Text style={styles.text}>

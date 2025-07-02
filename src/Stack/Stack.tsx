@@ -5,6 +5,7 @@ import Login from '../Screens/Auth/Login/Login';
 import Register from '../Screens/Auth/Register/Register';
 import { LogBox } from 'react-native';
 import TwoStepVerifiction from '../Screens/Auth/2StepVerification/2StepVerification';
+import HomeScreen from '../Screens/HomeScreen/HomeScreen';
 
 LogBox.ignoreAllLogs();
 
@@ -12,7 +13,8 @@ export type RootStackParamList = {
   splash: undefined;
   Login: undefined;
   Register: undefined;
-  TwoStepVerifiction?:undefined;
+  TwoStepVerifiction?: undefined;
+  HomeScreen?: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -38,6 +40,11 @@ const AppStack: React.FC = () => {
       <Stack.Screen
         name="TwoStepVerifiction"
         component={TwoStepVerifiction}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
