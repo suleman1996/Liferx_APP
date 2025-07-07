@@ -23,7 +23,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack: React.FC = () => {
   return (
-    <Stack.Navigator initialRouteName="splash">
+    <Stack.Navigator initialRouteName="splash" screenOptions={{
+      gestureEnabled: false
+    }}>
       <Stack.Screen
         name="splash"
         component={Splash}

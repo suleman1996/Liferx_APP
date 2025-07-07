@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
 import { FONTS } from '../../Assets/Fonts/Fonts';
@@ -8,7 +8,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: h(10),
+    marginTop: Platform.OS === 'ios' ? h(15) : h(30),
   },
   menuView: {
     borderWidth: 1,
@@ -31,6 +31,7 @@ export default StyleSheet.create({
     fontSize: w(16),
     fontFamily: FONTS.MONTSERRAT_SEMI_BOLD,
     color: Colors.APP_COLOR,
+    maxWidth:w(200)
   },
   locationView: {
     flexDirection: 'row',
@@ -45,5 +46,6 @@ export default StyleSheet.create({
     fontSize: w(14),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     paddingLeft: w(5),
+    color:Colors.APP_COLOR
   },
 });

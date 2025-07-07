@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
+import { FONTS } from '../../Assets/Fonts/Fonts';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -25,6 +26,30 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: w(8),
     marginTop: h(20),
+  },
+  productView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: h(10),
+  },
+  text: {
+    fontSize: w(15),
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+  },
+  seeAll: {
+    fontSize: w(12),
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
+  },
+  contentContainer: {
+    marginTop: h(15),
+  },
+  text1: {
+    fontSize: h(20),
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    color: Colors.APP_COLOR,
+    marginTop: h(15),
   },
 });
 export default styles;

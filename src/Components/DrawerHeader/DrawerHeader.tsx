@@ -23,7 +23,9 @@ const DrawerHeaderBar: React.FC<HeaderBarProps> = ({
       </Pressable>
 
       <View style={styles.centerView}>
-        <Text style={styles.headerName}>{name}</Text>
+        <Text style={styles.headerName} numberOfLines={1} ellipsizeMode="tail">
+          {name}
+        </Text>
         <View style={styles.locationView}>
           <Image
             source={require('../../Assets/Images/location.png')}

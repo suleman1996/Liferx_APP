@@ -1,17 +1,86 @@
 import React from 'react';
-import { SafeAreaView, Text, View, Image, Alert } from 'react-native';
-import styles from './style';
+import {
+  FlatList,
+  SafeAreaView,
+  Text,
+  View,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import DrawerHeaderBar from '../../Components/DrawerHeader/DrawerHeader';
-import { useTypedNavigation } from '../../utils/Helper/Helper';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import Colors from '../../utils/Colors/Colors';
+import CustomCarousel from '../../Components/Carousel/Carousel';
+import ProductCard from '../../Components/ProductCard/ProductCard';
+import TeamCard from '../../Components/TeamCard/TeamCard';
+import { h, w } from '../../utils/Helper/Helper';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
+import styles from './style';
 
 const HomeScreen: React.FC<any> = () => {
   const navigation = useNavigation();
+
+  const images = [
+    { id: '1', image: require('../../Assets/Images/Banner.png') },
+    { id: '2', image: 'https://picsum.photos/id/1016/600/300' },
+    { id: '3', image: 'https://picsum.photos/id/1018/600/300' },
+  ];
+  const productData = [
+    {
+      id: 1,
+      image: require('../../Assets/Images/Product1.png'),
+      text: 'Generic Sildenafil1',
+      month: '$17/month',
+    },
+    {
+      id: 2,
+      image: require('../../Assets/Images/Product2.png'),
+      text: 'Viagra',
+      month: '$17/month',
+    },
+    {
+      id: 3,
+      image: require('../../Assets/Images/Product3.png'),
+      text: 'Generic Tadalfil',
+      month: '$17/month',
+    },
+    {
+      id: 3,
+      image: require('../../Assets/Images/Product3.png'),
+      text: 'Generic Tadalfil',
+      month: '$17/month',
+    },
+  ];
+
+  const teamData = [
+    {
+      id: 1,
+      name: 'Dr. Hameed Q. Ali',
+      profession: 'D.O., S.F.H.M. Medical Director',
+      location: 'Elite Ortho Clinic, USA',
+      image: require('../../Assets/Images/Doc.png'),
+    },
+    {
+      id: 2,
+      name: 'Dr. Hameed Q. Ali',
+      profession: 'D.O., S.F.H.M. Medical Director',
+      location: 'Elite Ortho Clinic, USA',
+      image: require('../../Assets/Images/Doc2.png'),
+    },
+    {
+      id: 3,
+      name: 'Dr. Hameed Q. Ali',
+      profession: 'D.O., S.F.H.M. Medical Director',
+      location: 'Elite Ortho Clinic, USA',
+      image: require('../../Assets/Images/Doc3.png'),
+    },
+  ];
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.mainContainer}>
+        <CustomLoader visible={false} />
         <DrawerHeaderBar
           name="Suleman Amjad"
           country="USA"
@@ -26,7 +95,51 @@ const HomeScreen: React.FC<any> = () => {
           placeholder="Search doctor..."
           placeholderTextColor={Colors.PLACEHOLDER}
           leftImage={require('../../Assets/Images/searchIcon.png')}
+          selectionColor={Colors.APP_COLOR}
         />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: Platform.select({
+              ios: h(150),
+              android: h(200),
+            }),
+          }}
+        >
+          <CustomCarousel data={images} />
+          <View style={styles.productView}>
+            <Text style={styles.text}>Our Products</Text>
+            <Text style={styles.seeAll}>See all</Text>
+          </View>
+
+          <FlatList
+            data={productData}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item, index }) => (
+              <ProductCard item={item} index={index} />
+            )}
+            contentContainerStyle={[
+              styles.contentContainer,
+              { marginBottom: h(20), paddingHorizontal: w(5) },
+            ]}
+          />
+          <Text style={styles.text1}>Meet our Team</Text>
+
+          <FlatList
+            data={teamData}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => <TeamCard item={item} />}
+            contentContainerStyle={[
+              styles.contentContainer,
+              { marginBottom: h(20), paddingHorizontal: w(5) },
+            ]}
+            ItemSeparatorComponent={() => <View style={{ height: h(25) }} />}
+          />
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

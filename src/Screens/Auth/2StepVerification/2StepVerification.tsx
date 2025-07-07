@@ -56,11 +56,9 @@ const TwoStepVerifiction: React.FC<any> = () => {
           customTextStyles={styles.btnText}
           noShadow
           onPressHandler={() => {
-            if (code?.length < 6) {
-              Alert.alert('Please fill all numbers.');
-              return;
-            }
+             navigation.navigate('Login')
           }}
+          
         />
         <Text
           style={[

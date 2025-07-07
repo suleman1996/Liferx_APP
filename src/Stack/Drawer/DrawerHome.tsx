@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
 const DrawerHome = () => {
   const navigation = useNavigation();
+
+  React.useEffect(()=>{
+    Alert.alert('chl ja ')
+  },[])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
