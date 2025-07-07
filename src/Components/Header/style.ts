@@ -6,37 +6,40 @@ import { FONTS } from '../../Assets/Fonts/Fonts';
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.WHITE,
-    height: h('8%'),
+    height: h(80),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 4,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'relative',
   },
-  headerImage: {
-    height: h(35),
-    width: w(90),
+  title: {
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    fontSize: h(22),
+    marginLeft: w(20),
+  },
+  center: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: w('5%'),
+    zIndex: -1, 
   },
-  title:{
-    color:Colors.APP_COLOR,
-    fontFamily:FONTS.HIND_SEMIBOLD,
-    fontSize:h(22),
-    marginLeft:w(20)
+  arrowView: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
-  arrowView:{
-    flexDirection:'row',
-    alignItems:'center'
+  arrowIcon: {
+    height: h(30),
+    width: w(30),
+    marginLeft: w(20),
   },
-  arrowIcon:{
-    transform: [{ rotate: '180deg' }] ,
-    height:h(20),
-    width:w(25),
-    marginLeft:w(20)
-  }
 });
 
 export default styles;

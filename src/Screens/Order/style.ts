@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
-import { FONTS } from '../../Assets/Fonts/Fonts';
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -10,7 +9,8 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginHorizontal: w(20),
+    flex: 1,
   },
-  
+
 });
 export default styles;

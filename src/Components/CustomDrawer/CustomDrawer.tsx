@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import { View, Text, Image, Pressable } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import style from './style';
 
@@ -29,7 +23,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ({
           <Text style={style.drawerText}>Home</Text>
         </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           style={style.drawerItem}
           onPress={() => {
             navigation.navigate('Order', {
@@ -39,11 +33,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ({
           }}
         >
           <Text style={style.drawerText}>Order</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <View style={style.logoutWrapper}>
-        <TouchableOpacity
+        <Pressable
           onPress={() => {
             navigation.reset({
               index: 0,
@@ -52,11 +46,10 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ({
           }}
         >
           <Text style={style.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
 };
-
 
 export default CustomDrawerContent;
