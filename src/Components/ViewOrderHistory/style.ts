@@ -1,33 +1,9 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../../../utils/Colors/Colors';
-import { h, w } from '../../../utils/Helper/Helper';
-import { FONTS } from '../../../Assets/Fonts/Fonts';
+import Colors from '../../utils/Colors/Colors';
+import { h, w } from '../../utils/Helper/Helper';
+import { FONTS } from '../../Assets/Fonts/Fonts';
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-    backgroundColor: Colors.WHITE,
-  },
-  mainContainer: {
-    marginHorizontal: w(20),
-  },
-  contentContainerStyle: {
-    paddingBottom: h(10),
-  },
-  card: {
-    width: '100%',
-    marginRight: 12,
-    borderRadius: 16,
-    backgroundColor: Colors.WHITE,
-    paddingLeft: w(20),
-    marginTop: h(20),
-    paddingBottom: h(10),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
   image: {
     height: h(160),
     alignSelf: 'center',
@@ -36,7 +12,7 @@ const styles = StyleSheet.create({
   imageView: {
     backgroundColor: Colors.LIGHT_GRAY,
     height: h(160),
-    width: '94%',
+    width: '100%',
     justifyContent: 'center',
     borderRadius: 10,
   },
@@ -50,7 +26,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
-    fontSize: w(20),
+    fontSize: w(22),
     marginTop: h(20),
   },
   calenderIcon: {
@@ -70,20 +46,20 @@ const styles = StyleSheet.create({
   label: {
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
-    fontSize: w(15),
+    fontSize: w(16),
     width: w(140),
   },
   value: {
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_REGULAR,
-    fontSize: w(15),
+    fontSize: w(16),
     flex: 1,
   },
   customButtonStyles: {
-    width: w(150),
     borderRadius: 10,
-    height: h(50),
     marginTop: h(20),
+    height: h(35),
+    width: w('35%'),
   },
   customTextStyles: {
     fontSize: w(12),
@@ -93,6 +69,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: h(20),
+  },
+  closeIcon: {
+    height: h(18),
+    width: w(18),
+    alignSelf: 'flex-end',
+    marginBottom: h(10),
+    tintColor: Colors.APP_COLOR,
   },
 });
 export default styles;

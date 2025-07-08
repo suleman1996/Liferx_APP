@@ -17,7 +17,7 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ imageSource, customStyle, title }) => {
+const Header: React.FC<HeaderProps> = ({ title }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.header}>

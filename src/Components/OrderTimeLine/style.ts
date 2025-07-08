@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     top: CIRCLE_SIZE / 2,
     height: CIRCLE_SIZE / 2 + h(30),
     width: LINE_WIDTH,
-    backgroundColor: Colors.GRAY,
     zIndex: -1,
   },
   circle: {
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   labelText: {
-    fontSize: w(16),
+    fontSize: w(15),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     color: Colors.APP_COLOR,
     paddingTop:h(15)

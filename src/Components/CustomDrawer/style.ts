@@ -13,7 +13,7 @@ export default StyleSheet.create({
   logoWrapper: {
     alignItems: 'center',
     marginBottom: h(20),
-    marginTop: h(60),
+    marginTop: h(30),
   },
   logo: {
     height: h(53),
@@ -24,7 +24,8 @@ export default StyleSheet.create({
     borderBottomColor: Colors.BORDER_COLOR,
     backgroundColor: Colors.APP_COLOR,
     borderRadius: 12,
-    height: h(50),
+    paddingTop:h(12),
+    paddingBottom:h(12),
     justifyContent: 'center',
     paddingLeft: w(20),
   },

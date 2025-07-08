@@ -34,6 +34,18 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ({
         >
           <Text style={style.drawerText}>Order</Text>
         </Pressable>
+
+        <Pressable
+          style={style.drawerItem}
+          onPress={() => {
+            navigation.navigate('Shop', {
+              fromDrawer: true,
+              timestamp: Date.now(),
+            });
+          }}
+        >
+          <Text style={style.drawerText}>Shop</Text>
+        </Pressable>
       </View>
 
       <View style={style.logoutWrapper}>

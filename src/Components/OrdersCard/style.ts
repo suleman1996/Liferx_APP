@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: Colors.WHITE,
     paddingLeft: w(20),
+    paddingRight:w(20),
     marginTop: h(20),
     paddingBottom: h(20),
     shadowColor: '#000',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   imageView: {
     backgroundColor: Colors.LIGHT_GRAY,
     height: h(160),
-    width: '94%',
+    width: '100%',
     justifyContent: 'center',
     borderRadius: 10,
   },
@@ -70,19 +71,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   customButtonStyles: {
-    width: w(150),
     borderRadius: 10,
-    height: h(50),
     marginTop: h(20),
+    height: h(35),
+    width: w('35%'),
   },
   customTextStyles: {
     fontSize: w(12),
-    fontFamily:FONTS.MONTSERRAT_MEDIUM
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
   },
-  buttonView:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    marginTop:h(20)
+  buttonView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: h(20),
+  },
+  closeIcon:{
+    height:h(18),
+    width:w(18),
+    alignSelf:'flex-end',
+    marginBottom:h(10),
+    tintColor:Colors.APP_COLOR
   }
 });
 export default styles;

@@ -4,11 +4,13 @@ import HomeScreen from '../../Screens/HomeScreen/HomeScreen';
 import { w } from '../../utils/Helper/Helper';
 import Order from '../../Screens/Order/Order';
 import CustomDrawerContent from '../../Components/CustomDrawer/CustomDrawer';
+import Shop from '../../Screens/Shop/Shop';
 
 type DrawerParamList = {
   DrawerHome?: undefined;
   Home?: undefined;
   Order?: undefined;
+  Shop?: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -34,6 +36,11 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen
         name="Order"
         component={Order}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="Shop"
+        component={Shop}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

@@ -37,13 +37,15 @@ const CustomCarousel: React.FC<Props> = ({
         autoPlay={autoPlay}
         loop={loop}
         style={{ flexGrow: 0 }}
-        scrollAnimationDuration={1000}
+        scrollAnimationDuration={2000}
         onSnapToItem={index => setActiveIndex(index)}
         mode="parallax"
         modeConfig={{
           parallaxScrollingOffset: gap,
           parallaxScrollingScale: 0.9,
+          
         }}
+        
         renderItem={({ item }) => (
           <View style={styles.card}>
             <ImageBackground

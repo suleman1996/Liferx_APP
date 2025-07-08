@@ -37,7 +37,7 @@ const Order: React.FC<any> = () => {
         <FlatList
           data={orderItems}
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => item?.id?.toString()}
+          keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => <OrderCard item={item} />}
           contentContainerStyle={{
             paddingHorizontal: w(5),

@@ -16,7 +16,12 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
   children,
 }) => {
   return (
-    <Modal isVisible={visible} onBackdropPress={onDismiss} animationIn={'fadeIn'} animationOut={'fadeOut'}>
+    <Modal
+      isVisible={visible}
+      onBackdropPress={onDismiss}
+      animationIn={'fadeIn'}
+      animationOut={'fadeOut'}
+    >
       <View style={styles.modal}>{children}</View>
     </Modal>
   );

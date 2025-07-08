@@ -5,7 +5,6 @@ import { h, w } from '../../utils/Helper/Helper';
 const styles = StyleSheet.create({
   buttonView: {
     backgroundColor: Colors.APP_COLOR,
-    width: w('50%'),
     height: h(60),
     borderRadius: 16,
     justifyContent: 'space-around',

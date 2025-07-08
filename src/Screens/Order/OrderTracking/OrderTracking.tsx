@@ -1,21 +1,16 @@
-import React from 'react';
-import {
-  FlatList,
-  Image,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import React, { useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import ImageView from 'react-native-image-viewing';
+import { useRoute } from '@react-navigation/native';
 import styles from './style';
 import Header from '../../../Components/Header/Header';
 import OrderTimeline from '../../../Components/OrderTimeLine/OrderTimeLine';
 
 const OrderTracking: React.FC<any> = ({}) => {
   const route = useRoute();
+  const [visible, setIsVisible] = useState(false);
+
   const { item }: any = route?.params || {};
 
   const steps = [
@@ -27,7 +22,7 @@ const OrderTracking: React.FC<any> = ({}) => {
     {
       label: 'Ready To Ship',
       icon: require('../../../Assets/Images/truck.png'),
-      isActive: true,
+      isActive: false,
     },
     {
       label: 'Order Approved',
@@ -59,11 +54,16 @@ const OrderTracking: React.FC<any> = ({}) => {
               Daily Tadalafil Oral Tablets
             </Text>
 
-            <View style={styles.innerView}>
+            <Pressable
+              style={styles.innerView}
+              onPress={() => {
+                setIsVisible(true);
+              }}
+            >
               <View style={styles.imageView}>
                 <Image source={item?.image} style={styles.image} />
               </View>
-            </View>
+            </Pressable>
 
             <View style={styles.row}>
               <Text style={styles.label}>Order Number :</Text>
@@ -78,6 +78,14 @@ const OrderTracking: React.FC<any> = ({}) => {
             <OrderTimeline steps={steps} />
           </View>
         </View>
+        <ImageView
+          images={[{ uri: Image.resolveAssetSource(item?.image).uri }]}
+          imageIndex={0}
+          visible={visible}
+          onRequestClose={() => setIsVisible(false)}
+          presentationStyle="fullScreen"
+          backgroundColor="#000000EE"
+        />
       </ScrollView>
     </SafeAreaView>
   );
