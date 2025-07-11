@@ -6,12 +6,14 @@ import Colors from '../../../utils/Colors/Colors';
 import Button from '../../../Components/Button/Button';
 import { FONTS } from '../../../Assets/Fonts/Fonts';
 import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
+import EyeIcon from 'react-native-vector-icons/Entypo';
 
 const Register: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -78,6 +80,16 @@ const Register: React.FC<any> = () => {
               error === 'password' ? Colors.error : Colors.APP_COLOR
             }
             selectionColor={Colors.APP_COLOR}
+            secureTextEntry={!isPasswordVisible}
+            rightImage={
+              <EyeIcon
+                name={isPasswordVisible ? 'eye-with-line' : 'eye'}
+                size={20}
+                color={Colors.APP_COLOR}
+                style={styles.eyeIcon}
+                onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+              />
+            }
           />
         )}
 

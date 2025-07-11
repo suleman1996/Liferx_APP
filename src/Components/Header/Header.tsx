@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
+import BackArrowIcon from 'react-native-vector-icons/FontAwesome6';
+import Colors from '../../utils/Colors/Colors';
 
 interface HeaderProps {
   imageSource?: ImageSourcePropType;
@@ -23,8 +25,10 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
     <View style={styles.header}>
       <View style={styles.arrowView}>
         <Pressable onPress={() => navigation.goBack()}>
-          <Image
-            source={require('../../Assets/Images/leftArrow.png')}
+          <BackArrowIcon
+            name="arrow-left-long"
+            size={25}
+            color={Colors.APP_COLOR}
             style={styles.arrowIcon}
           />
         </Pressable>

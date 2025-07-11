@@ -22,6 +22,12 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = ({
         >
           <Text style={style.drawerText}>Home</Text>
         </Pressable>
+        <Pressable
+          style={style.drawerItem}
+          onPress={() => navigation.navigate('Profile')}
+        >
+          <Text style={style.drawerText}>Profile</Text>
+        </Pressable>
 
         <Pressable
           style={style.drawerItem}

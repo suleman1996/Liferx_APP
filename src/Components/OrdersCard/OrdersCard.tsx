@@ -45,7 +45,6 @@ const OrderCard: React.FC<Props> = ({ item }) => {
           <ViewOrderHistory
             item={item}
             onClose={() => setIsPopUpOpen(false)}
-            onImagePress={() => setIsVisible(true)}
           />
         </CustomDialog>
       )}

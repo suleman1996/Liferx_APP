@@ -59,5 +59,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: h(25),
   },
+  eyeIcon: {
+    right: 10,
+  },
 });
 export default styles;

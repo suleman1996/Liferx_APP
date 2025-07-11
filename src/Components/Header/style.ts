@@ -36,8 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   arrowIcon: {
-    height: h(25),
-    width: w(25),
     marginLeft: w(20),
   },
 });

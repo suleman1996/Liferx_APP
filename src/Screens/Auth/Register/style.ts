@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontSize: w(14),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
   },
-  inputContainer:{
+  inputContainer: {
     marginTop: h(50),
   },
   button: {
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
     fontSize: w(14),
     textAlign: 'center',
     marginTop: h(25),
+  },
+  eyeIcon: {
+    right: 10,
   },
 });
 export default styles;

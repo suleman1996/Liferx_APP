@@ -12,6 +12,7 @@ interface Props extends TextInputProps {
   customErrorStyles?: object;
   customInputWrapper?: object;
   leftImage?: any;
+  rightImage?: any;
 }
 
 const CustomTextInput: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const CustomTextInput: React.FC<Props> = ({
   customLabelStyles,
   customErrorStyles,
   leftImage,
+  rightImage,
   customInputWrapper,
   ...rest
 }) => {
@@ -48,6 +50,7 @@ const CustomTextInput: React.FC<Props> = ({
           placeholderTextColor={Colors.GRAY}
           {...rest}
         />
+        {rightImage && <View style={styles.leftIcon}>{rightImage}</View>}
       </View>
 
       {error && <Text style={[styles.error, customErrorStyles]}>{error}</Text>}

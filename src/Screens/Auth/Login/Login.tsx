@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, Text, View, Image } from 'react-native';
 import styles from './style';
 import CustomTextInput from '../../../Components/TextInput/TextInput';
@@ -9,8 +9,11 @@ import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../Store';
 import { setEmail, setError, setPassword } from './actions';
+import EyeIcon from 'react-native-vector-icons/Entypo';
+
 
 const Login: React.FC<any> = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const dispatch = useDispatch();
   const { email, password, error } = useSelector(
     (state: RootState) => state?.login,
@@ -77,6 +80,16 @@ const Login: React.FC<any> = () => {
             error === 'password' ? Colors.error : Colors.APP_COLOR
           }
           selectionColor={Colors.APP_COLOR}
+          secureTextEntry={!isPasswordVisible}
+           rightImage={
+            <EyeIcon
+              name={isPasswordVisible ? 'eye-with-line' : 'eye'}
+              size={20}
+              color={Colors.APP_COLOR}
+              style={styles.eyeIcon}
+              onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+            />
+          }
         />
 
         <Button

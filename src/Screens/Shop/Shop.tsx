@@ -11,12 +11,12 @@ const servicesData = [
   {
     title: 'Regrow Hair',
     icon: require('../../Assets/Images/Hair.png'),
-    active: true,
+    active: false,
   },
   {
     title: 'Better Sex',
     icon: require('../../Assets/Images/MinoxiBlend.png'),
-    active: false,
+    active: true,
   },
   {
     title: 'Weight Loss',

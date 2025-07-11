@@ -8,6 +8,8 @@ import TwoStepVerifiction from '../Screens/Auth/2StepVerification/2StepVerificat
 import HomeScreen from '../Screens/HomeScreen/HomeScreen';
 import DrawerStack from './Drawer/Drawer';
 import OrderTracking from '../Screens/Order/OrderTracking/OrderTracking';
+import ChangePassword from '../Screens/Profile/ChangePassword/ChangePassword';
+import UpdateAccountDetail from '../Screens/Profile/UpdateAccountDetail/UpdateAccountDetail';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -17,6 +19,8 @@ export type RootStackParamList = {
   TwoStepVerifiction?: undefined;
   HomeScreen?: undefined;
   DrawerStack?: undefined;
+  ChangePassword?: undefined;
+  UpdateAccountDetail?:undefined;
   OrderTracking?: {};
 };
 
@@ -53,6 +57,16 @@ const AppStack: React.FC = () => {
       <Stack.Screen
         name="OrderTracking"
         component={OrderTracking}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="UpdateAccountDetail"
+        component={UpdateAccountDetail}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen

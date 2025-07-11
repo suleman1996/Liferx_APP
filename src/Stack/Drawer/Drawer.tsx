@@ -5,12 +5,14 @@ import { w } from '../../utils/Helper/Helper';
 import Order from '../../Screens/Order/Order';
 import CustomDrawerContent from '../../Components/CustomDrawer/CustomDrawer';
 import Shop from '../../Screens/Shop/Shop';
+import Profile from '../../Screens/Profile/Profile';
 
 type DrawerParamList = {
   DrawerHome?: undefined;
   Home?: undefined;
   Order?: undefined;
   Shop?: undefined;
+  Profile?: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -23,7 +25,7 @@ const DrawerStack: React.FC = () => {
       screenOptions={{
         swipeEnabled: false,
         drawerStyle: {
-          width: w(320),
+          width: w('70%'),
         },
         drawerType: 'slide',
       }}
@@ -41,6 +43,11 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen
         name="Shop"
         component={Shop}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
