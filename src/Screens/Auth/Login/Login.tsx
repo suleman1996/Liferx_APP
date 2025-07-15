@@ -106,7 +106,7 @@ const Login: React.FC<any> = () => {
               return;
             }
             if (email && password) {
-              navigation.navigate('DrawerStack');
+              navigation.navigate('BottomTab');
               // navigation.navigate('HomeScreen');
             }
           }}

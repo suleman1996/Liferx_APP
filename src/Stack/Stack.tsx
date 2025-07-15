@@ -10,6 +10,10 @@ import DrawerStack from './Drawer/Drawer';
 import OrderTracking from '../Screens/Order/OrderTracking/OrderTracking';
 import ChangePassword from '../Screens/Profile/ChangePassword/ChangePassword';
 import UpdateAccountDetail from '../Screens/Profile/UpdateAccountDetail/UpdateAccountDetail';
+import BottomTabs from './BottomTab/BottomTab';
+import Profile from '../Screens/Profile/Profile';
+import DecidingQuestions from '../Screens/DecidingQuestions/DecidingQuestions';
+import SelectState from '../Screens/SelectState/SelectState';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -20,7 +24,11 @@ export type RootStackParamList = {
   HomeScreen?: undefined;
   DrawerStack?: undefined;
   ChangePassword?: undefined;
-  UpdateAccountDetail?:undefined;
+  UpdateAccountDetail?: undefined;
+  BottomTab?: undefined;
+  Profile?: undefined;
+  DecidingQuestions?: undefined;
+  SelectState?: undefined;
   OrderTracking?: {};
 };
 
@@ -64,9 +72,29 @@ const AppStack: React.FC = () => {
         component={ChangePassword}
         options={{ headerShown: false }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="UpdateAccountDetail"
         component={UpdateAccountDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DecidingQuestions"
+        component={DecidingQuestions}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SelectState"
+        component={SelectState}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="BottomTab"
+        component={BottomTabs}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen
@@ -74,11 +102,11 @@ const AppStack: React.FC = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       /> */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="DrawerStack"
         component={DrawerStack}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

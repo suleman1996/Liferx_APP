@@ -20,8 +20,7 @@ const styles = StyleSheet.create({
   title: {
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
-    fontSize: h(22),
-    marginLeft: w(20),
+    fontSize: h(18),
   },
   center: {
     position: 'absolute',
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: -1, 
+    zIndex: -1,
   },
   arrowView: {
     justifyContent: 'center',
@@ -38,6 +37,29 @@ const styles = StyleSheet.create({
   arrowIcon: {
     marginLeft: w(20),
   },
+  leftSection: {
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  // center: {
+  //   flex: 1,
+  //   alignItems: 'center',
+  // },
+  rightSection: {
+    width: 40,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  image: {
+    width: 25,
+    height: 25,
+    resizeMode: 'contain',
+    marginLeft: w(20),
+  },
+  // arrowIcon: {
+  //   padding: 4,
+  // },
 });
 
 export default styles;

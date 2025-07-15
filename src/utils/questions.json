@@ -1,0 +1,92 @@
+{
+    "deciding_questions": [
+        {
+            "id": 9,
+            "text": "With treatment, what results are you hoping for?",
+            "type": "multi-select",
+            "options": [
+                {
+                    "id": 25,
+                    "text": "A stronger, defined hairline",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 26,
+                    "text": "Visibly thicker, fuller hair",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 27,
+                    "text": "More scalp coverage",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 28,
+                    "text": "Keep the hair I have",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 29,
+                    "text": "All of the above",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": true,
+                    "none_of_all": false
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "text": "What kind of treatment do you prefer?",
+            "type": "single-select",
+            "options": [
+                {
+                    "id": 30,
+                    "text": "Oral (Pills or chewables)",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 31,
+                    "text": "Topical (Sprays or serums)",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                },
+                {
+                    "id": 32,
+                    "text": "No preference (Choose what's most effective for me)",
+                    "explanation_required": false,
+                    "file": null,
+                    "is_multimedia": false,
+                    "select_all": false,
+                    "none_of_all": false
+                }
+            ]
+        }
+    ],
+    "deciding_questions_count": 2,
+    "questionnaire_id": 1
+}

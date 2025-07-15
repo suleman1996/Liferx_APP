@@ -6,20 +6,22 @@ import {
   View,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import DrawerHeaderBar from '../../Components/DrawerHeader/DrawerHeader';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import Colors from '../../utils/Colors/Colors';
 import CustomCarousel from '../../Components/Carousel/Carousel';
 import ProductCard from '../../Components/ProductCard/ProductCard';
 import TeamCard from '../../Components/TeamCard/TeamCard';
-import { h, w } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import styles from './style';
+import Header from '../../Components/Header/Header';
 
 const HomeScreen: React.FC<any> = () => {
-  const navigation = useNavigation();
+  const navigation = useTypedNavigation();
 
   const images = [
     { id: '1', image: require('../../Assets/Images/Banner.png') },
@@ -79,15 +81,21 @@ const HomeScreen: React.FC<any> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <Header
+        title="Home"
+        leftImage={require('../../Assets/Images/DefaultIcon.png')}
+        leftImageStyle={styles.leftImageStyle}
+        profileImageHandler={() => navigation.navigate('Profile')}
+      />
+
       <View style={styles.mainContainer}>
-        <CustomLoader visible={false} />
-        <DrawerHeaderBar
+        {/* <DrawerHeaderBar
           name="Suleman Amjad"
           country="USA"
           handleMenuPress={() =>
             navigation.dispatch(DrawerActions.openDrawer())
           }
-        />
+        /> */}
 
         <CustomTextInput
           customInputWrapper={styles.wrapper}

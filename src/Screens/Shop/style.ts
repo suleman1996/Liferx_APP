@@ -1,7 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
 import { FONTS } from '../../Assets/Fonts/Fonts';
+
+const screenWidth = Dimensions.get('window').width;
+const ITEM_HORIZONTAL_MARGIN = 16;
+const ITEM_SPACING = 20;
+
+const ITEM_WIDTH =
+  (screenWidth - ITEM_HORIZONTAL_MARGIN * 2 - ITEM_SPACING) / 2;
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -10,7 +17,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     marginHorizontal: w(20),
-    flex: 1,
+    flexGrow: 1,
   },
   title: {
     color: Colors.APP_COLOR,
@@ -20,12 +27,11 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: Colors.LIGHT_GRAY,
-    width: w(170),
+    width: ITEM_WIDTH,
     borderRadius: 10,
     paddingTop: h(20),
     paddingBottom: h(20),
     marginBottom: h(16),
-    // minHeight: h(250),
   },
   image: {
     height: h(120),

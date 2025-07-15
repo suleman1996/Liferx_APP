@@ -1,6 +1,5 @@
 import React from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList, Image, Text, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, w } from '../../utils/Helper/Helper';
@@ -84,10 +83,10 @@ const Shop: React.FC<any> = () => {
           columnWrapperStyle={{ justifyContent: 'space-between' }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
+          style={{ flexGrow: 1 }}
         />
       </View>
     </SafeAreaView>
   );
 };
-
 export default Shop;

@@ -1,9 +1,15 @@
 import React from 'react';
-import { Pressable, Image, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  Pressable,
+  Image,
+  ScrollView,
+  Text,
+  View,
+  SafeAreaView,
+} from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { h, useTypedNavigation } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
 import EditIcon from 'react-native-vector-icons/Feather';
 
@@ -14,7 +20,10 @@ const Profile: React.FC<any> = () => {
       <Header title="Profile" />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: h(50) }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: h(20),
+        }}
       >
         <View style={styles.mainContainer}>
           <View style={styles.roundedView}>

@@ -26,17 +26,16 @@ const CustomDatePicker: React.FC<Props> = ({
   const [showPicker, setShowPicker] = useState(false);
   const [tempDate, setTempDate] = useState<Date>(new Date());
 
-  const handleChange = (event: any, selectedDate?: any) => {
-    if (Platform.OS === 'android') {
+  const handleChange = (event: any, selectedDate?: Date) => {
+    const isDismissed = event?.type === 'dismissed';
+    if (!isDismissed && selectedDate) {
+      setTempDate(selectedDate);
+      if (Platform.OS === 'android') {
+        setShowPicker(false);
+        onChange(moment(selectedDate).format('MM/DD/YYYY'));
+      }
+    } else if (Platform.OS === 'android') {
       setShowPicker(false);
-      if (selectedDate) {
-        const formatted = moment(selectedDate).format('MM/DD/YYYY');
-        onChange(formatted);
-      }
-    } else {
-      if (selectedDate) {
-        setTempDate(selectedDate);
-      }
     }
   };
 
@@ -50,18 +49,17 @@ const CustomDatePicker: React.FC<Props> = ({
 
       {showPicker && (
         <View style={styles.wrapper}>
-        <View style={styles.iosPickerWrapper}>
-          <DateTimePicker
-            value={tempDate}
-            mode={mode}
-            display={Platform.OS === 'ios' ? 'spinner':'default'}
-            onChange={handleChange}
-            minimumDate={minimumDate}
-            maximumDate={maximumDate}
-            style={styles.iosPicker}
-          />
-
-        </View>
+          <View style={styles.iosPickerWrapper}>
+            <DateTimePicker
+              value={tempDate}
+              mode={mode}
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleChange}
+              minimumDate={minimumDate}
+              maximumDate={maximumDate}
+              style={styles.iosPicker}
+            />
+          </View>
           <View style={styles.buttonRow}>
             <Pressable
               onPress={() => setShowPicker(false)}

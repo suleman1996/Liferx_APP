@@ -8,7 +8,6 @@ import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import Colors from '../../../utils/Colors/Colors';
 import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
 import CustomDatePicker from '../../../Components/CustomDatePicker/CustomDatePicker';
-import moment from 'moment';
 import Button from '../../../Components/Button/Button';
 
 const UpdateAccountDetail: React.FC<any> = () => {

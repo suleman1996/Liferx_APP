@@ -11,6 +11,6 @@ const styles = StyleSheet.create({
     marginHorizontal: w(20),
     flexGrow: 1,
   },
-
+contentContainer:{}
 });
 export default styles;

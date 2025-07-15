@@ -51,5 +51,9 @@ const styles = StyleSheet.create({
     color: Colors.APP_COLOR,
     marginTop: h(15),
   },
+  leftImageStyle: {
+    height: h(35),
+    width: w(35),
+  },
 });
 export default styles;

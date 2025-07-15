@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     marginTop: h(20),
     width: w(120),
     alignSelf: 'flex-end',
+    height: h(50),
   },
   customTextStyles: {
     fontFamily: FONTS.MONTSERRAT_MEDIUM,

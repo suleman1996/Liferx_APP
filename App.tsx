@@ -8,6 +8,7 @@ import store from './src/Store';
 import AppStack from './src/Stack/Stack';
 import { StatusBar } from 'react-native';
 import Colors from './src/utils/Colors/Colors';
+import CustomToast from './src/Components/CustomToast/CustomToast';
 
 const App: React.FC<any> = () => {
   useEffect(() => {
@@ -23,7 +24,32 @@ const App: React.FC<any> = () => {
           translucent={false}
         />
         <AppStack />
-        <Toast topOffset={h('6%')} />
+        <Toast
+          config={{
+            success: props => (
+              <CustomToast
+                text1={props.text1}
+                text2={props.text2}
+                type="success"
+              />
+            ),
+            error: props => (
+              <CustomToast
+                text1={props.text1}
+                text2={props.text2}
+                type="error"
+              />
+            ),
+            info: props => (
+              <CustomToast
+                text1={props.text1}
+                text2={props.text2}
+                type="info"
+              />
+            ),
+          }}
+          topOffset={h('10%')}
+        />
       </NavigationContainer>
     </Provider>
   );
