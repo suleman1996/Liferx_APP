@@ -9,6 +9,7 @@ import AppStack from './src/Stack/Stack';
 import { StatusBar } from 'react-native';
 import Colors from './src/utils/Colors/Colors';
 import CustomToast from './src/Components/CustomToast/CustomToast';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App: React.FC<any> = () => {
   useEffect(() => {
@@ -17,40 +18,42 @@ const App: React.FC<any> = () => {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor={Colors.WHITE}
-          translucent={false}
-        />
-        <AppStack />
-        <Toast
-          config={{
-            success: props => (
-              <CustomToast
-                text1={props.text1}
-                text2={props.text2}
-                type="success"
-              />
-            ),
-            error: props => (
-              <CustomToast
-                text1={props.text1}
-                text2={props.text2}
-                type="error"
-              />
-            ),
-            info: props => (
-              <CustomToast
-                text1={props.text1}
-                text2={props.text2}
-                type="info"
-              />
-            ),
-          }}
-          topOffset={h('10%')}
-        />
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor={Colors.WHITE}
+            translucent={true}
+          />
+          <AppStack />
+          <Toast
+            config={{
+              success: props => (
+                <CustomToast
+                  text1={props.text1}
+                  text2={props.text2}
+                  type="success"
+                />
+              ),
+              error: props => (
+                <CustomToast
+                  text1={props.text1}
+                  text2={props.text2}
+                  type="error"
+                />
+              ),
+              info: props => (
+                <CustomToast
+                  text1={props.text1}
+                  text2={props.text2}
+                  type="info"
+                />
+              ),
+            }}
+            topOffset={h('10%')}
+          />
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Provider>
   );
 };

@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginLeft: w(20),
   },
+   leftIcon: {
+    width: 20,
+    height: 20,
+  },
   // arrowIcon: {
   //   padding: 4,
   // },

@@ -1,8 +1,7 @@
 import React, { use, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './style';
 import Header from '../../../Components/Header/Header';
-import { Alert, Pressable, Text, View } from 'react-native';
+import { Alert, Pressable, Text, View,SafeAreaView } from 'react-native';
 import CustomTextInput from '../../../Components/TextInput/TextInput';
 import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import Colors from '../../../utils/Colors/Colors';

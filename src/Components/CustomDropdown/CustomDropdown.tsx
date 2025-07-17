@@ -14,8 +14,10 @@ interface Props {
   placeholder?: string;
   items: DropdownItem[];
   label?: string;
+  style?: object;
   customLabelStyles?: object;
   selectedValue: string | null;
+  CustomDropdownContainer?: object;
   onChange: (val: any | null) => void;
 }
 
@@ -24,7 +26,9 @@ const CustomDropdown: React.FC<Props> = ({
   items,
   selectedValue,
   customLabelStyles,
+  style,
   label,
+  CustomDropdownContainer,
   onChange,
 }) => {
   const [open, setOpen] = useState(false);
@@ -51,6 +55,7 @@ const CustomDropdown: React.FC<Props> = ({
           borderRadius: 15,
           paddingHorizontal: w('5%'),
           marginTop: h(5),
+          ...style
         }}
         textStyle={{
           fontSize: h(16),
@@ -63,6 +68,7 @@ const CustomDropdown: React.FC<Props> = ({
         dropDownContainerStyle={{
           borderColor: Colors.GRAY,
           paddingLeft: w('3%'),
+          ...CustomDropdownContainer,
         }}
         selectedItemLabelStyle={{
           color: Colors.APP_COLOR,

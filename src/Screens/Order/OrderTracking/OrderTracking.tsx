@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image, Pressable, ScrollView, Text, View ,SafeAreaView} from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import { useRoute } from '@react-navigation/native';
 import styles from './style';

@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, Image, Text, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { h, w } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Button from '../../Components/Button/Button';
 import Colors from '../../utils/Colors/Colors';
 
@@ -25,6 +25,8 @@ const servicesData = [
 ];
 
 const Shop: React.FC<any> = () => {
+  const navigation = useTypedNavigation();
+
   const renderItem = ({ item }: any) => (
     <View style={styles.container}>
       <Text
@@ -64,6 +66,7 @@ const Shop: React.FC<any> = () => {
           },
         ]}
         customTextStyles={styles.customTextStyles}
+        onPressHandler={() => navigation.navigate('DecidingQuestions')}
         noShadow
       />
     </View>

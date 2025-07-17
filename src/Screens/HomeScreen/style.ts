@@ -55,5 +55,8 @@ const styles = StyleSheet.create({
     height: h(35),
     width: w(35),
   },
+  logoutIcon:{
+    right:w(20)
+  }
 });
 export default styles;

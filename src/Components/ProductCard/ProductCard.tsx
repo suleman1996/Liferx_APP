@@ -20,7 +20,7 @@ const ProductCard: React.FC<Props> = ({ item, index }) => {
   return (
     <Pressable
       style={[styles.card, index > 0 && { marginLeft: w(20) }]}
-      onPress={() => navigation.navigate('DecidingQuestions')}
+      // onPress={() => navigation.navigate('DecidingQuestions')}
     >
       <Image source={item?.image} style={styles.image} resizeMode="cover" />
 

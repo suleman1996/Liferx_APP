@@ -43,8 +43,7 @@ const getBackgroundColor = (type?: string) => {
 const styles = StyleSheet.create<Styles>({
   container: {
     borderRadius: 10,
-    padding: h(13),
-    minHeight: 80,
+    padding: w(13),
     justifyContent: 'center',
   },
   text1: {

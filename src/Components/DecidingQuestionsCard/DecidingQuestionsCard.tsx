@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import styles from './style';
 import Button from '../Button/Button';
@@ -19,13 +19,64 @@ interface QuestionItem {
 
 interface Props {
   item?: QuestionItem;
+  // alreadySelected?: number[] | number | null;
   handleContinue?: (selected: number[]) => void;
 }
 
 const DecidingQuestionsCard: React.FC<Props> = ({ item, handleContinue }) => {
   const [selected, setSelected] = useState<number[]>([]);
 
+  //  useEffect(() => {
+  //   if (typeof alreadySelected === 'number') {
+  //     setSelected([alreadySelected]);
+  //   } else if (Array.isArray(alreadySelected)) {
+  //     setSelected(alreadySelected);
+  //   } else {
+  //     setSelected([]);
+  //   }
+  // }, [alreadySelected]);
+
+//   const toggleSelect = (id: number) => {
+//   const options = item?.options || [];
+//   const allOption = options.find(opt => opt.select_all);
+//   const allId = allOption?.id;
+//   const normalIds = options.filter(opt => !opt.select_all).map(opt => opt.id);
+
+//   if (item?.type === 'multi-select') {
+//     if (id === allId) {
+//       // Toggle "All of the above"
+//       if (selected.includes(allId)) {
+//         setSelected([]);
+//       } else {
+//         setSelected([...normalIds, allId]);
+//       }
+//     } else {
+//       let updated = selected.includes(id)
+//         ? selected.filter(i => i !== id)
+//         : [...selected, id];
+
+//       // ✅ If all normal options are selected, add "All of the above"
+//       const allSelected = normalIds.every(optId => updated.includes(optId));
+//       if (allSelected && allId) {
+//         updated = [...updated, allId];
+//       }
+
+//       // ✅ If not all selected, remove "All of the above"
+//       if (!allSelected && updated.includes(allId)) {
+//         updated = updated.filter(i => i !== allId);
+//       }
+
+//       setSelected(updated);
+//     }
+//   } else {
+//     setSelected([id]); // single-select
+//   }
+// };
+
+
   const toggleSelect = (id: number) => {
+
+    
     const options = item?.options || [];
     const allId = options.find(opt => opt.select_all)?.id;
     const isAll = id === allId;

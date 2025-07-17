@@ -14,6 +14,9 @@ import BottomTabs from './BottomTab/BottomTab';
 import Profile from '../Screens/Profile/Profile';
 import DecidingQuestions from '../Screens/DecidingQuestions/DecidingQuestions';
 import SelectState from '../Screens/SelectState/SelectState';
+import Questionaire from '../Screens/Questionaire/Questionaire';
+import PersonalInformation from '../Screens/PersonalInformation/PersonalInformation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -29,6 +32,8 @@ export type RootStackParamList = {
   Profile?: undefined;
   DecidingQuestions?: undefined;
   SelectState?: undefined;
+  Questionaire?: undefined;
+  PersonalInformation?: undefined;
   OrderTracking?: {};
 };
 
@@ -36,6 +41,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack: React.FC = () => {
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <Stack.Navigator
       initialRouteName="splash"
       screenOptions={{
@@ -93,6 +99,16 @@ const AppStack: React.FC = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="Questionaire"
+        component={Questionaire}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PersonalInformation"
+        component={PersonalInformation}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="BottomTab"
         component={BottomTabs}
         options={{ headerShown: false }}
@@ -108,6 +124,7 @@ const AppStack: React.FC = () => {
         options={{ headerShown: false }}
       /> */}
     </Stack.Navigator>
+    </SafeAreaView>
   );
 };
 

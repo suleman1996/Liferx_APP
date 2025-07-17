@@ -5,6 +5,7 @@ import {
 import { PixelRatio } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import ImagePicker from 'react-native-image-crop-picker';
 import { RootStackParamList } from '../../Stack/Stack';
 
 // Responsive width: accepts px or percentage string
@@ -38,3 +39,30 @@ export const formatTime = (seconds: number) => {
   return `${mins}:${secs}`;
 };
 
+export const pickImageFromCamera = async (): Promise<any | null> => {
+  try {
+    const image = await ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    });
+    return image;
+  } catch (error) {
+    console.warn('Camera Error:', error);
+    return null;
+  }
+};
+
+export const pickImageFromGallery = async (): Promise<any | null> => {
+  try {
+    const image = await ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    });
+    return image;
+  } catch (error) {
+    console.warn('Gallery Error:', error);
+    return null;
+  }
+};

@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import DrawerHeaderBar from '../../Components/DrawerHeader/DrawerHeader';
+import LogoutIcon from 'react-native-vector-icons/AntDesign';
 import { DrawerActions } from '@react-navigation/native';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import Colors from '../../utils/Colors/Colors';
@@ -79,12 +80,45 @@ const HomeScreen: React.FC<any> = () => {
     },
   ];
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Logout',
+          style: 'destructive',
+          onPress: () => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }],
+            });
+          },
+        },
+      ],
+      { cancelable: true },
+    );
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Header
         title="Home"
         leftImage={require('../../Assets/Images/DefaultIcon.png')}
         leftImageStyle={styles.leftImageStyle}
+        rightImage={
+          <LogoutIcon
+            name={'logout'}
+            size={20}
+            color={Colors.APP_COLOR}
+            style={styles.logoutIcon}
+            onPress={() => handleLogout()}
+          />
+        }
         profileImageHandler={() => navigation.navigate('Profile')}
       />
 

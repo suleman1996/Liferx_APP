@@ -1,6 +1,5 @@
 import React from 'react';
-import { FlatList, Platform, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlatList, Platform, View,SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, w } from '../../utils/Helper/Helper';

@@ -16,11 +16,12 @@ import Colors from '../../utils/Colors/Colors';
 interface HeaderProps {
   title?: string;
   leftImage?: ImageSourcePropType;
-  rightImage?: ImageSourcePropType;
+  rightImage?: any;
   leftImageStyle?: StyleProp<ImageStyle>;
   rightImageStyle?: StyleProp<ImageStyle>;
   onRightImagePress?: () => void;
   profileImageHandler?: () => void;
+  onBackPress?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -28,9 +29,8 @@ const Header: React.FC<HeaderProps> = ({
   leftImage,
   rightImage,
   leftImageStyle,
-  rightImageStyle,
+  onBackPress,
   profileImageHandler,
-  onRightImagePress,
 }) => {
   const navigation = useNavigation();
 
@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
             <Image source={leftImage} style={[styles.image, leftImageStyle]} />
           </Pressable>
         ) : (
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable onPress={onBackPress ?? (() => navigation.goBack())}>
             <BackArrowIcon
               name="arrow-left-long"
               size={25}
@@ -58,14 +58,7 @@ const Header: React.FC<HeaderProps> = ({
       </View>
 
       <View style={styles.rightSection}>
-        {rightImage && (
-          <Pressable onPress={onRightImagePress}>
-            <Image
-              source={rightImage}
-              style={[styles.image, rightImageStyle]}
-            />
-          </Pressable>
-        )}
+        {rightImage && <View style={styles.leftIcon}>{rightImage}</View>}
       </View>
     </View>
   );
