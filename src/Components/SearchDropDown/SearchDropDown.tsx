@@ -35,10 +35,16 @@ interface Props {
   editPostReview?: boolean;
   path?: { name?: string };
   restaurantData?: { id?: string | number };
+  label?: string;
+  customSearchDropDownContainer?: object;
+  customLabelStyles?: object;
+  customContainerStyle?:object
 }
 
 const SearchDropDown: React.FC<Props> = React.memo(
   ({
+    label,
+    customSearchDropDownContainer,
     flatlistData,
     setSelectedItem,
     placeholder,
@@ -48,6 +54,8 @@ const SearchDropDown: React.FC<Props> = React.memo(
     renderFooter,
     onSubmitEditing,
     selectedItem,
+    customLabelStyles,
+    customContainerStyle
   }) => {
     const itemHeight = 250;
     const [isListVisible, setListVisible] = useState(false);
@@ -98,6 +106,9 @@ const SearchDropDown: React.FC<Props> = React.memo(
 
     return (
       <View style={{ position: 'relative', zIndex: 10 }}>
+        {label ? (
+          <Text style={[styles.label, customLabelStyles]}>{label}</Text>
+        ) : null}
         <View
           style={[
             styles.mainInputView,
@@ -105,6 +116,7 @@ const SearchDropDown: React.FC<Props> = React.memo(
               borderColor:
                 selectedItem || search ? Colors.APP_COLOR : Colors.GRAY,
             },
+            customSearchDropDownContainer,
           ]}
         >
           <TextInput
@@ -157,7 +169,7 @@ const SearchDropDown: React.FC<Props> = React.memo(
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
             onScroll={onScroll}
-            style={[styles.listContainer, { maxHeight: itemHeight }]}
+            style={[styles.listContainer, { maxHeight: itemHeight },customContainerStyle]}
           />
         )}
       </View>

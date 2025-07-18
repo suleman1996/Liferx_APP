@@ -12,12 +12,16 @@ interface Props {
   minimumDate?: Date;
   maximumDate?: Date;
   customLabelStyles?: object;
+  customContainerStyle?: object;
+  customDatePickerInput?:object
 }
 
 const CustomDatePicker: React.FC<Props> = ({
   label,
   value,
   customLabelStyles,
+  customContainerStyle,
+  customDatePickerInput,
   onChange,
   mode = 'date',
   minimumDate,
@@ -40,10 +44,10 @@ const CustomDatePicker: React.FC<Props> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,customContainerStyle]}>
       {label && <Text style={(styles.label, customLabelStyles)}>{label}</Text>}
 
-      <Pressable style={styles.input} onPress={() => setShowPicker(true)}>
+      <Pressable style={[styles.input,customDatePickerInput]} onPress={() => setShowPicker(true)}>
         <Text style={styles.inputText}>{value || 'Select date'}</Text>
       </Pressable>
 

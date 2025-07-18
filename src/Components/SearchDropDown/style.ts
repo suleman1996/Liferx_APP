@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: h(60),
     fontSize: w(15),
-    fontFamily: FONTS.MONTSERRAT_REGULAR,
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
     paddingLeft: w(15),
     color: Colors.APP_COLOR,
   },
@@ -82,6 +82,11 @@ const styles = StyleSheet.create({
     maxWidth: w(300),
     flexWrap: 'wrap',
     lineHeight: 18,
+  },
+    label: {
+    fontSize: w(16),
+    color: Colors.BLACK,
+    fontFamily: 'HindSiliguri-Regular',
   },
 });
 

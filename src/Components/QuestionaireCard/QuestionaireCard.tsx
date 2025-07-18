@@ -131,9 +131,8 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
 
       {item?.options?.map(option => {
         const isSelected = selected.includes(option.id);
-        const isMultiText = item?.type === QuestionTypes.MULTI_TEXT;
         const explainationText =
-          option?.explanation_required && isMultiText && isSelected;
+          option?.explanation_required && QuestionTypes.MULTI_TEXT && isSelected;
         return (
           <View key={option.id}>
             <Pressable

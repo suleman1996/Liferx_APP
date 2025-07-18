@@ -2272,6 +2272,8 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - RNDeviceInfo (14.0.4):
+    - React-Core
   - RNGestureHandler (2.27.1):
     - boost
     - DoubleConversion
@@ -2684,6 +2686,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -2849,6 +2852,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -2938,6 +2943,7 @@ SPEC CHECKSUMS:
   ReactCommon: 658874decaf8c4fd76cfa3a878b94a869db85b1c
   RNCMaskedView: aac38cf7e947ff80e483996d1acd43c5ad4ab610
   RNDateTimePicker: 6a378a237ff8b2c4bf949189ba38b131cda7bc92
+  RNDeviceInfo: feea80a690d2bde1fe51461cf548039258bd03f2
   RNGestureHandler: c202f13fa95347076d8aca4ccb61739b067396cb
   RNImageCropPicker: 36d402fc475d75e1208f8b81ba294c84ac7f09eb
   RNReanimated: 2010262133feb53009f16faaa404042eed7da018

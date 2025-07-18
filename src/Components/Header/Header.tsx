@@ -63,5 +63,4 @@ const Header: React.FC<HeaderProps> = ({
     </View>
   );
 };
-
 export default Header;

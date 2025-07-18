@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, FlatList, ScrollView, View,SafeAreaView } from 'react-native';
+import { Alert, FlatList, ScrollView, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import StepProgressBar from '../../Components/StepProgressBar/StepProgressBar';
@@ -45,6 +45,22 @@ const Questionaire: React.FC<any> = () => {
       return;
     }
 
+    if (
+      QuestionTypes.MULTI_TEXT &&
+      Array.isArray(selectedOption) &&
+      selectedOption.some(
+        id =>
+          RegularQuestions[currentIndex]?.options.find(o => o.id === id)
+            ?.explanation_required && !simpleText?.[id]?.trim(),
+      )
+    ) {
+      Toast.show({
+        type: 'error',
+        text2: 'Please provide explanation for required options.',
+      });
+      return;
+    }
+
     dispatch(
       addQuestionaireAnswer({
         questionId: RegularQuestions[currentIndex].id,
@@ -63,8 +79,8 @@ const Questionaire: React.FC<any> = () => {
   const handleBackPress = () => {
     if (currentIndex > 0) {
       setCurrentIndex(prev => prev - 1);
-    }else{
-      navigation.goBack()
+    } else {
+      navigation.goBack();
     }
   };
 
@@ -79,7 +95,7 @@ const Questionaire: React.FC<any> = () => {
           totalLength={RegularQuestions?.length}
           currentStep={currentIndex}
         />
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <FlatList
             data={[RegularQuestions[currentIndex]]}
             keyExtractor={item => item?.id?.toString()}

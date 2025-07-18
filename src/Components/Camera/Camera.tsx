@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Pressable,
 } from 'react-native';
 import CamIcon from 'react-native-vector-icons/Entypo';
+import DeviceInfo from 'react-native-device-info';
 import styles from './style';
 import Colors from '../../utils/Colors/Colors';
 import Button from '../Button/Button';
@@ -25,6 +26,14 @@ const Camera: React.FC<Props> = ({
   imageSource,
   onRemoveImage,
 }) => {
+  const [isEmulator, setIsEmulator] = useState(false);
+
+  useEffect(() => {
+    DeviceInfo.isEmulator().then(result => {
+      setIsEmulator(result);
+    });
+  }, []);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.cameraView}>
@@ -48,45 +57,50 @@ const Camera: React.FC<Props> = ({
       </View>
 
       <View style={styles.buttonView}>
-        <Button
-          text="Upload from camera"
-          customButtonStyles={[
-            styles.customButtonStyles,
-            {
-              backgroundColor: imageSource
-                ? Colors.BORDER_COLOR
-                : Colors.APP_COLOR,
-              borderWidth: imageSource ? 0 : 1,
-              borderColor: Colors.APP_COLOR,
-            },
-          ]}
-          customTextStyles={[
-            styles.customTextStyles,
-            { color: imageSource ? Colors.DARK_GREY : Colors.WHITE },
-          ]}
-          noShadow
-          onPressHandler={onPressCamera}
-          disabled={!!imageSource}
-        />
-        <Button
-          text="Upload from gallery"
-          customButtonStyles={[
-            styles.customButtonStyles,
-            {
-              marginTop: h(10),
-              backgroundColor: imageSource ? Colors.BORDER_COLOR : Colors.WHITE,
-              borderWidth: imageSource ? 0 : 1,
-              borderColor: Colors.APP_COLOR,
-            },
-          ]}
-          customTextStyles={[
-            styles.customTextStyles,
-            { color: imageSource ? Colors.DARK_GREY : Colors.APP_COLOR },
-          ]}
-          noShadow
-          onPressHandler={onPressGallery}
-          disabled={!!imageSource}
-        />
+        {!isEmulator ? (
+          <Button
+            text="Upload from camera"
+            customButtonStyles={[
+              styles.customButtonStyles,
+              {
+                backgroundColor: imageSource
+                  ? Colors.BORDER_COLOR
+                  : Colors.APP_COLOR,
+                borderWidth: imageSource ? 0 : 1,
+                borderColor: Colors.APP_COLOR,
+              },
+            ]}
+            customTextStyles={[
+              styles.customTextStyles,
+              { color: imageSource ? Colors.DARK_GREY : Colors.WHITE },
+            ]}
+            noShadow
+            onPressHandler={onPressCamera}
+            disabled={!!imageSource}
+          />
+        ) : (
+          <Button
+            text="Upload from gallery"
+            customButtonStyles={[
+              styles.customButtonStyles,
+              {
+                marginTop: h(10),
+                backgroundColor: imageSource
+                  ? Colors.BORDER_COLOR
+                  : Colors.WHITE,
+                borderWidth: imageSource ? 0 : 1,
+                borderColor: Colors.APP_COLOR,
+              },
+            ]}
+            customTextStyles={[
+              styles.customTextStyles,
+              { color: imageSource ? Colors.DARK_GREY : Colors.APP_COLOR },
+            ]}
+            noShadow
+            onPressHandler={onPressGallery}
+            disabled={!!imageSource}
+          />
+        )}
       </View>
     </View>
   );
