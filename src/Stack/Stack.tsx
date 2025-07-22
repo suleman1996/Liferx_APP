@@ -17,6 +17,10 @@ import SelectState from '../Screens/SelectState/SelectState';
 import Questionaire from '../Screens/Questionaire/Questionaire';
 import PersonalInformation from '../Screens/PersonalInformation/PersonalInformation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import PhoneVerification from '../Screens/PhoneVerification/PhoneVerification';
+import OtpPhoneVerify from '../Screens/OtpPhoneVerify/OtpPhoneVerify';
+import SuggestMedicine from '../Screens/SuggestMedicine/SuggestMedicine';
+import SelectDosage from '../Screens/SelectDosage/SelectDosage';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -34,96 +38,121 @@ export type RootStackParamList = {
   SelectState?: undefined;
   Questionaire?: undefined;
   PersonalInformation?: undefined;
+  PhoneVerification?: undefined;
+  OtpPhoneVerify?: undefined;
+  SuggestMedicine?: undefined;
+  SelectDosage?: undefined;
   OrderTracking?: {};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack: React.FC = () => {
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <Stack.Navigator
-      initialRouteName="splash"
-      screenOptions={{
-        gestureEnabled: false,
-      }}
-    >
-      <Stack.Screen
-        name="splash"
-        component={Splash}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="TwoStepVerifiction"
-        component={TwoStepVerifiction}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="OrderTracking"
-        component={OrderTracking}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="UpdateAccountDetail"
-        component={UpdateAccountDetail}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="DecidingQuestions"
-        component={DecidingQuestions}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="SelectState"
-        component={SelectState}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Questionaire"
-        component={Questionaire}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="PersonalInformation"
-        component={PersonalInformation}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="BottomTab"
-        component={BottomTabs}
-        options={{ headerShown: false }}
-      />
-      {/* <Stack.Screen
+      <Stack.Navigator
+        initialRouteName="splash"
+        screenOptions={{
+          gestureEnabled: false,
+        }}
+      >
+        <Stack.Screen
+          name="splash"
+          component={Splash}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TwoStepVerifiction"
+          component={TwoStepVerifiction}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OrderTracking"
+          component={OrderTracking}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="UpdateAccountDetail"
+          component={UpdateAccountDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DecidingQuestions"
+          component={DecidingQuestions}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectState"
+          component={SelectState}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Questionaire"
+          component={Questionaire}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PersonalInformation"
+          component={PersonalInformation}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="PhoneVerification"
+          component={PhoneVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OtpPhoneVerify"
+          component={OtpPhoneVerify}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SuggestMedicine"
+          component={SuggestMedicine}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectDosage"
+          component={SelectDosage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BottomTab"
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        {/* <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
       /> */}
-      {/* <Stack.Screen
+        {/* <Stack.Screen
         name="DrawerStack"
         component={DrawerStack}
         options={{ headerShown: false }}
       /> */}
-    </Stack.Navigator>
+      </Stack.Navigator>
     </SafeAreaView>
   );
 };

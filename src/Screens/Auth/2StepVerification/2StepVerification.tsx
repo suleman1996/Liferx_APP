@@ -5,18 +5,24 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
-  Alert,
 } from 'react-native';
 import styles from './style';
-import { formatTime, h, useTypedNavigation } from '../../../utils/Helper/Helper';
+import {
+  formatTime,
+  h,
+  useTypedNavigation,
+} from '../../../utils/Helper/Helper';
 import OtpInputField from '../../../Components/Otp/Otp';
 import Button from '../../../Components/Button/Button';
 import Colors from '../../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../Store';
-import { setCode } from './actions';
+import { sendOtp, setCode } from './actions';
+import Header from '../../../Components/Header/Header';
+import Toast from 'react-native-toast-message';
 
 const TwoStepVerifiction: React.FC<any> = () => {
+  const { token } = useSelector((state: RootState) => state?.registerReducer);
   const { code } = useSelector(
     (state: RootState) => state?.twoStepVerification,
   );
@@ -33,8 +39,22 @@ const TwoStepVerifiction: React.FC<any> = () => {
     return () => clearInterval(time);
   }, [timer]);
 
+  useEffect(() => {
+    if (token) {
+      dispatch(sendOtp()).payload.then(res => {
+        if (res?.status === 200) {
+          Toast.show({
+            type: 'success',
+            text2: res?.data,
+          });
+        }
+      });
+    }
+  }, [token]);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <Header />
       <Image
         source={require('../../../Assets/Images/logo.png')}
         style={styles.logo}
@@ -56,9 +76,8 @@ const TwoStepVerifiction: React.FC<any> = () => {
           customTextStyles={styles.btnText}
           noShadow
           onPressHandler={() => {
-             navigation.navigate('Login')
+            navigation.navigate('Login');
           }}
-          
         />
         <Text
           style={[

@@ -1,0 +1,400 @@
+{
+  "suggested_products": [
+    {
+      "id": 5,
+      "name": "3-in-1 Combo Hair Growth Pill",
+      "description": "This combination supports hair loss treatment by promoting hair growth with Minoxidil, reducing androgenic effects with Finasteride, and enhancing keratin production with Biotin for healthier, thicker hair.",
+      "side_effects": "Biotin-\ngastrointestinal upset\nadministration of anticonvulsant medications may impair Biotin absorption\n\nFinasteride-\nCommon\nReproductive:\nAbnormal ejaculation (0.2% to 1.2% ), Decreased ejaculate volume (0.8% to3.7%), Erectile dysfunction (1.3% to 8.1%), Reduced libido (1.8% to 6.4%)\nSerious\nEndocrine metabolic:\nNeoplasm of breast (0.06% to 0.13%)\nPsychiatric:\nSuicidal thoughts\nReproductive:\nProstate cancer (1.8%)\n\nMinoxidil-\nCommon\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Tablet",
+      "product_variants": [
+        {
+          "id": 122,
+          "price": 71.55,
+          "quantity": 30,
+          "dosage": "1/1/5 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/3-in-1_Combo_Hair_Growth_Pill.png",
+          "plan_duration": "1 Month",
+          "plan_total_price": 83.05,
+          "active_ingredient": "Biotin, Finasteride, Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 123,
+          "price": 202.5,
+          "quantity": 30,
+          "dosage": "1/1/5 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/3-in-1_Combo_Hair_Growth_Pill.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 214.0,
+          "active_ingredient": "Biotin, Finasteride, Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 124,
+          "price": 317.25,
+          "quantity": 30,
+          "dosage": "1/1/5 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/3-in-1_Combo_Hair_Growth_Pill.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 328.75,
+          "active_ingredient": "Biotin, Finasteride, Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 83.05,
+      "is_suggested": false
+    },
+    {
+      "id": 6,
+      "name": "MinoxiBlend-9",
+      "description": "This formulation combines vitamins and minerals like Biotin, Vitamin E, and Zinc with Minoxidil to promote hair growth, enhance scalp health, and support overall hair vitality and strength.",
+      "side_effects": "Gastrointestinal upset",
+      "service": 2,
+      "product_type": "Tablet",
+      "product_variants": [
+        {
+          "id": 126,
+          "price": 202.5,
+          "quantity": 30,
+          "dosage": "10/0.2/10/1/20/10/10 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/MinoxiBlend-9.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 214.0,
+          "active_ingredient": "Ascorbic, Fe Sulfate, Methionine, Minoxidil, NaCl, Tyrosine, Vit E, Zn",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 127,
+          "price": 317.25,
+          "quantity": 30,
+          "dosage": "10/0.2/10/1/20/10/10 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/MinoxiBlend-9.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 328.75,
+          "active_ingredient": "Ascorbic, Fe Sulfate, Methionine, Minoxidil, NaCl, Tyrosine, Vit E, Zn",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 125,
+          "price": 71.55,
+          "quantity": 30,
+          "dosage": "10/0.2/10/1/20/10/10 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/MinoxiBlend-9.png",
+          "plan_duration": "1 Month",
+          "plan_total_price": 83.05,
+          "active_ingredient": "Ascorbic, Fe Sulfate, Methionine, Minoxidil, NaCl, Tyrosine, Vit E, Zn",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 83.05,
+      "is_suggested": false
+    },
+    {
+      "id": 7,
+      "name": "Minoxidil (LoxOral®)",
+      "description": "Minoxidil 0.25 mg capsules stimulate hair follicles, promote hair regrowth, and improve blood flow to the scalp, effectively treating androgenetic alopecia and other forms of hair loss.",
+      "side_effects": "Common\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Tablet",
+      "product_variants": [
+        {
+          "id": 128,
+          "price": 60.75,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Minoxidil_LoxOral.png",
+          "plan_duration": "1 Month",
+          "plan_total_price": 72.25,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 129,
+          "price": 162.0,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Minoxidil_LoxOral.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 173.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 130,
+          "price": 249.75,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Minoxidil_LoxOral.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 261.25,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 72.25,
+      "is_suggested": false
+    },
+    {
+      "id": 8,
+      "name": "Spironolactone / Minoxidil (LoxOral®)",
+      "description": "These capsules promote hair regrowth, block androgen effects, and address hormonal hair loss in women effectively and conveniently.  PCCA's LoxOral promotes hair regrowth, reduces hair loss, and improves scalp health with hormonal support.",
+      "side_effects": "Spironolactone-\nCommon\nEndocrine metabolic:\nGynecomastia\nGastrointestinal:\nDiarrhea, Nausea and vomiting\nNeurologic:\nSomnolence\nReproductive:\nDisorder of menstruation, Erectile dysfunction\nSerious\nDermatologic:\nStevens-Johnson syndrome, Toxic epidermal necrolysis\nEndocrine metabolic:\nBreast cancer, Disorder of electrolytes, Hyperglycemia, Hyperkalemia,Hyperuricemia, Hypocalcemia, Hypochloremic alkalosis, Hypomagnesemia, Hyponatremia,Hypovolemia, Metabolic acidosis\nGastrointestinal:\nGastric hemorrhage, Gastritis\nHematologic:\nAgranulocytosis\nHepatic:\nHepatotoxicity\nImmunologic:\nDrug reaction with eosinophilia and systemic symptoms, Systemic lupuserythematosus\nRenal:\nAcute renal failure, Decreased renal function, Nephrotoxicity\nOther:\nBreast cancer\n\nMinoxidil-\nCommon\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia\"\" \"",
+      "service": 2,
+      "product_type": "Tablet",
+      "product_variants": [
+        {
+          "id": 131,
+          "price": 60.75,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Spironolactone___Minoxidil_LoxOral.png",
+          "plan_duration": "1 Month",
+          "plan_total_price": 72.25,
+          "active_ingredient": "Spironolactone / Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 132,
+          "price": 162.0,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Spironolactone___Minoxidil_LoxOral.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 173.5,
+          "active_ingredient": "Spironolactone / Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 133,
+          "price": 249.75,
+          "quantity": 30,
+          "dosage": "0.25 mg",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/Spironolactone___Minoxidil_LoxOral.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 261.25,
+          "active_ingredient": "Spironolactone / Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 72.25,
+      "is_suggested": false
+    },
+    {
+      "id": 9,
+      "name": "Minoxidil Oral Troches",
+      "description": "Minoxidil 1.8 mg oral troches stimulate hair growth, enhance scalp circulation, and effectively treat hair loss with convenient sublingual administration.",
+      "side_effects": "Common\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Oral Troche",
+      "product_variants": [
+        {
+          "id": 134,
+          "price": 71.55,
+          "quantity": 30,
+          "dosage": "1.8 mg",
+          "image": null,
+          "plan_duration": "1 Month",
+          "plan_total_price": 83.05,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 135,
+          "price": 202.5,
+          "quantity": 30,
+          "dosage": "1.8 mg",
+          "image": null,
+          "plan_duration": "3 Months",
+          "plan_total_price": 214.0,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 136,
+          "price": 317.25,
+          "quantity": 30,
+          "dosage": "1.8 mg",
+          "image": null,
+          "plan_duration": "5 Months",
+          "plan_total_price": 328.75,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 83.05,
+      "is_suggested": true
+    },
+    {
+      "id": 10,
+      "name": "Hair Regrowth 2-in-1 Lotion",
+      "description": "Promotes hair regrowth by stimulating follicles and blocking androgens, effectively treating hair loss. Atrevis Hydrogel enhances absorption, provides even distribution, retains moisture, offers a non-greasy texture, and supports the effectiveness of the active ingredients herein.",
+      "side_effects": "Minoxidil-\nCommon\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia\" \n\nFinasteride-\nCommon\nReproductive:\nAbnormal ejaculation (0.2% to 1.2% ), Decreased ejaculate volume (0.8% to3.7%), Erectile dysfunction (1.3% to 8.1%), Reduced libido (1.8% to 6.4%)\nSerious\nEndocrine metabolic:\nNeoplasm of breast (0.06% to 0.13%)\nPsychiatric:\nSuicidal thoughts\nReproductive:\nProstate cancer (1.8%)",
+      "service": 2,
+      "product_type": "Lotion (Spout)",
+      "product_variants": [
+        {
+          "id": 137,
+          "price": 135.0,
+          "quantity": 60,
+          "dosage": "10g/0.1g/100mL",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/spray_lotion.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 146.5,
+          "active_ingredient": "Minoxidil / Finasteride",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 138,
+          "price": 180.0,
+          "quantity": 60,
+          "dosage": "10g/0.1g/100mL",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/spray_lotion.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 191.5,
+          "active_ingredient": "Minoxidil / Finasteride",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 146.5,
+      "is_suggested": false
+    },
+    {
+      "id": 11,
+      "name": "Minoxidil Hair Regrowth Lotion",
+      "description": "Minoxidil 10% topical lotion promotes hair regrowth, increases blood circulation to hair follicles, and effectively addresses severe hair loss and thinning in both men and women. Atrevis Hydrogel enhances absorption, provides even distribution, retains moisture, offers a non-greasy texture, and supports the effectiveness of the active ingredients herein.",
+      "side_effects": "Common\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Lotion (Spout)",
+      "product_variants": [
+        {
+          "id": 139,
+          "price": 135.0,
+          "quantity": 60,
+          "dosage": "10g/100mL",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/spray_lotion.png",
+          "plan_duration": "3 Months",
+          "plan_total_price": 146.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 140,
+          "price": 180.0,
+          "quantity": 60,
+          "dosage": "10g/100mL",
+          "image": "https://liferx-public.s3.amazonaws.com/product_images/spray_lotion.png",
+          "plan_duration": "5 Months",
+          "plan_total_price": 191.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 146.5,
+      "is_suggested": false
+    },
+    {
+      "id": 12,
+      "name": "Minoxidil Hair Regrowth 5% Tropical Lotion",
+      "description": "Minoxidil 5% topical solution (TrichoSol) promotes hair regrowth, increases blood circulation to follicles, and effectively treats hair thinning and loss.",
+      "side_effects": "Common\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Lotion (Spout)",
+      "product_variants": [
+        {
+          "id": 141,
+          "price": 135.0,
+          "quantity": 60,
+          "dosage": "5g/100mL",
+          "image": null,
+          "plan_duration": "3 Months",
+          "plan_total_price": 146.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 142,
+          "price": 180.0,
+          "quantity": 60,
+          "dosage": "5g/100mL",
+          "image": null,
+          "plan_duration": "5 Months",
+          "plan_total_price": 191.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 146.5,
+      "is_suggested": false
+    },
+    {
+      "id": 13,
+      "name": "Minoxidil Hair Regrowth 7% Tropical Lotion",
+      "description": "Minoxidil 7% topical solution (TrichoSol) enhances hair regrowth, improves scalp blood flow, and effectively treats androgenetic alopecia for thicker hair.",
+      "side_effects": "Common\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia",
+      "service": 2,
+      "product_type": "Lotion (Spout)",
+      "product_variants": [
+        {
+          "id": 143,
+          "price": 135.0,
+          "quantity": 60,
+          "dosage": "7g/100mL",
+          "image": null,
+          "plan_duration": "3 Months",
+          "plan_total_price": 146.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 144,
+          "price": 180.0,
+          "quantity": 60,
+          "dosage": "7g/100mL",
+          "image": null,
+          "plan_duration": "5 Months",
+          "plan_total_price": 191.5,
+          "active_ingredient": "Minoxidil",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 146.5,
+      "is_suggested": false
+    },
+    {
+      "id": 14,
+      "name": "2-in-1 Hair Regrowth Tropical Solution",
+      "description": "This solution stimulates hair regrowth and improves scalp health while effectively blocking androgen effects to prevent hair loss.",
+      "side_effects": "Minoxidil-\nCommon\nCardiovascular:\nHypotension\nDermatologic:\nHirsutism, Hypertrichosis\nEndocrine metabolic:\nBody fluid retention (7%), Hypernatremia\nSerious\nCardiovascular:\nAngina pectoris, Cardiac tamponade, Electrocardiogram abnormal (60%),Pericardial effusion (3%), Pericarditis, Tachyarrhythmia\nDermatologic:\nStevens-Johnson syndrome\nHematologic:\nLeukopenia, Thrombocytopenia\" \n\nFinasteride-\nCommon\nReproductive:\nAbnormal ejaculation (0.2% to 1.2% ), Decreased ejaculate volume (0.8% to3.7%), Erectile dysfunction (1.3% to 8.1%), Reduced libido (1.8% to 6.4%)\nSerious\nEndocrine metabolic:\nNeoplasm of breast (0.06% to 0.13%)\nPsychiatric:\nSuicidal thoughts\nReproductive:\nProstate cancer (1.8%)",
+      "service": 2,
+      "product_type": "Solution (Dropper, Spray)",
+      "product_variants": [
+        {
+          "id": 145,
+          "price": 135.0,
+          "quantity": 60,
+          "dosage": "3g/0.25g/100mL",
+          "image": null,
+          "plan_duration": "3 Months",
+          "plan_total_price": 146.5,
+          "active_ingredient": "Minoxidil / Finasteride",
+          "shipping_price": 11.5
+        },
+        {
+          "id": 146,
+          "price": 180.0,
+          "quantity": 60,
+          "dosage": "3g/0.25g/100mL",
+          "image": null,
+          "plan_duration": "5 Months",
+          "plan_total_price": 191.5,
+          "active_ingredient": "Minoxidil / Finasteride",
+          "shipping_price": 11.5
+        }
+      ],
+      "starting_price": 146.5,
+      "is_suggested": false
+    }
+  ],
+  "user_pdf": 207
+}

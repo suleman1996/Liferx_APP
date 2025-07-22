@@ -13,12 +13,15 @@ import Colors from '../../utils/Colors/Colors';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import CustomDatePicker from '../../Components/CustomDatePicker/CustomDatePicker';
 import SearchDropDown from '../../Components/SearchDropDown/SearchDropDown';
-import { h } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation } from '../../utils/Helper/Helper';
+import Button from '../../Components/Button/Button';
 
 const PersonalInformation: React.FC<any> = () => {
+  const navigation = useTypedNavigation();
   const [search, setSearch] = useState('');
   const [selectedState, setselectedState] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const stateArray = [
     { id: 1, name: 'State 1' },
@@ -42,7 +45,9 @@ const PersonalInformation: React.FC<any> = () => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 100}
       >
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{
+            paddingBottom: isDropdownOpen ? h(300) : h(60),
+          }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -111,6 +116,7 @@ const PersonalInformation: React.FC<any> = () => {
                 { paddingTop: h(25) },
               ]}
               customContainerStyle={styles.customAddressContainerStyle}
+              onToggleDropdown={setIsDropdownOpen}
             />
             <CustomTextInput
               label="State"
@@ -128,6 +134,12 @@ const PersonalInformation: React.FC<any> = () => {
               placeholderTextColor={Colors.APP_COLOR}
               selectionColor={Colors.APP_COLOR}
               editable={false}
+            />
+            <Button
+              text="Continue"
+              onPressHandler={() => {
+                navigation.navigate('PhoneVerification');
+              }}
             />
           </View>
         </ScrollView>

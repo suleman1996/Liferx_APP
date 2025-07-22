@@ -3,7 +3,6 @@ import { ImageBackground, View } from 'react-native';
 import styles from './style';
 
 const Splash: React.FC<any> = ({ navigation }) => {
-  
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigation?.replace('Login');
@@ -21,4 +20,3 @@ const Splash: React.FC<any> = ({ navigation }) => {
   );
 };
 export default Splash;
-

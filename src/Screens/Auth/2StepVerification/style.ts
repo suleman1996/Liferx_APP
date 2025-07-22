@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     height: h(53),
     width: w(160),
     alignSelf: 'center',
-    marginTop: h(80),
+    marginTop: h(30),
   },
   email: {
     fontSize: w(14),

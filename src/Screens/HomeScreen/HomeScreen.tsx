@@ -20,9 +20,12 @@ import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import styles from './style';
 import Header from '../../Components/Header/Header';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../Auth/Register/actions';
 
 const HomeScreen: React.FC<any> = () => {
   const navigation = useTypedNavigation();
+  const dispatch = useDispatch();
 
   const images = [
     { id: '1', image: require('../../Assets/Images/Banner.png') },
@@ -93,10 +96,8 @@ const HomeScreen: React.FC<any> = () => {
           text: 'Logout',
           style: 'destructive',
           onPress: () => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            });
+            dispatch(setToken(''));
+            navigation.navigate('Login');
           },
         },
       ],

@@ -3,6 +3,7 @@ const Colors = {
   secondary: '#F4F4F4',
   accent: '#FF6B6B',
   text: '#333333',
+  RED:'#FF0000',
   WHITE: '#FFFFFF',
   muted: '#B0B2B7',
   success: '#28a745',

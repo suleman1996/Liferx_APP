@@ -45,6 +45,7 @@ const styles = StyleSheet.create<Styles>({
     borderRadius: 10,
     padding: w(13),
     justifyContent: 'center',
+    maxWidth:'80%'
   },
   text1: {
     fontSize: w(20),

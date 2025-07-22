@@ -38,7 +38,8 @@ interface Props {
   label?: string;
   customSearchDropDownContainer?: object;
   customLabelStyles?: object;
-  customContainerStyle?:object
+  customContainerStyle?: object;
+  onToggleDropdown?: (isOpen: boolean) => void;
 }
 
 const SearchDropDown: React.FC<Props> = React.memo(
@@ -55,10 +56,15 @@ const SearchDropDown: React.FC<Props> = React.memo(
     onSubmitEditing,
     selectedItem,
     customLabelStyles,
-    customContainerStyle
+    customContainerStyle,
+    onToggleDropdown,
   }) => {
     const itemHeight = 250;
     const [isListVisible, setListVisible] = useState(false);
+
+    useEffect(() => {
+      onToggleDropdown?.(isListVisible);
+    }, [isListVisible]);
 
     useEffect(() => {
       if (search?.trim() === '') {
@@ -169,7 +175,11 @@ const SearchDropDown: React.FC<Props> = React.memo(
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
             onScroll={onScroll}
-            style={[styles.listContainer, { maxHeight: itemHeight },customContainerStyle]}
+            style={[
+              styles.listContainer,
+              { maxHeight: itemHeight },
+              customContainerStyle,
+            ]}
           />
         )}
       </View>

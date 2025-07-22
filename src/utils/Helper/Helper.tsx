@@ -66,3 +66,52 @@ export const pickImageFromGallery = async (): Promise<any | null> => {
     return null;
   }
 };
+
+export const formatPhoneNumber = (text: string) => {
+  const cleaned = text.replace(/\D/g, '').slice(0, 10); // keep max 10 digits
+  const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+  if (!match) return text; // fallback to raw if something weird happens
+
+  let formatted = '';
+  if (match[1]) formatted += `(${match[1]}`;
+  if (match[1].length === 3) formatted += ') ';
+  if (match[2]) formatted += match[2];
+  if (match[2].length === 3 && match[3]) formatted += '-';
+  if (match[3]) formatted += match[3];
+
+  return formatted;
+};
+
+export const getPasswordStrengthLabel = (
+  validation: ReturnType<typeof getPasswordValidation>,
+) => {
+  const checks = Object.values(validation);
+  const passed = checks.filter(Boolean).length;
+
+  if (passed >= 8) return { label: 'Strong', color: '#046b33' };
+  if (passed >= 5) return { label: 'Medium', color: '#e0a800' };
+  return { label: 'Weak', color: '#c40000' };
+};
+
+export const getPasswordValidation = (password: string) => {
+  const noCommon123 = !/(123|abc)/i.test(password);
+  const noRepeats = !/(.)\1{2,}/.test(password);
+  const isUnique = new Set(password).size >= Math.min(password.length, 5);
+  const isMultiWord =
+    /\s/.test(password) ||
+    /[a-z][A-Z]/.test(password) ||
+    /[A-Z][a-z]+[A-Z]/.test(password) ||
+    /[^\w\s]/.test(password);
+
+  return {
+    minLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasLowercase: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    noCommon123,
+    noRepeats,
+    isUnique,
+    isMultiWord,
+  };
+};
