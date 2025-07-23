@@ -58,10 +58,14 @@ type ApiResponse<T> = AxiosResponse<T>;
 
 // ========= API METHODS ==========
 
-export async function get<T = any>(url: string): Promise<T> {
+export async function get<T = any>(
+  url: string,
+  customHeaders?: Record<string, string>,
+): Promise<AxiosResponse<T>> {
   try {
-    const response: ApiResponse<T> = await api.get(url);
-    return response.data;
+    const config = customHeaders ? { headers: customHeaders } : undefined;
+    const response = await api.get<T>(url, config);
+    return response; // ✅ Full response object
   } catch (error) {
     throw extractErrorMessage(error);
   }
@@ -70,10 +74,12 @@ export async function get<T = any>(url: string): Promise<T> {
 export async function post<T = any, D = any>(
   url: string,
   data?: D,
+  customHeaders?: Record<string, string>,
 ): Promise<AxiosResponse<T>> {
   try {
-    const response = await api.post<T>(url, data);
-    return response; // ✅ Full response including status, headers, etc.
+    const config = customHeaders ? { headers: customHeaders } : undefined;
+    const response = await api.post<T>(url, data, config);
+    return response;
   } catch (error) {
     throw extractErrorMessage(error);
   }

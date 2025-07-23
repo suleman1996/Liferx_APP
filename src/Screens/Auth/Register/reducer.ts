@@ -1,4 +1,4 @@
-import { SET_EMAIL, SET_ERROR, SET_PASSWORD, SET_TOKEN } from './actionTypes';
+import { SET_EMAIL, SET_ERROR, SET_PASSWORD } from './actionTypes';
 
 const initialState = {
   loading: false,
@@ -6,7 +6,6 @@ const initialState = {
   email: '',
   password: '',
   error: '',
-  token: '',
 };
 
 export default function registerReducer(state = initialState, action: any) {
@@ -17,8 +16,6 @@ export default function registerReducer(state = initialState, action: any) {
       return { ...state, loading: false, password: action.payload };
     case SET_ERROR:
       return { ...state, loading: false, error: action.payload };
-    case SET_TOKEN:
-      return { ...state, loading: false, token: action.payload };
     default:
       return state;
   }

@@ -29,12 +29,10 @@ import {
   setEmail,
   setError,
   setPassword,
-  setToken,
 } from './actions';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 import PasswordValidationFeedback from '../../../Components/PasswordValidationFeedback/PasswordValidationFeedback';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register: React.FC<any> = () => {
   const navigation = useTypedNavigation();
@@ -42,6 +40,7 @@ const Register: React.FC<any> = () => {
   const { email, password, error } = useSelector(
     (state: RootState) => state.registerReducer,
   );
+  const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState({
     minLength: false,
@@ -50,8 +49,6 @@ const Register: React.FC<any> = () => {
     hasNumber: false,
     hasSpecialChar: false,
   });
-
-  const [loading, setLoading] = useState(false);
 
   const createUserHandler = () => {
     const isValidPassword = Object.values(passwordValidation).every(Boolean);
@@ -73,25 +70,22 @@ const Register: React.FC<any> = () => {
     setLoading(true);
     const body = { email, password };
     dispatch(createUser(body))
-      .payload.then(res => {
-        if (res?.status === 200) {
+        .then((res:any) => {
+        if (res?.value?.status === 200) {
           const tokenBody = {
             username: email,
             password,
           };
           dispatch(createToken(tokenBody))
-            .payload.then(async res => {
-              const token = res?.data?.token?.access;
+            .then(async (res:any) => {
+              const token = res?.value?.data?.token?.access;
               if (token) {
-                await AsyncStorage.setItem('token', token);
-                dispatch(setToken(token));
+                navigation.navigate('TwoStepVerifiction', { token });
               }
             })
-            .catch(error => {
+            .catch((error:string) => {
               console.log(error, 'token error');
             });
-
-          navigation.navigate('TwoStepVerifiction');
           Toast.show({
             type: 'success',
             text2: 'Your account is registered',
@@ -104,7 +98,7 @@ const Register: React.FC<any> = () => {
         }
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err:string) => {
         setLoading(false);
         Toast.show({
           type: 'error',

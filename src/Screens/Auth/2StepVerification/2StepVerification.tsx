@@ -17,19 +17,22 @@ import Button from '../../../Components/Button/Button';
 import Colors from '../../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../Store';
-import { sendOtp, setCode } from './actions';
+import { sendOtp, setCode, verifyOtp } from './actions';
 import Header from '../../../Components/Header/Header';
 import Toast from 'react-native-toast-message';
+import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 
-const TwoStepVerifiction: React.FC<any> = () => {
-  const { token } = useSelector((state: RootState) => state?.registerReducer);
+const TwoStepVerifiction: React.FC<any> = ({ route }) => {
+  const navigation = useTypedNavigation();
+  const { token } = route?.params;
+  const { email } = useSelector((state: RootState) => state?.registerReducer);
   const { code } = useSelector(
     (state: RootState) => state?.twoStepVerification,
   );
   ``;
-  const navigation = useTypedNavigation();
   const dispatch = useDispatch();
   const [timer, setTimer] = useState(30);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (timer === 0) return;
@@ -39,21 +42,75 @@ const TwoStepVerifiction: React.FC<any> = () => {
     return () => clearInterval(time);
   }, [timer]);
 
-  useEffect(() => {
-    if (token) {
-      dispatch(sendOtp()).payload.then(res => {
-        if (res?.status === 200) {
+  const createOtp = () => {
+    dispatch(sendOtp(token))
+      .then((res:any) => {
+        if (res?.value?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: res?.data,
+            text2: res?.value?.data,
           });
         }
+      })
+      .catch((error:string) => {
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
       });
+  };
+
+  useEffect(() => {
+    if (token) {
+      createOtp();
     }
   }, [token]);
 
+  const handleTwoStepAuthentication = () => {
+    if (code?.length !== 6) {
+      Toast.show({
+        type: 'error',
+        text2: 'Please enter the complete 6-digit OTP.',
+      });
+      return;
+    }
+    setLoading(true);
+    const body = {
+      otp_code: code,
+    };
+    dispatch(verifyOtp(body,token))
+      .then((res:any) => {
+        if (res?.value?.status === 200) {
+          Toast.show({
+            type: 'success',
+            text2: res?.value?.data,
+          });
+          navigation.navigate('Login');
+          dispatch(setCode(''));
+        } else {
+          Toast.show({
+            type: 'error',
+            text2: 'Unexpected response from server',
+          });
+        }
+        setLoading(false);
+      })
+      .catch((err:string) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+      });
+  };
+
+  useEffect(()=>{
+    dispatch(setCode(''));
+  },[])
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <CustomLoader visible={loading} />
       <Header />
       <Image
         source={require('../../../Assets/Images/logo.png')}
@@ -63,7 +120,7 @@ const TwoStepVerifiction: React.FC<any> = () => {
         <Text style={styles.title}>Two-step authentication</Text>
         <Text style={styles.title1}>
           Enter the verification code sent to your email{' '}
-          <Text style={styles.email}>suleman@codekhalaq.com</Text>
+          <Text style={styles.email}>{email}</Text>
         </Text>
 
         <OtpInputField
@@ -76,7 +133,7 @@ const TwoStepVerifiction: React.FC<any> = () => {
           customTextStyles={styles.btnText}
           noShadow
           onPressHandler={() => {
-            navigation.navigate('Login');
+            handleTwoStepAuthentication();
           }}
         />
         <Text
@@ -97,6 +154,7 @@ const TwoStepVerifiction: React.FC<any> = () => {
                 { color: timer > 0 ? Colors.GRAY : Colors.APP_COLOR },
               ]}
               onPress={() => {
+                createOtp();
                 setTimer(30);
               }}
             >

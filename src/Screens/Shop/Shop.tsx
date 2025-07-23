@@ -1,10 +1,21 @@
-import React from 'react';
-import { FlatList, Image, Text, View, SafeAreaView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  Text,
+  View,
+  SafeAreaView,
+  RefreshControl,
+} from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Button from '../../Components/Button/Button';
 import Colors from '../../utils/Colors/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { getServices } from './actions';
+import { RootState } from '../../Store';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const servicesData = [
   {
@@ -25,7 +36,11 @@ const servicesData = [
 ];
 
 const Shop: React.FC<any> = () => {
+  const { services } = useSelector((state: RootState) => state.shopReducer);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useTypedNavigation();
+  const dispatch = useDispatch();
 
   const renderItem = ({ item }: any) => (
     <View style={styles.container}>
@@ -40,12 +55,12 @@ const Shop: React.FC<any> = () => {
         Active
       </Text>
 
-      {item?.icon ? (
-        <Image source={item.icon} style={styles.image} />
+      {item?.image ? (
+        <Image source={{ uri: item?.image }} style={styles.image} />
       ) : (
         <View style={[{ opacity: 0 }]} />
       )}
-      <Text style={styles.text}>{item?.title}</Text>
+      <Text style={styles.text}>{item?.name}</Text>
       {item?.description && (
         <Text style={styles.descrption}>{item?.description}</Text>
       )}
@@ -72,15 +87,40 @@ const Shop: React.FC<any> = () => {
     </View>
   );
 
+  const fetchServices = async () => {
+    setLoading(true);
+    try {
+      await dispatch(getServices());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <CustomLoader visible={!refreshing && loading} />
       <Header title="Shop" />
       <View style={styles.mainContainer}>
         <Text style={styles.title}>Services</Text>
 
         <FlatList
-          data={servicesData}
+          data={services}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl
+              colors={[Colors.APP_COLOR]}
+              refreshing={refreshing}
+              onRefresh={async () => {
+                setRefreshing(true);
+                await fetchServices();
+                setRefreshing(false);
+              }}
+            />
+          }
           keyExtractor={(_, index) => index.toString()}
           numColumns={2}
           columnWrapperStyle={{ justifyContent: 'space-between' }}

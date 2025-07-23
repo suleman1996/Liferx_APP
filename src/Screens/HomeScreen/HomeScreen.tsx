@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -20,10 +20,13 @@ import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../Auth/Register/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RootState } from '../../Store';
+import { getToken } from '../Auth/Login/actions';
 
 const HomeScreen: React.FC<any> = () => {
+  // const { token, userData } = useSelector((state: RootState) => state.login);
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
 
@@ -95,9 +98,10 @@ const HomeScreen: React.FC<any> = () => {
         {
           text: 'Logout',
           style: 'destructive',
-          onPress: () => {
-            dispatch(setToken(''));
-            navigation.navigate('Login');
+          onPress: async () => {
+            await AsyncStorage.removeItem('token');
+            dispatch(getToken(''));
+            navigation.replace('Login');
           },
         },
       ],

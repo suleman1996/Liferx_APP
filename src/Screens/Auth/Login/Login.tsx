@@ -16,19 +16,78 @@ import { FONTS } from '../../../Assets/Fonts/Fonts';
 import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../Store';
-import { setEmail, setError, setPassword } from './actions';
+import {
+  createLogin,
+  getToken,
+  getUserData,
+  setEmail,
+  setError,
+  setPassword,
+} from './actions';
 import EyeIcon from 'react-native-vector-icons/Entypo';
+import Toast from 'react-native-toast-message';
+import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login: React.FC<any> = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { email, password, error } = useSelector(
     (state: RootState) => state?.login,
   );
   const navigation = useTypedNavigation();
 
+  const handleLogin = () => {
+    if (!email) {
+      dispatch(setError('email'));
+      return;
+    } else if (!password) {
+      dispatch(setError('password'));
+      return;
+    }
+    setLoading(true);
+    const body = {
+      username: email,
+      password,
+    };
+    dispatch(createLogin(body))
+      .then(async (res: any) => {
+        const response = res?.value;
+        if (response?.status === 200) {
+          const token = response?.data?.token?.access;
+          const userData = response?.data?.user;
+
+          if (token) {
+            await AsyncStorage.setItem('token', token);
+            dispatch(getToken(token));
+          }
+          dispatch(getUserData(userData));
+          navigation.navigate('BottomTab');
+          Toast.show({
+            type: 'success',
+            text2: 'Login successfully',
+          });
+        } else {
+          Toast.show({
+            type: 'error',
+            text2: 'Unexpected response from server',
+          });
+        }
+        setLoading(false);
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
+      });
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <CustomLoader visible={loading} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -114,16 +173,7 @@ const Login: React.FC<any> = () => {
               customTextStyles={styles.btnText}
               noShadow
               onPressHandler={() => {
-                if (!email) {
-                  dispatch(setError('email'));
-                  return;
-                } else if (!password) {
-                  dispatch(setError('password'));
-                  return;
-                }
-                if (email && password) {
-                  navigation.navigate('BottomTab');
-                }
+                handleLogin();
               }}
             />
 

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   customButtonStyles: {
     height: null,
-    width: '75%',
+    width: '80%',
     padding: h(10),
     alignSelf: 'center',
     borderRadius: 10,

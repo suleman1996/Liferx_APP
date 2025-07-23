@@ -21,6 +21,8 @@ import PhoneVerification from '../Screens/PhoneVerification/PhoneVerification';
 import OtpPhoneVerify from '../Screens/OtpPhoneVerify/OtpPhoneVerify';
 import SuggestMedicine from '../Screens/SuggestMedicine/SuggestMedicine';
 import SelectDosage from '../Screens/SelectDosage/SelectDosage';
+import { RootState } from '../Store';
+import { useSelector } from 'react-redux';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
