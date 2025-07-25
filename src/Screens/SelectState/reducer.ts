@@ -1,16 +1,13 @@
-import { SELECT_STATE } from './actionTypes';
+import { SET_STATE } from './actionTypes';
 
 const initialState = {
-  states: '',
+  selectedState: '',
 };
 
 const selectYourState = (state = initialState, action: any) => {
   switch (action.type) {
-    case SELECT_STATE:
-      return {
-        ...state,
-        states: action.payload,
-      };
+    case SET_STATE:
+      return { ...state, selectedState: action.payload };
     default:
       return state;
   }

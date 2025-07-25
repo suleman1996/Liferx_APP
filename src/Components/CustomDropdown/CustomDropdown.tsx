@@ -15,6 +15,7 @@ interface Props {
   items: DropdownItem[];
   label?: string;
   style?: object;
+  placeholderStyle?:object;
   customLabelStyles?: object;
   selectedValue: string | null;
   CustomDropdownContainer?: object;
@@ -27,6 +28,7 @@ const CustomDropdown: React.FC<Props> = ({
   selectedValue,
   customLabelStyles,
   style,
+  placeholderStyle,
   label,
   CustomDropdownContainer,
   onChange,
@@ -59,11 +61,12 @@ const CustomDropdown: React.FC<Props> = ({
         }}
         textStyle={{
           fontSize: h(16),
-          color: selectedValue ? Colors.BLACK : Colors.GRAY,
+          color: selectedValue ? Colors.APP_COLOR : Colors.GRAY,
         }}
         placeholderStyle={{
           fontSize: h(16),
           color: Colors.APP_COLOR,
+          ...placeholderStyle
         }}
         dropDownContainerStyle={{
           borderColor: Colors.GRAY,

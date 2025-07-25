@@ -15,7 +15,7 @@ import Button from '../../../Components/Button/Button';
 import { FONTS } from '../../../Assets/Fonts/Fonts';
 import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../Store';
+import store, { persistor, RootState } from '../../../Store';
 import {
   createLogin,
   getToken,
@@ -33,7 +33,7 @@ const Login: React.FC<any> = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { email, password, error } = useSelector(
+  const { email, password, error,userData } = useSelector(
     (state: RootState) => state?.login,
   );
   const navigation = useTypedNavigation();
@@ -55,14 +55,11 @@ const Login: React.FC<any> = () => {
       .then(async (res: any) => {
         const response = res?.value;
         if (response?.status === 200) {
-          const token = response?.data?.token?.access;
-          const userData = response?.data?.user;
-
-          if (token) {
-            await AsyncStorage.setItem('token', token);
-            dispatch(getToken(token));
-          }
-          dispatch(getUserData(userData));
+          const newToken = response?.data?.token?.access;
+          const newUser = response?.data?.user; 
+          await AsyncStorage.setItem('token', newToken);
+          dispatch(getToken(newToken));
+          dispatch(getUserData(newUser));
           navigation.navigate('BottomTab');
           Toast.show({
             type: 'success',

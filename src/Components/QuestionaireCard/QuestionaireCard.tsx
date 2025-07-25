@@ -38,9 +38,10 @@ interface Props {
 }
 
 const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
+  const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
-    state.RegularQuestionsAnswer.Questionaire_Answer.find(
-      answer => answer.questionId === item?.id,
+    state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[serviceId]?.find(
+      (ans: any) => ans?.question === item?.id,
     ),
   );
   const [selected, setSelected] = useState<number[]>([]);
@@ -50,13 +51,13 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
 
   useEffect(() => {
     if (existingAnswer) {
-      if (Array.isArray(existingAnswer.selectedOption)) {
-        setSelected(existingAnswer.selectedOption);
+      if (Array.isArray(existingAnswer?.selectedOption)) {
+        setSelected(existingAnswer?.selectedOption);
       } else {
-        setSelected([existingAnswer.selectedOption]);
+        setSelected([existingAnswer?.selectedOption]);
       }
-      setSimpleText(existingAnswer.simpleText || '');
-      setExplaination(existingAnswer.simpleText || '');
+      setSimpleText(existingAnswer?.simpleText || '');
+      setExplaination(existingAnswer?.simpleText || '');
     }
   }, [existingAnswer]);
 
@@ -132,7 +133,9 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
       {item?.options?.map(option => {
         const isSelected = selected.includes(option.id);
         const explainationText =
-          option?.explanation_required && QuestionTypes.MULTI_TEXT && isSelected;
+          option?.explanation_required &&
+          QuestionTypes.MULTI_TEXT &&
+          isSelected;
         return (
           <View key={option.id}>
             <Pressable
@@ -176,7 +179,7 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
             if (item?.type === QuestionTypes.TEXT) {
               handleContinue?.([], simpleText);
             } else {
-              handleContinue?.(selected, explaination);
+              handleContinue?.(selected, explaination,);
             }
           }}
           customButtonStyles={styles.customButtonStyles}

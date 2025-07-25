@@ -1,0 +1,2 @@
+export const SET_PHONE_NUMBER = 'SET_PHONE_NUMBER'
+export const SET_ERROR = 'SET_ERROR'

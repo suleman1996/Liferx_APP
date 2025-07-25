@@ -17,6 +17,7 @@ interface Props {
   placeholder?: string;
   containerStyle?: ViewStyle;
   labelStyle?: TextStyle;
+  placeholderTextColor?:string;
 }
 
 const PhoneNumberInput: React.FC<Props> = ({
@@ -24,11 +25,12 @@ const PhoneNumberInput: React.FC<Props> = ({
   value,
   onChangeText,
   placeholder = '(555) 123-4567',
+  placeholderTextColor,
   containerStyle,
   labelStyle,
 }) => {
   return (
-    <View style={containerStyle}>
+    <View>
       {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
 
       <View
@@ -37,6 +39,7 @@ const PhoneNumberInput: React.FC<Props> = ({
           {
             borderColor: value?.length > 0 ? Colors.APP_COLOR : Colors.GRAY,
           },
+          containerStyle
         ]}
       >
         <View
@@ -60,7 +63,7 @@ const PhoneNumberInput: React.FC<Props> = ({
           keyboardType="number-pad"
           style={styles.input}
           placeholder={placeholder}
-          placeholderTextColor={Colors.GRAY}
+          placeholderTextColor={placeholderTextColor}
           maxLength={14} // formatted length: (123) 456-7890
         />
       </View>

@@ -17,10 +17,30 @@ import {
 import Button from '../../Components/Button/Button';
 import PhoneNumberInput from '../../Components/ PhoneNumberInput/ PhoneNumberInput';
 import { ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Store';
+import { setError, setPhoneNumber } from './actions';
+import Colors from '../../utils/Colors/Colors';
+import Toast from 'react-native-toast-message';
 
 const PhoneVerification: React.FC<any> = () => {
+  const { error, phoneNumber } = useSelector(
+    (state: RootState) => state.phoneVerifyReducer,
+  );
+  const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const handleVerification = () => {
+    if (!phoneNumber) {
+      dispatch(setError('phoneNumber'));
+      Toast.show({
+        type: 'error',
+        text2: 'Phone number must be required.',
+      });
+      return;
+    }
+    navigation.navigate('OtpPhoneVerify');
+  };
 
   return (
     <SafeAreaView
@@ -50,8 +70,17 @@ const PhoneVerification: React.FC<any> = () => {
             <PhoneNumberInput
               label="Phone Number"
               labelStyle={styles.label}
-              value={phoneNumber}
-              onChangeText={text => setPhoneNumber(formatPhoneNumber(text))}
+              value={formatPhoneNumber(phoneNumber)}
+              onChangeText={text => {
+                const raw = text?.replace(/\D/g, '');
+                dispatch(setPhoneNumber(raw));
+                dispatch(setError(''));
+              }}
+              containerStyle={{
+                borderColor:
+                  error === 'phoneNumber' ? Colors.error : Colors.APP_COLOR,
+              }}
+              placeholderTextColor={error === 'phoneNumber' ? Colors.error : Colors.GRAY}
             />
 
             <Button
@@ -59,7 +88,7 @@ const PhoneVerification: React.FC<any> = () => {
               noShadow
               customButtonStyles={styles.customButtonStyles}
               onPressHandler={() => {
-                navigation.navigate('OtpPhoneVerify');
+                handleVerification();
               }}
             />
             <Text style={styles.text}>

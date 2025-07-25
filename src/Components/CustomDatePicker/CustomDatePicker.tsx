@@ -13,7 +13,8 @@ interface Props {
   maximumDate?: Date;
   customLabelStyles?: object;
   customContainerStyle?: object;
-  customDatePickerInput?:object
+  customDatePickerInput?:object;
+  customInputTextStyle?:object
 }
 
 const CustomDatePicker: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const CustomDatePicker: React.FC<Props> = ({
   customLabelStyles,
   customContainerStyle,
   customDatePickerInput,
+  customInputTextStyle,
   onChange,
   mode = 'date',
   minimumDate,
@@ -48,7 +50,7 @@ const CustomDatePicker: React.FC<Props> = ({
       {label && <Text style={(styles.label, customLabelStyles)}>{label}</Text>}
 
       <Pressable style={[styles.input,customDatePickerInput]} onPress={() => setShowPicker(true)}>
-        <Text style={styles.inputText}>{value || 'Select date'}</Text>
+        <Text style={[styles.inputText,customInputTextStyle]}>{value || 'Select date'}</Text>
       </Pressable>
 
       {showPicker && (

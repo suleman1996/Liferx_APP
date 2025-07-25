@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, ScrollView, View, SafeAreaView } from 'react-native';
+import { FlatList, ScrollView, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import StepProgressBar from '../../Components/StepProgressBar/StepProgressBar';
-import RegularQuestions from '../../utils/RegularQuestions.json';
-import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
+import { buildFormDataForImageUpload, h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import QuestionaireCard from '../../Components/QuestionaireCard/QuestionaireCard';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,17 +19,21 @@ import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 const Questionaire: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const { Questionaire_Answer, regularQuestions } = useSelector(
+  const { selectedRegularAnswer, regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
-  const [loading, setLoading] = useState(false);
+    const { selectedAnswer } = useSelector(
+    (state: RootState) => state.decidingQuestionAnswer,
+  );
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
+  const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const type = regularQuestions[currentIndex]?.type;
 
   const handleContinue = (
     selectedOption: number[] | number,
     simpleText: string,
+    imagePath?: string | null
   ) => {
     const isSelectionEmpty =
       Array.isArray(selectedOption) && selectedOption?.length === 0;
@@ -66,18 +69,17 @@ const Questionaire: React.FC<any> = () => {
       });
       return;
     }
-
-    dispatch(
-      addQuestionaireAnswer({
-        questionId: regularQuestions[currentIndex].id,
-        selectedOption,
-        simpleText,
-      }),
-    );
-
+    const answers = {
+      question: regularQuestions[currentIndex].id,
+      selectedOption,
+      simpleText,
+    };
+    dispatch(addQuestionaireAnswer({...answers,serviceId}));
     if (currentIndex < regularQuestions?.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
+      console.log(selectedRegularAnswer?.[serviceId],'selectedRegularAnswer')
+      console.log(selectedAnswer?.[serviceId],'selectedAnswer');
       navigation.navigate('PersonalInformation');
     }
   };
@@ -92,6 +94,7 @@ const Questionaire: React.FC<any> = () => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
+      if (!serviceId) return;
       setLoading(true);
       try {
         await dispatch(getRegularQuestions(serviceId)).then((res: any) => {
@@ -102,9 +105,7 @@ const Questionaire: React.FC<any> = () => {
       }
     };
     fetchQuestions();
-  }, []);
-
-  // console.log(Questionaire_Answer, 'all answers');
+  }, [serviceId]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

@@ -13,6 +13,7 @@ const initialState = {
   password: '',
   error: '',
   token: '',
+  prevToken: '',
   userData: {},
 };
 
@@ -25,7 +26,12 @@ export default function loginReducer(state = initialState, action: any) {
     case SET_LOGIN_ERROR:
       return { ...state, loading: false, error: action.payload };
     case GET_TOKEN:
-      return { ...state, loading: false, token: action.payload };
+      return {
+        ...state,
+        loading: false,
+        prevToken: state.token || '',
+        token: action.payload,
+      };
     case GET_USER_DATA:
       return { ...state, loading: false, userData: action.payload };
     default:

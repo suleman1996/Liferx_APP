@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, Keyboard, Text, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
@@ -6,22 +6,20 @@ import SearchDropDown from '../../Components/SearchDropDown/SearchDropDown';
 import Button from '../../Components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
-import { addState, saveDecidingAnswers } from './actions';
+import { setState } from './actions';
 import { useTypedNavigation } from '../../utils/Helper/Helper';
 import Toast from 'react-native-toast-message';
-import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import { usStates } from '../../utils/Constants/Constants';
 
 const SelectState: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const { states } = useSelector((state: RootState) => state.selectYourState);
+  const { selectedState } = useSelector((state: RootState) => state.selectYourState);
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const { selectedAnswer } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
-  const [selectedState, setselectedState] = useState<any>(null);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(selectedState?.name || '');
 
   const handleContinue = () => {
     if (!selectedState) {
@@ -31,19 +29,8 @@ const SelectState: React.FC<any> = () => {
       });
       return;
     }
-    dispatch(addState(selectedState?.name));
-    // const currentAnswers = selectedAnswer?.[serviceId] || [];
-    // console.log('✅ Selected Answers for serviceId:', serviceId);
-    // console.log(currentAnswers);
     navigation.navigate('Questionaire');
   };
-
-  useEffect(() => {
-    if (states) {
-      setselectedState(states);
-      setSearch(states);
-    }
-  }, [states]);
 
   return (
     <SafeAreaView
@@ -70,7 +57,9 @@ const SelectState: React.FC<any> = () => {
           flatlistData={usStates.filter(data =>
             data?.name?.toLowerCase().includes(search.toLowerCase()),
           )}
-          setSelectedItem={setselectedState}
+          setSelectedItem={(text)=>{
+            dispatch(setState(text))
+          }}
           selectedItem={selectedState}
           setSearch={setSearch}
           search={search}

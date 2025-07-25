@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { RootStackParamList } from '../../Stack/Stack';
+import moment from 'moment';
 
 // Responsive width: accepts px or percentage string
 export const w = (value: number | string): number => {
@@ -68,19 +69,20 @@ export const pickImageFromGallery = async (): Promise<any | null> => {
 };
 
 export const formatPhoneNumber = (text: string) => {
-  const cleaned = text.replace(/\D/g, '').slice(0, 10); // keep max 10 digits
-  const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-  if (!match) return text; // fallback to raw if something weird happens
+  const cleaned = text.replace(/\D/g, '').slice(0, 10); // Keep only digits
 
-  let formatted = '';
-  if (match[1]) formatted += `(${match[1]}`;
-  if (match[1].length === 3) formatted += ') ';
-  if (match[2]) formatted += match[2];
-  if (match[2].length === 3 && match[3]) formatted += '-';
-  if (match[3]) formatted += match[3];
+  if (cleaned.length === 0) return '';
 
-  return formatted;
+  if (cleaned.length < 4) {
+    return `(${cleaned}`;
+  } else if (cleaned.length < 7) {
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
+  } else {
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+  }
 };
+
+
 
 export const getPasswordStrengthLabel = (
   validation: ReturnType<typeof getPasswordValidation>,
@@ -115,3 +117,44 @@ export const getPasswordValidation = (password: string) => {
     isMultiWord,
   };
 };
+
+export  const ageValidation = (dob: string) => {
+ const birthDate = moment(dob, 'MM/DD/YYYY');
+  if (!birthDate.isValid()) return false;
+  const age = moment().diff(birthDate, 'years');
+  return age >= 18;
+};
+
+export interface FormDataPayload {
+  question: number;
+  selected?: number[];
+  explanation?: string;
+  imagePath: string;
+}
+export const buildFormDataForImageUpload = ({
+  question,
+  selected = [],
+  explanation = '',
+  imagePath,
+}: FormDataPayload): FormData => {
+  const formData = new FormData();
+
+  formData.append('question', question.toString());
+  formData.append(
+    'json_answer',
+    JSON.stringify({
+      selected,
+      explanation,
+    })
+  );
+  const file = {
+    uri: imagePath,
+    type: 'image/jpeg',
+    name: 'photo.jpg',
+  } as any;
+
+  formData.append('file', file);
+  return formData;
+};
+
+

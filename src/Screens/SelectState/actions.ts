@@ -1,12 +1,11 @@
-import { post } from '../../Modules/Requests';
-import { SELECT_STATE } from './actionTypes';
+import { SET_STATE } from './actionTypes';
 
-export const addState = (state: any) => ({
-  type: SELECT_STATE,
+export const setState = (state: any) => ({
+  type: SET_STATE,
   payload: state,
 });
 
-export const saveDecidingAnswers = (data: any) => ({
-  type: SELECT_STATE,
-  payload: post('/api/v1/save-answers/save-deciding-answers/', data),
-});
+// export const saveDecidingAnswers = (data: any) => ({
+//   type: SELECT_STATE,
+//   payload: post('/api/v1/save-answers/save-deciding-answers/', data),
+// });

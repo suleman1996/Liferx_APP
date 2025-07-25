@@ -16,15 +16,20 @@ import selectYourState from '../Screens/SelectState/reducer';
 import RegularQuestionsAnswer from '../Screens/Questionaire/reducer';
 import registerReducer from '../Screens/Auth/Register/reducer';
 import shopReducer from '../Screens/Shop/reducer';
+import personalInfoReducer from '../Screens/PersonalInformation/reducer';
+import { logoutReducer } from '../utils/LogoutReducer/LogoutReducer';
+import phoneVerifyReducer from '../Screens/PhoneVerification/reducer';
 
 const rootReducer = combineReducers({
-  login: loginReducer,
-  registerReducer: registerReducer,
-  twoStepVerification: twoStepVerificationReducer,
-  decidingQuestionAnswer: decidingQuestionAnswer,
-  selectYourState: selectYourState,
-  RegularQuestionsAnswer: RegularQuestionsAnswer,
-  shopReducer: shopReducer,
+  login: logoutReducer(loginReducer),
+  registerReducer: logoutReducer(registerReducer),
+  twoStepVerification: logoutReducer(twoStepVerificationReducer),
+  decidingQuestionAnswer: logoutReducer(decidingQuestionAnswer),
+  selectYourState: logoutReducer(selectYourState),
+  RegularQuestionsAnswer: logoutReducer(RegularQuestionsAnswer),
+  shopReducer: logoutReducer(shopReducer),
+  personalInfoReducer: logoutReducer(personalInfoReducer),
+  phoneVerifyReducer: logoutReducer(phoneVerifyReducer),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -33,13 +38,17 @@ export type RootState = ReturnType<typeof rootReducer>;
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['decidingQuestionAnswer', 'selectYourState'], // ← add reducers you want to persist
+  whitelist: [
+    'decidingQuestionAnswer',
+    'selectYourState',
+    'RegularQuestionsAnswer',
+    'personalInfoReducer',
+    'phoneVerifyReducer',
+    'login',
+  ], // ← add reducers you want to persist
 };
-// 🧠 persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-// 🏪 create store
 const store = createStore(persistedReducer, applyMiddleware(promiseMiddleware));
-// ⏳ persistor
 export const persistor = persistStore(store);
 
 export default store;

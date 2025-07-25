@@ -22,7 +22,7 @@ import styles from './style';
 import Header from '../../Components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RootState } from '../../Store';
+import { persistor, RootState } from '../../Store';
 import { getToken } from '../Auth/Login/actions';
 
 const HomeScreen: React.FC<any> = () => {
@@ -121,7 +121,7 @@ const HomeScreen: React.FC<any> = () => {
             size={20}
             color={Colors.APP_COLOR}
             style={styles.logoutIcon}
-            onPress={() => handleLogout()}
+            // onPress={() => handleLogout()}
           />
         }
         profileImageHandler={() => navigation.navigate('Profile')}

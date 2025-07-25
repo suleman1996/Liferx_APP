@@ -60,3 +60,9 @@ export const usStates = [
   { id: 49, name: 'Wisconsin' },
   { id: 50, name: 'Wyoming' },
 ];
+
+ export const genderOptions = [
+    // { label: 'Other', value: 'Other' },
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' },
+  ];
