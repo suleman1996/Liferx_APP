@@ -1,7 +1,13 @@
-import { CLEAR_QUESTIONAIRE_ANSWER, QUESTIONAIRE_ANSWER } from './actionTypes';
+import {
+  CLEAR_QUESTIONAIRE_ANSWER,
+  GET_QUESTIONS_LISTING,
+  GET_REGULAR_QUESTIONS,
+  QUESTIONAIRE_ANSWER,
+} from './actionTypes';
 
 const initialState = {
   Questionaire_Answer: [],
+  regularQuestions: [],
 };
 
 const RegularQuestionsAnswer = (state = initialState, action: any) => {
@@ -14,6 +20,11 @@ const RegularQuestionsAnswer = (state = initialState, action: any) => {
       return {
         ...state,
         Questionaire_Answer: [...updatedAnswers, action.payload],
+      };
+    case GET_QUESTIONS_LISTING:
+      return {
+        ...state,
+        regularQuestions: action.payload,
       };
     case CLEAR_QUESTIONAIRE_ANSWER:
       return {

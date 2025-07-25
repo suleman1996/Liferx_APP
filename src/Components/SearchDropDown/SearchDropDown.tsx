@@ -7,6 +7,7 @@ import {
   FlatList,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Keyboard,
 } from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -78,6 +79,7 @@ const SearchDropDown: React.FC<Props> = React.memo(
     };
 
     const onselectValue = (item: RestaurantItem) => {
+      Keyboard.dismiss();
       setSelectedItem(item);
       setSearch(item?.name);
       setListVisible(false);

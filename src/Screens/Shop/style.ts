@@ -30,21 +30,19 @@ const styles = StyleSheet.create({
     width: ITEM_WIDTH,
     borderRadius: 10,
     paddingTop: h(20),
-    paddingBottom: h(20),
     marginBottom: h(16),
   },
   image: {
     height: h(120),
     width: w(100),
-    alignSelf: 'center',
-    resizeMode: 'contain',
+    alignSelf: 'flex-end',
+    resizeMode: 'cover',
   },
   text: {
     color: Colors.APP_COLOR,
-    fontSize: w(15),
-    fontFamily: FONTS.MONTSERRAT_MEDIUM,
-    paddingLeft: w(20),
-    paddingTop: h(10),
+    fontSize: w(16),
+    fontFamily: FONTS.MONTSERRAT_SEMI_BOLD,
+    paddingLeft: w(10),
   },
   descrption: {
     color: Colors.APP_COLOR,
@@ -75,6 +73,21 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     right: w(15),
     fontSize: w(11),
+  },
+  arrowIcon: {
+    backgroundColor: Colors.APP_COLOR,
+    height: 28,
+    width: 28,
+    borderRadius: 28 / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    left: w(10),
+    bottom: h(10),
+  },
+  imageView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 export default styles;

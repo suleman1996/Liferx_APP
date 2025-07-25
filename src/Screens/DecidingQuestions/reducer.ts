@@ -1,7 +1,13 @@
-import { CLEAR_DECIDING_ANSWERS, DECIDING_ANSWER } from './actionTypes';
+import {
+  CLEAR_DECIDING_ANSWERS,
+  DECIDING_ANSWER,
+  GET_DECIDING_QUESTIONS,
+  SELECTED_DECIDING_ANSWERS,
+} from './actionTypes';
 
 const initialState = {
-  answers: [],
+  selectedAnswer: [],
+  decidingQuestions: [],
 };
 
 const decidingQuestionAnswer = (state = initialState, action: any) => {
@@ -9,8 +15,25 @@ const decidingQuestionAnswer = (state = initialState, action: any) => {
     case DECIDING_ANSWER:
       return {
         ...state,
-        answers: [...state.answers, action.payload],
+        decidingQuestions: action.payload,
       };
+    case SELECTED_DECIDING_ANSWERS: {
+      const { serviceId, deciding_questions } = action.payload;
+      const existing = state.selectedAnswer?.[serviceId] || [];
+      return {
+        ...state,
+        selectedAnswer: {
+          ...state.selectedAnswer,
+          [serviceId]: [
+            ...existing.filter(
+              (ans: any) => ans.deciding_questions !== deciding_questions,
+            ),
+            action.payload,
+          ],
+        },
+      };
+    }
+
     case CLEAR_DECIDING_ANSWERS:
       return {
         ...state,

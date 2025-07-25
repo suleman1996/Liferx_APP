@@ -6,6 +6,9 @@ import {
   View,
   SafeAreaView,
   RefreshControl,
+  Linking,
+  Pressable,
+  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
@@ -13,27 +16,11 @@ import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Button from '../../Components/Button/Button';
 import Colors from '../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { getServices } from './actions';
+import { getServiceId, getServiceListing, getServices } from './actions';
 import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
-
-const servicesData = [
-  {
-    title: 'Regrow Hair',
-    icon: require('../../Assets/Images/Hair.png'),
-    active: false,
-  },
-  {
-    title: 'Better Sex',
-    icon: require('../../Assets/Images/MinoxiBlend.png'),
-    active: true,
-  },
-  {
-    title: 'Weight Loss',
-    description: 'Clinical support meets real results.',
-    active: false,
-  },
-];
+import { weightLossUrl } from '../../utils/Constants/Constants';
+import Icon from 'react-native-vector-icons/Feather';
 
 const Shop: React.FC<any> = () => {
   const { services } = useSelector((state: RootState) => state.shopReducer);
@@ -42,29 +29,60 @@ const Shop: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
 
-  const renderItem = ({ item }: any) => (
-    <View style={styles.container}>
-      <Text
-        style={[
-          styles.status,
-          item?.active
-            ? { backgroundColor: Colors.LIGHT_GREEN }
-            : { opacity: 0 },
-        ]}
-      >
-        Active
-      </Text>
+  const getImages = (index: number) => {
+    switch (index) {
+      case 0:
+        return require('../../Assets/Images/weightloss.png');
+      case 1:
+        return require('../../Assets/Images/hairloss.png');
+      default:
+        return require('../../Assets/Images/half-med.png');
+    }
+  };
 
-      {item?.image ? (
-        <Image source={{ uri: item?.image }} style={styles.image} />
-      ) : (
-        <View style={[{ opacity: 0 }]} />
-      )}
-      <Text style={styles.text}>{item?.name}</Text>
-      {item?.description && (
-        <Text style={styles.descrption}>{item?.description}</Text>
-      )}
-      <Button
+  const getText = (index: number) => {
+    switch (index) {
+      case 0:
+        return 'Weight Loss';
+      case 1:
+        return 'Regrow Hair';
+      default:
+        return 'Better Sex';
+    }
+  };
+
+  const renderItem = ({ item, index }: any) => {
+    return (
+      <Pressable
+        style={styles.container}
+        onPress={() => {
+          if (index === 0) {
+            Linking.openURL(weightLossUrl);
+          } else {
+            dispatch(getServiceId(item?.id));
+            navigation.navigate('DecidingQuestions');
+          }
+        }}
+      >
+        <Text style={styles.text}>{getText(index)}</Text>
+        {item?.image ? (
+          <View style={styles.imageView}>
+            <View style={styles.arrowIcon}>
+              <Icon
+                name={index === 0 ? 'arrow-up-right' : 'arrow-down'}
+                color={Colors.WHITE}
+                size={16}
+              />
+            </View>
+            <Image source={getImages(index)} style={styles.image} />
+          </View>
+        ) : (
+          <View style={[{ opacity: 0 }]} />
+        )}
+        {item?.description && (
+          <Text style={styles.descrption}>{item?.description}</Text>
+        )}
+        {/* <Button
         text={
           item?.description
             ? 'Learn More'
@@ -81,16 +99,26 @@ const Shop: React.FC<any> = () => {
           },
         ]}
         customTextStyles={styles.customTextStyles}
-        onPressHandler={() => navigation.navigate('DecidingQuestions')}
+        onPressHandler={() => {
+          if(index === 2){
+              Linking.openURL(weightLossUrl)
+          }else{
+            navigation.navigate('DecidingQuestions',{serviceId:item?.id})
+          }
+        }}
         noShadow
-      />
-    </View>
-  );
+      /> */}
+      </Pressable>
+    );
+  };
 
   const fetchServices = async () => {
     setLoading(true);
     try {
-      await dispatch(getServices());
+      await dispatch(getServices()).then((res: any) => {
+        const response = res?.value?.data;
+        dispatch(getServiceListing(response));
+      });
     } finally {
       setLoading(false);
     }
@@ -107,27 +135,29 @@ const Shop: React.FC<any> = () => {
       <View style={styles.mainContainer}>
         <Text style={styles.title}>Services</Text>
 
-        <FlatList
-          data={services}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              colors={[Colors.APP_COLOR]}
-              refreshing={refreshing}
-              onRefresh={async () => {
-                setRefreshing(true);
-                await fetchServices();
-                setRefreshing(false);
-              }}
-            />
-          }
-          keyExtractor={(_, index) => index.toString()}
-          numColumns={2}
-          columnWrapperStyle={{ justifyContent: 'space-between' }}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
-          style={{ flexGrow: 1 }}
-        />
+        {services?.length > 0 && (
+          <FlatList
+            data={services}
+            renderItem={renderItem}
+            refreshControl={
+              <RefreshControl
+                colors={[Colors.APP_COLOR]}
+                refreshing={refreshing}
+                onRefresh={async () => {
+                  setRefreshing(true);
+                  await fetchServices();
+                  setRefreshing(false);
+                }}
+              />
+            }
+            keyExtractor={item => item.id.toString()}
+            numColumns={2}
+            columnWrapperStyle={{ justifyContent: 'space-between' }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
+            style={{ flexGrow: 1 }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

@@ -1,32 +1,28 @@
-import React, { useState } from 'react';
-import {
-  FlatList,
-  Pressable,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, View, SafeAreaView, ScrollView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
-import decidingQuestionsData from '../../utils/questions.json';
 import DecidingQuestionsCard from '../../Components/DecidingQuestionsCard/DecidingQuestionsCard';
-import { addAnswer, clearDecidingAnswer } from './actions';
+import {
+  addDecidingAnswer,
+  getDecidingQuestion,
+  selectedDecidingAnswer,
+} from './actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { RootState } from '../../Store';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
-const DecidingQuestions: React.FC<any> = () => {
-  const { answers } = useSelector(
+const DecidingQuestions: React.FC<any> = ({ route }) => {
+  const { decidingQuestions, selectedAnswer } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentQuestion =
-    decidingQuestionsData?.deciding_questions[currentIndex];
-
+  const [loading, setLoading] = useState(false);
+  const currentQuestion = decidingQuestions?.deciding_questions?.[currentIndex];
   const dispatch = useDispatch();
 
   const handleContinue = (selected: number[] | number) => {
@@ -48,47 +44,56 @@ const DecidingQuestions: React.FC<any> = () => {
             : selected,
       },
     };
-
-    dispatch(addAnswer(answer));
+    dispatch(selectedDecidingAnswer({ ...answer, serviceId }));
     const nextIndex = currentIndex + 1;
-    if (nextIndex < decidingQuestionsData?.deciding_questions?.length) {
+    if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
       navigation.navigate('SelectState');
     }
   };
 
-  // const handleBack = () => {
-  //   if (currentIndex > 0) {
-  //     setCurrentIndex(currentIndex - 1);
-  //   } else {
-  //     navigation.goBack(); // Or exit the screen
-  //   }
-  // };
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    } else {
+      navigation.goBack();
+    }
+  };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch(clearDecidingAnswer());
-    }, [dispatch]),
-  );
+  const fetchDecidingQuestions = async () => {
+    setLoading(true);
+    try {
+      await dispatch(getDecidingQuestion(serviceId)).then((res: any) => {
+        const response = res?.value?.data;
+        dispatch(addDecidingAnswer(response));
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchDecidingQuestions();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header />
+      <CustomLoader visible={loading} />
+      <Header onBackPress={handleBack} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.mainContainer}>
           <FlatList
             data={[currentQuestion]}
             keyExtractor={item => item?.id?.toString()}
             renderItem={({ item }) => {
-              // const existingAnswer = answers.find(
-              //   ans => ans.deciding_questions === item?.id,
-              // );
-              // const alreadySelected = existingAnswer?.json_answer?.selected;
+              const existingAnswer = selectedAnswer?.[serviceId]?.find(
+                ans => ans.deciding_questions === item?.id,
+              );
+              const alreadySelected = existingAnswer?.json_answer?.selected;
               return (
                 <DecidingQuestionsCard
                   item={item}
-                  // alreadySelected={alreadySelected}
+                  alreadySelected={alreadySelected}
                   handleContinue={select => handleContinue(select)}
                 />
               );
