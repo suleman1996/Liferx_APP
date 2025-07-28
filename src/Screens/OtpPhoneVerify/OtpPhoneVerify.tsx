@@ -14,14 +14,31 @@ import Header from '../../Components/Header/Header';
 import { ScrollView } from 'react-native';
 import OtpInputField from '../../Components/Otp/Otp';
 import Button from '../../Components/Button/Button';
-import { formatTime, useTypedNavigation } from '../../utils/Helper/Helper';
-import { Pressable } from 'react-native';
+import {
+  formatPhoneNumber,
+  formatTime,
+  useTypedNavigation,
+} from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Store';
+import { sendPhoneOtp, setVerificationCode } from './action';
+import Toast from 'react-native-toast-message';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const OtpPhoneVerify: React.FC<any> = () => {
+  const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const [code, setCode] = useState('');
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const verificationCode = useSelector(
+    (state: RootState) =>
+      state.verificationCodeReducer.verificationCode?.[userId] || '',
+  );
+  const phoneNumber = useSelector(
+    (state: RootState) => state.phoneVerifyReducer.phoneNumber?.[userId] || '',
+  );
   const [timer, setTimer] = useState(30);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (timer === 0) return;
@@ -31,11 +48,49 @@ const OtpPhoneVerify: React.FC<any> = () => {
     return () => clearInterval(time);
   }, [timer]);
 
+  useEffect(() => {
+    fetchOtpCode();
+    dispatch(setVerificationCode('',''))
+  }, []);
+
+  const fetchOtpCode = async () => {
+    const body = {
+      phone: phoneNumber,
+    };
+    setLoading(true);
+    await dispatch(sendPhoneOtp(body))
+      .then((res: any) => {
+        if (res?.value?.status === 200) {
+          Toast.show({
+            type: 'success',
+            text2: res?.value?.data,
+          });
+        }
+        setLoading(false);
+      })
+      .catch((error: string) => {
+        setLoading(false);
+        console.log(error, 'error');
+      });
+  };
+
+  const verificationCodeHandler = () => {
+    if (typeof verificationCode !== 'string' || verificationCode.length !== 6) {
+      Toast.show({
+        type: 'error',
+        text2: 'Please enter the complete 6-digit OTP.',
+      });
+      return;
+    }
+    navigation.navigate('SuggestMedicine');
+  };
+
   return (
     <SafeAreaView
       style={styles.safeAreaView}
       onTouchStart={() => Keyboard.dismiss()}
     >
+      <CustomLoader visible={loading} />
       <Header title="Phone Verification" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -54,16 +109,23 @@ const OtpPhoneVerify: React.FC<any> = () => {
             <Text style={styles.heading}>Enter Verification Code</Text>
             <Text style={styles.description}>
               We've sent a 6-digit code to{' '}
-              <Text style={styles.givenNumber}>(121) 212-1212</Text>
+              <Text style={styles.givenNumber}>
+                {formatPhoneNumber(phoneNumber)}
+              </Text>
             </Text>
 
-            <OtpInputField onChange={(number: string) => setCode(number)} />
+            <OtpInputField
+              onChange={(number: string) => {
+                dispatch(setVerificationCode(number, userId));
+              }}
+              customFocusColor={Colors.APP_COLOR}
+            />
 
             <Button
               text="Verify Code"
               noShadow
               customButtonStyles={styles.customButtonStyles}
-              onPressHandler={() => navigation.navigate('SuggestMedicine')}
+              onPressHandler={() => verificationCodeHandler()}
             />
 
             <Text
@@ -84,7 +146,10 @@ const OtpPhoneVerify: React.FC<any> = () => {
 
             <Text style={styles.text}>
               Didn't receive the code?{' '}
-              <TouchableWithoutFeedback disabled={timer > 0}>
+              <TouchableWithoutFeedback
+                disabled={timer > 0}
+                onPress={() => fetchOtpCode()}
+              >
                 <Text
                   style={[
                     styles.resend,

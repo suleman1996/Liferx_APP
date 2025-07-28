@@ -1,0 +1,3 @@
+export const SET_VERIFICATION_CODE = 'SET_VERIFICATION_CODE'
+export const SEND_PHONE_OTP = 'SEND_PHONE_OTP'
+export const SET_ERROR = 'SET_ERROR'

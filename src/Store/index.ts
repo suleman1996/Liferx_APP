@@ -19,6 +19,10 @@ import shopReducer from '../Screens/Shop/reducer';
 import personalInfoReducer from '../Screens/PersonalInformation/reducer';
 import { logoutReducer } from '../utils/LogoutReducer/LogoutReducer';
 import phoneVerifyReducer from '../Screens/PhoneVerification/reducer';
+import verificationCodeReducer from '../Screens/OtpPhoneVerify/reducer';
+import productMedicineReducer from '../Screens/SuggestMedicine/reducer';
+import dosageReducers from '../Screens/SelectDosage/reducer';
+import dosageVarientReducers from '../Screens/DosageVarient/reducer';
 
 const rootReducer = combineReducers({
   login: logoutReducer(loginReducer),
@@ -30,6 +34,10 @@ const rootReducer = combineReducers({
   shopReducer: logoutReducer(shopReducer),
   personalInfoReducer: logoutReducer(personalInfoReducer),
   phoneVerifyReducer: logoutReducer(phoneVerifyReducer),
+  verificationCodeReducer: logoutReducer(verificationCodeReducer),
+  productMedicineReducer: logoutReducer(productMedicineReducer),
+  dosageReducers: logoutReducer(dosageReducers),
+  dosageVarientReducers: logoutReducer(dosageVarientReducers),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -45,6 +53,10 @@ const persistConfig = {
     'personalInfoReducer',
     'phoneVerifyReducer',
     'login',
+    'verificationCodeReducer',
+    'productMedicineReducer',
+    'dosageReducers',
+    'dosageVarientReducers',
   ], // ← add reducers you want to persist
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);

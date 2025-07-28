@@ -121,7 +121,7 @@ const HomeScreen: React.FC<any> = () => {
             size={20}
             color={Colors.APP_COLOR}
             style={styles.logoutIcon}
-            // onPress={() => handleLogout()}
+            onPress={() => handleLogout()}
           />
         }
         profileImageHandler={() => navigation.navigate('Profile')}

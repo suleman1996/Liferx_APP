@@ -6,8 +6,11 @@ import Colors from '../../utils/Colors/Colors';
 
 interface ProductItem {
   id?: string;
+  variant_id?: string;
   dosage?: string;
+  quantity?: string;
   starting_price?: number;
+  plan_total_price?: number;
 }
 
 interface Props {
@@ -22,7 +25,8 @@ const SelectDosageCard: React.FC<Props> = ({
   selectDosage,
   setSelectDosage,
 }) => {
-  const isSelected = item?.id === selectDosage;
+  const isSelected =
+    item?.id === selectDosage || item?.variant_id === selectDosage;
 
   const handleSelector = (id?: string) => {
     if (setSelectDosage) {
@@ -36,7 +40,7 @@ const SelectDosageCard: React.FC<Props> = ({
         styles.card,
         { borderColor: isSelected ? Colors.APP_COLOR : Colors.GRAY },
       ]}
-      onPress={() => handleSelector(item?.id)}
+      onPress={() => handleSelector(item?.id || item?.variant_id)}
     >
       <View style={styles.iconView2}>
         <View style={styles.iconView3}>
@@ -45,14 +49,15 @@ const SelectDosageCard: React.FC<Props> = ({
             size={20}
             color={Colors.APP_COLOR}
           />
-          <Text style={styles.startPrice}>{item?.dosage}</Text>
+          <Text style={styles.startPrice}>
+            {item?.dosage || `${item?.quantity} uses/month`}
+          </Text>
         </View>
         <Text style={styles.price}>
-          {`starting at $${item?.starting_price}/mo*`}
+          {`starting at $${item?.starting_price || item?.plan_total_price}/mo*`}
         </Text>
       </View>
     </Pressable>
   );
 };
-
 export default SelectDosageCard;

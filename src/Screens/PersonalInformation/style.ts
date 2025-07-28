@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginTop: h(0),
   },
-  customAddressContainerStyle:{
- 
-  }
+  customAddressContainerStyle: {},
+  customInputStyles: {
+    color: Colors.APP_COLOR,
+  },
 });
 export default styles;

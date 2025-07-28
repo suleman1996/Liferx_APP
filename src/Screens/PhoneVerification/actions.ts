@@ -1,8 +1,8 @@
 import { SET_ERROR, SET_PHONE_NUMBER } from './actionTypes';
 
-export const setPhoneNumber = (data: string) => ({
+export const setPhoneNumber = (number: string, userId: string) => ({
   type: SET_PHONE_NUMBER,
-  payload: data,
+  payload: { number, userId },
 });
 export const setError = (data: string) => ({
   type: SET_ERROR,

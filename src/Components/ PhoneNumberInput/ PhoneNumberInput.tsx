@@ -59,7 +59,7 @@ const PhoneNumberInput: React.FC<Props> = ({
 
         <TextInput
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={(text)=>onChangeText(text)}
           keyboardType="number-pad"
           style={styles.input}
           placeholder={placeholder}

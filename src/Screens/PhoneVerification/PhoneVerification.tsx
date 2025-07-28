@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -24,9 +24,11 @@ import Colors from '../../utils/Colors/Colors';
 import Toast from 'react-native-toast-message';
 
 const PhoneVerification: React.FC<any> = () => {
-  const { error, phoneNumber } = useSelector(
-    (state: RootState) => state.phoneVerifyReducer,
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const phoneNumber = useSelector(
+    (state: RootState) => state.phoneVerifyReducer.phoneNumber?.[userId] || '',
   );
+  const { error } = useSelector((state: RootState) => state.phoneVerifyReducer);
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
 
@@ -36,6 +38,12 @@ const PhoneVerification: React.FC<any> = () => {
       Toast.show({
         type: 'error',
         text2: 'Phone number must be required.',
+      });
+      return;
+    } else if (phoneNumber?.length < 10) {
+      Toast.show({
+        type: 'error',
+        text2: 'Phone number is in correct',
       });
       return;
     }
@@ -70,17 +78,19 @@ const PhoneVerification: React.FC<any> = () => {
             <PhoneNumberInput
               label="Phone Number"
               labelStyle={styles.label}
-              value={formatPhoneNumber(phoneNumber)}
+              value={formatPhoneNumber(phoneNumber || '')}
               onChangeText={text => {
                 const raw = text?.replace(/\D/g, '');
-                dispatch(setPhoneNumber(raw));
+                dispatch(setPhoneNumber(raw, userId));
                 dispatch(setError(''));
               }}
               containerStyle={{
                 borderColor:
                   error === 'phoneNumber' ? Colors.error : Colors.APP_COLOR,
               }}
-              placeholderTextColor={error === 'phoneNumber' ? Colors.error : Colors.GRAY}
+              placeholderTextColor={
+                error === 'phoneNumber' ? Colors.error : Colors.GRAY
+              }
             />
 
             <Button

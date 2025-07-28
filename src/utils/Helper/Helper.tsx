@@ -69,11 +69,12 @@ export const pickImageFromGallery = async (): Promise<any | null> => {
 };
 
 export const formatPhoneNumber = (text: string) => {
-  const cleaned = text.replace(/\D/g, '').slice(0, 10); // Keep only digits
+  if (!text || typeof text !== 'string') return '';
+  const cleaned = text?.replace(/\D/g, '').slice(0, 10); // Keep only digits
 
-  if (cleaned.length === 0) return '';
+  if (cleaned?.length === 0) return '';
 
-  if (cleaned.length < 4) {
+  if (cleaned?.length < 4) {
     return `(${cleaned}`;
   } else if (cleaned.length < 7) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;

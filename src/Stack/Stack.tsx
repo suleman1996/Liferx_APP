@@ -23,6 +23,7 @@ import SuggestMedicine from '../Screens/SuggestMedicine/SuggestMedicine';
 import SelectDosage from '../Screens/SelectDosage/SelectDosage';
 import { RootState } from '../Store';
 import { useSelector } from 'react-redux';
+import DosageVarient from '../Screens/DosageVarient/DosageVarient';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -44,13 +45,13 @@ export type RootStackParamList = {
   OtpPhoneVerify?: undefined;
   SuggestMedicine?: undefined;
   SelectDosage?: undefined;
+  DosageVarient?: undefined;
   OrderTracking?: {};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack: React.FC = () => {
-  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Navigator
@@ -137,6 +138,11 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="SelectDosage"
           component={SelectDosage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DosageVarient"
+          component={DosageVarient}
           options={{ headerShown: false }}
         />
         <Stack.Screen

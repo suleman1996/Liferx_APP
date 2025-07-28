@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     marginTop: h(20),
     paddingTop: h(25),
     paddingBottom: h(25),
-    paddingHorizontal:w(15)
+    paddingHorizontal: w(15),
   },
   iconView2: {
     flexDirection: 'row',

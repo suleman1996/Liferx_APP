@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   SafeAreaView,
@@ -11,14 +11,23 @@ import {
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation } from '../../utils/Helper/Helper';
 import SuggetedMedicine from '../../utils/SuggestedProducts.json';
 import SelectMedicineCard from '../../Components/SelectMedicineCard/SelectMedicineCard';
 import Button from '../../Components/Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../Store';
+import { setSelectedMedicine } from './action';
+import Toast from 'react-native-toast-message';
 
 const SuggestMedicine: React.FC<any> = () => {
   const navigation = useTypedNavigation();
-  const [selectProduct, setSelectProduct] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.login.userData?.id);
+  const productId = useSelector(
+    (state: RootState) =>
+      state.productMedicineReducer.productId?.[userId] || '',
+  );
   const rawData = SuggetedMedicine?.suggested_products;
 
   const sortedMedArray = [
@@ -56,8 +65,10 @@ const SuggestMedicine: React.FC<any> = () => {
                   <SelectMedicineCard
                     item={item}
                     index={index}
-                    selectProduct={selectProduct}
-                    setSelectProduct={setSelectProduct}
+                    selectProduct={productId}
+                    setSelectProduct={medId => {
+                      dispatch(setSelectedMedicine(medId, userId));
+                    }}
                   />
                 );
               }}
@@ -68,7 +79,14 @@ const SuggestMedicine: React.FC<any> = () => {
               text="Continue"
               noShadow
               onPressHandler={() => {
-                navigation.navigate('SelectDosage');
+                if (!productId) {
+                  Toast.show({
+                    type: 'error',
+                    text2: 'Please select atleast 1 product',
+                  });
+                  return;
+                }
+                navigation.navigate('SelectDosage', { productId });
               }}
             />
           </View>

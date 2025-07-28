@@ -7,25 +7,56 @@ import {
 } from './actionTypes';
 
 const initialState = {
-  firstName: '',
-  lastName: '',
-  dateOfBirth: '',
+  firstName: {},
+  lastName: {},
+  dateOfBirth: {},
   error: '',
-  gender: '',
+  gender: {},
 };
 
 export default function personalInfoReducer(state = initialState, action: any) {
-  switch (action.type) {
+  const { type, payload } = action;
+  const userId = payload?.userId;
+  const data = payload?.data;
+  switch (type) {
     case SET_NAME:
-      return { ...state, loading: false, firstName: action.payload };
+      return {
+        ...state,
+        loading: false,
+        firstName: {
+          ...state.firstName,
+          [userId]: data,
+        },
+      };
     case SET_LAST_NAME:
-      return { ...state, loading: false, lastName: action.payload };
+      return {
+        ...state,
+        loading: false,
+        lastName: {
+          ...state.lastName,
+          [userId]: data,
+        },
+      };
     case SET_DOB:
-      return { ...state, loading: false, dateOfBirth: action.payload };
+      return {
+        ...state,
+        loading: false,
+        dateOfBirth: {
+          ...state.dateOfBirth,
+          [userId]: data,
+        },
+      };
     case SET_ERROR:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: payload };
     case SET_GENDER:
-      return { ...state, loading: false, gender: action.payload };
+      return {
+        ...state,
+        loading: false,
+        gender: {
+          ...state.gender,
+          [userId]: data,
+        },
+      };
     default:
       return state;
   }

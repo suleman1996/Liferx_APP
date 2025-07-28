@@ -16,32 +16,37 @@ import SelectDosageCard from '../../Components/SelectDosage/SelectDosage';
 import Button from '../../Components/Button/Button';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDosage, getDosageListing, setSelectedDosage } from './action';
 import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import Toast from 'react-native-toast-message';
+import {
+  getDosageVarients,
+  getDosageVarientsListing,
+  setSelectedDosageVarients,
+} from './action';
 
-const SelectDosage: React.FC<any> = () => {
-  const dispatch = useDispatch();
-  const navigation = useTypedNavigation();
+const DosageVarient: React.FC<any> = () => {
   const route = useRoute();
-  const { productId } = route?.params;
+  const { selectedDosageItem, productId } = route?.params;
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
-  const selectedDosage = useSelector(
-    (state: RootState) =>
-      state.dosageReducers.selectDosage?.[userId]?.[productId] || '',
+  const { doasgeVarientList } = useSelector(
+    (state: RootState) => state.dosageVarientReducers,
   );
-  const { doasgeList } = useSelector(
-    (state: RootState) => state.dosageReducers,
+  const selectedDosageVarient = useSelector(
+    (state: RootState) =>
+      state.dosageVarientReducers.selectDosageVarient?.[userId]?.[productId] ||
+      '',
   );
   const [loading, setLoading] = useState(false);
+  const navigation = useTypedNavigation();
+  const dispatch = useDispatch();
 
-  const fetchDosage = async () => {
+  const fetchDosageVarients = async () => {
     setLoading(true);
-    await dispatch(getDosage(productId))
+    await dispatch(getDosageVarients(productId, selectedDosageItem?.dosage))
       .then((res: any) => {
         if (res?.value?.status === 200) {
-          dispatch(getDosageListing(res?.value?.data?.dosages));
+          dispatch(getDosageVarientsListing(res?.value?.data?.usage_variants));
         }
         setLoading(false);
       })
@@ -51,10 +56,8 @@ const SelectDosage: React.FC<any> = () => {
   };
 
   useEffect(() => {
-    if (productId) {
-      fetchDosage();
-    }
-  }, [productId]);
+    fetchDosageVarients();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -74,22 +77,26 @@ const SelectDosage: React.FC<any> = () => {
               source={require('../../Assets/Images/logo.png')}
               style={styles.logo}
             />
-            <Text style={styles.heading}>Select your dosage</Text>
+            <Text style={styles.heading}>Select the uses of medicine</Text>
 
             {!loading && (
               <>
                 <FlatList
-                  data={doasgeList}
+                  data={doasgeVarientList}
                   keyExtractor={item => item?.id?.toString()}
                   renderItem={({ item, index }) => {
                     return (
                       <SelectDosageCard
                         item={item}
                         index={index}
-                        selectDosage={selectedDosage}
+                        selectDosage={selectedDosageVarient}
                         setSelectDosage={(dosageId: any) => {
                           dispatch(
-                            setSelectedDosage(dosageId, userId, productId),
+                            setSelectedDosageVarients(
+                              dosageId,
+                              userId,
+                              productId,
+                            ),
                           );
                         }}
                       />
@@ -105,20 +112,14 @@ const SelectDosage: React.FC<any> = () => {
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!selectedDosage) {
+                    if (!selectedDosageVarient) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select your dosage',
                       });
                       return;
                     }
-                    const selectedDosageItem = doasgeList.find(
-                      (item: any) => item?.id === selectedDosage,
-                    );
-                    navigation.navigate('DosageVarient', {
-                      selectedDosageItem,
-                      productId,
-                    });
+                    console.log(selectedDosageVarient, 'selectedDosageVarient');
                   }}
                 />
               </>
@@ -129,4 +130,4 @@ const SelectDosage: React.FC<any> = () => {
     </SafeAreaView>
   );
 };
-export default SelectDosage;
+export default DosageVarient;

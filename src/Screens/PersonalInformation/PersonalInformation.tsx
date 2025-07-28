@@ -35,15 +35,18 @@ import { genderOptions } from '../../utils/Constants/Constants';
 const PersonalInformation: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
+  const userId = useSelector((state: RootState) => state.login.userData?.id);
+  const personalInfo = useSelector((state: RootState) => ({
+    firstName: state.personalInfoReducer.firstName?.[userId] || '',
+    lastName: state.personalInfoReducer.lastName?.[userId] || '',
+    dateOfBirth: state.personalInfoReducer.dateOfBirth?.[userId] || '',
+    gender: state.personalInfoReducer.gender?.[userId] || '',
+    error: state.personalInfoReducer.error,
+  }));
   const { selectedState } = useSelector(
     (state: RootState) => state.selectYourState,
   );
-  const { firstName, lastName, dateOfBirth, error, gender } = useSelector(
-    (state: RootState) => state.personalInfoReducer,
-  );
   const [search, setSearch] = useState('');
-  // const [selectedState, setselectedState] = useState<any>(null);
-  // const [selectedDate, setSelectedDate] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const stateArray = [
@@ -60,28 +63,29 @@ const PersonalInformation: React.FC<any> = () => {
   ];
 
   const personalInfoHandler = () => {
-    if (!firstName) {
+    if (!personalInfo?.firstName) {
       dispatch(setError('firstName'));
       return;
-    } else if (!lastName) {
+    } else if (!personalInfo?.lastName) {
       dispatch(setError('lastName'));
       return;
-    } else if (!dateOfBirth) {
+    } else if (!personalInfo?.dateOfBirth) {
       dispatch(setError('dateOfBirth'));
       return;
-    } else if (!ageValidation(dateOfBirth)) {
+    } else if (!ageValidation(personalInfo?.dateOfBirth)) {
       Toast.show({
         type: 'error',
         text2: 'You must be at least 18 years old',
       });
       dispatch(setError('dateOfBirth'));
       return;
-    } else if (!gender) {
+    } else if (!personalInfo?.gender) {
       dispatch(setError('gender'));
       return;
     }
     navigation.navigate('PhoneVerification');
   };
+
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -104,14 +108,14 @@ const PersonalInformation: React.FC<any> = () => {
             <CustomTextInput
               label="First Name"
               customLabelStyles={styles.customLabelStyles}
-              value={firstName}
+              value={personalInfo?.firstName}
               customInputWrapper={[
                 styles.customInputStyle,
                 {
                   borderColor:
-                    error === 'firstName'
+                    personalInfo?.error === 'firstName'
                       ? Colors.error
-                      : firstName?.length > 0
+                      : personalInfo?.firstName?.length > 0
                       ? Colors.APP_COLOR
                       : Colors.GRAY,
                 },
@@ -119,26 +123,29 @@ const PersonalInformation: React.FC<any> = () => {
               placeholder="Enter your first name"
               // customErrorStyles={styles.customErrorStyle}
               placeholderTextColor={
-                error === 'firstName' ? Colors.error : Colors.APP_COLOR
+                personalInfo?.error === 'firstName'
+                  ? Colors.error
+                  : Colors.APP_COLOR
               }
               selectionColor={Colors.APP_COLOR}
               containerStyle={styles.inputContainer}
               onChangeText={text => {
-                dispatch(setFirstName(text));
+                dispatch(setFirstName(text, userId));
                 dispatch(setError(''));
               }}
+              customInputStyles={styles.customInputStyles}
             />
             <CustomTextInput
               label="Last Name"
-              value={lastName}
+              value={personalInfo?.lastName}
               customLabelStyles={styles.customLabelStyles}
               customInputWrapper={[
                 styles.customInputStyle,
                 {
                   borderColor:
-                    error === 'lastName'
+                    personalInfo?.error === 'lastName'
                       ? Colors.error
-                      : lastName?.length > 0
+                      : personalInfo?.lastName?.length > 0
                       ? Colors.APP_COLOR
                       : Colors.GRAY,
                 },
@@ -146,13 +153,16 @@ const PersonalInformation: React.FC<any> = () => {
               placeholder="Enter your last name"
               // customErrorStyles={styles.customErrorStyle}
               placeholderTextColor={
-                error === 'lastName' ? Colors.error : Colors.APP_COLOR
+                personalInfo?.error === 'lastName'
+                  ? Colors.error
+                  : Colors.APP_COLOR
               }
               selectionColor={Colors.APP_COLOR}
               onChangeText={text => {
-                dispatch(setLastName(text));
+                dispatch(setLastName(text, userId));
                 dispatch(setError(''));
               }}
+              customInputStyles={styles.customInputStyles}
             />
 
             <CustomDatePicker
@@ -163,20 +173,22 @@ const PersonalInformation: React.FC<any> = () => {
                 styles.customDatePickerInput,
                 {
                   borderColor:
-                    error === 'dateOfBirth'
+                    personalInfo?.error === 'dateOfBirth'
                       ? Colors.error
-                      : dateOfBirth?.length > 0
+                      : personalInfo?.dateOfBirth?.length > 0
                       ? Colors.APP_COLOR
                       : Colors.GRAY,
                 },
               ]}
               customInputTextStyle={{
                 color:
-                  error === 'dateOfBirth' ? Colors.error : Colors.APP_COLOR,
+                  personalInfo?.error === 'dateOfBirth'
+                    ? Colors.error
+                    : Colors.APP_COLOR,
               }}
-              value={dateOfBirth}
+              value={personalInfo?.dateOfBirth}
               onChange={text => {
-                dispatch(setDob(text));
+                dispatch(setDob(text, userId));
                 dispatch(setError(''));
               }}
               minimumDate={new Date(1900, 0, 1)}
@@ -189,23 +201,26 @@ const PersonalInformation: React.FC<any> = () => {
                 { marginTop: h(15) },
               ]}
               items={genderOptions}
-              selectedValue={gender}
-              onChange={text => {
-                dispatch(setGender(text));
-                dispatch(setError(''))
+              selectedValue={personalInfo?.gender}
+              onChange={selected => {
+                dispatch(setGender(selected, userId));
+                dispatch(setError(''));
               }}
               placeholder="Select Gender"
               style={{
                 marginTop: 0,
                 borderColor:
-                  error === 'gender'
+                  personalInfo?.error === 'gender'
                     ? Colors.error
-                    : gender?.length > 0
+                    : personalInfo?.gender?.length > 0
                     ? Colors.APP_COLOR
                     : Colors.GRAY,
               }}
               placeholderStyle={{
-                color: error === 'gender' ? Colors.error : Colors.APP_COLOR,
+                color:
+                  personalInfo?.error === 'gender'
+                    ? Colors.error
+                    : Colors.APP_COLOR,
               }}
             />
             <Text style={[styles.heading, { marginTop: h(30) }]}>
@@ -248,6 +263,7 @@ const PersonalInformation: React.FC<any> = () => {
               placeholderTextColor={Colors.APP_COLOR}
               selectionColor={Colors.APP_COLOR}
               editable={false}
+              customInputStyles={styles.customInputStyles}
             />
             <Button
               text="Continue"

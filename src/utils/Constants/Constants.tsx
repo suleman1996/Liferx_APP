@@ -61,8 +61,7 @@ export const usStates = [
   { id: 50, name: 'Wyoming' },
 ];
 
- export const genderOptions = [
-    // { label: 'Other', value: 'Other' },
-    { label: 'Male', value: 'Male' },
-    { label: 'Female', value: 'Female' },
-  ];
+export const genderOptions = [
+  { label: 'Male', value: 'Male' },
+  { label: 'Female', value: 'Female' },
+];
