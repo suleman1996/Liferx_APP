@@ -1,2 +1,3 @@
 export const SAVE_DECIDING_ANSWERS = 'SAVE_DECIDING_ANSWERS';
-export const SET_STATE = 'SET_STATE'
+export const SET_STATE = 'SET_STATE';
+

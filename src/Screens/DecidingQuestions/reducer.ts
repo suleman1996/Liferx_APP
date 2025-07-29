@@ -2,12 +2,14 @@ import {
   CLEAR_DECIDING_ANSWERS,
   DECIDING_ANSWER,
   GET_DECIDING_QUESTIONS,
+  GET_SESSION_ID,
   SELECTED_DECIDING_ANSWERS,
 } from './actionTypes';
 
 const initialState = {
   selectedAnswer: [],
   decidingQuestions: [],
+  sessionId: '',
 };
 
 const decidingQuestionAnswer = (state = initialState, action: any) => {
@@ -33,6 +35,8 @@ const decidingQuestionAnswer = (state = initialState, action: any) => {
         },
       };
     }
+    case GET_SESSION_ID:
+      return { ...state, sessionId: action.payload };
 
     case CLEAR_DECIDING_ANSWERS:
       return {

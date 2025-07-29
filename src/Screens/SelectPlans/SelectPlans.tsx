@@ -12,71 +12,71 @@ import {
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation } from '../../utils/Helper/Helper';
-import SelectMedicineCard from '../../Components/SelectMedicineCard/SelectMedicineCard';
+import SelectDosageCard from '../../Components/SelectDosage/SelectDosage';
 import Button from '../../Components/Button/Button';
+import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
-import {
-  getSuggestedProducts,
-  getSuggestedProductsList,
-  setSelectedMedicine,
-} from './action';
-import Toast from 'react-native-toast-message';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
+import Toast from 'react-native-toast-message';
+import {
+  getPaymentPlans,
+  getPaymentPlansListing,
+  setSelectedPaymentPlan,
+} from './action';
+import SelectPaymentPlanCard from '../../Components/SelectPaymentPlanCard/SelectPaymentPlanCard';
 
-const SuggestMedicine: React.FC<any> = () => {
-  const navigation = useTypedNavigation();
+const SelectPlans: React.FC<any> = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.login.userData?.id);
-  const { sessionId } = useSelector(
-    (state: RootState) => state.decidingQuestionAnswer,
+  const navigation = useTypedNavigation();
+  const route = useRoute();
+  const { plansListing } = useSelector(
+    (state: RootState) => state.paymentPlansReducers,
   );
-  const { suggestedProducts } = useSelector(
-    (state: RootState) => state.productMedicineReducer,
-  );
-  const productId = useSelector(
+  const { selectedDosageVarientByList, productId, selectedDosageItem } =
+    route?.params;
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const selectedPaymentPlan = useSelector(
     (state: RootState) =>
-      state.productMedicineReducer.productId?.[userId] || '',
+      state.paymentPlansReducers.selectedPaymentPlan?.[userId]?.[productId] ||
+      '',
   );
-  const rawData = suggestedProducts?.data;
   const [loading, setLoading] = useState(false);
-  const sortedMedArray = [
-    ...rawData?.sort((a: any, b: any) => {
-      if (a?.is_suggested) return -1;
-      if (b?.is_suggested) return 1;
-      return 0;
-    }),
-  ];
 
-  const fetchSuggestedProducts = async () => {
-    const body = {
-      session_id: sessionId,
-    };
+  const fetchPlans = async () => {
     setLoading(true);
-    await dispatch(getSuggestedProducts(body))
+    await dispatch(
+      getPaymentPlans(
+        productId,
+        selectedDosageItem?.dosage,
+        selectedDosageVarientByList?.quantity,
+      ),
+    )
       .then((response: any) => {
-        dispatch(
-          getSuggestedProductsList(response?.value?.data?.suggested_products),
-        );
+        if (response?.value?.status === 200) {
+          dispatch(
+            getPaymentPlansListing(response?.value?.data?.plan_variants),
+          );
+        }
         setLoading(false);
       })
-      .catch((error: any) => {
-        setLoading(false);
+      .catch((error: string) => {
         Toast.show({
           type: 'error',
           text2: error,
         });
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    fetchSuggestedProducts();
+    fetchPlans();
   }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <CustomLoader visible={loading} />
-      <Header title="Medicine" />
+      <Header title="Dosage" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -91,21 +91,32 @@ const SuggestMedicine: React.FC<any> = () => {
               source={require('../../Assets/Images/logo.png')}
               style={styles.logo}
             />
-            <Text style={styles.heading}>Select a medicine</Text>
+            <Text style={styles.heading}>
+              {selectedDosageVarientByList?.product_name}
+            </Text>
+            <Text style={styles.subHeading}>
+              {selectedDosageVarientByList?.active_ingredient}
+            </Text>
+
+            <Text style={[styles.heading, { marginTop: h(40) }]}>
+              Select payment plan
+            </Text>
 
             {!loading && (
               <>
                 <FlatList
-                  data={sortedMedArray}
+                  data={plansListing}
                   keyExtractor={item => item?.id?.toString()}
                   renderItem={({ item, index }) => {
                     return (
-                      <SelectMedicineCard
+                      <SelectPaymentPlanCard
                         item={item}
                         index={index}
-                        selectProduct={productId}
-                        setSelectProduct={medId => {
-                          dispatch(setSelectedMedicine(medId, userId));
+                        selectDosage={selectedPaymentPlan}
+                        setSelectDosage={(id: any) => {
+                          dispatch(
+                            setSelectedPaymentPlan(id, userId, productId),
+                          );
                         }}
                       />
                     );
@@ -115,18 +126,18 @@ const SuggestMedicine: React.FC<any> = () => {
                     <View style={{ height: h(5) }} />
                   )}
                 />
+
                 <Button
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!productId) {
+                    if (!selectedPaymentPlan) {
                       Toast.show({
                         type: 'error',
-                        text2: 'Please select atleast 1 product',
+                        text2: 'Please select your payment plan',
                       });
                       return;
                     }
-                    navigation.navigate('SelectDosage', { productId });
                   }}
                 />
               </>
@@ -137,4 +148,4 @@ const SuggestMedicine: React.FC<any> = () => {
     </SafeAreaView>
   );
 };
-export default SuggestMedicine;
+export default SelectPlans;

@@ -27,7 +27,7 @@ import {
 
 const DosageVarient: React.FC<any> = () => {
   const route = useRoute();
-  const { selectedDosageItem, productId } = route?.params;
+  const { selectedDosageItem, productId } = route?.params || {};
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { doasgeVarientList } = useSelector(
     (state: RootState) => state.dosageVarientReducers,
@@ -51,6 +51,10 @@ const DosageVarient: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: string) => {
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
         setLoading(false);
       });
   };
@@ -119,7 +123,14 @@ const DosageVarient: React.FC<any> = () => {
                       });
                       return;
                     }
-                    console.log(selectedDosageVarient, 'selectedDosageVarient');
+                    const selectedDosageVarientByList = doasgeVarientList.find(
+                      (i: any) => i?.variant_id === selectedDosageVarient,
+                    );
+                    navigation.navigate('SelectPlans', {
+                      selectedDosageVarientByList,
+                      productId,
+                      selectedDosageItem
+                    });
                   }}
                 />
               </>

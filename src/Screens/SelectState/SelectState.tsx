@@ -14,9 +14,11 @@ import { usStates } from '../../utils/Constants/Constants';
 const SelectState: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const { selectedState } = useSelector((state: RootState) => state.selectYourState);
+  const { selectedState } = useSelector(
+    (state: RootState) => state.selectYourState,
+  );
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
-  const { selectedAnswer } = useSelector(
+  const { selectedAnswer, decidingQuestions, sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
   const [search, setSearch] = useState(selectedState?.name || '');
@@ -57,8 +59,8 @@ const SelectState: React.FC<any> = () => {
           flatlistData={usStates.filter(data =>
             data?.name?.toLowerCase().includes(search.toLowerCase()),
           )}
-          setSelectedItem={(text)=>{
-            dispatch(setState(text))
+          setSelectedItem={text => {
+            dispatch(setState(text));
           }}
           selectedItem={selectedState}
           setSearch={setSearch}

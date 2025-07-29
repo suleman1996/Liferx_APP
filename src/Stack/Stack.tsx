@@ -24,6 +24,7 @@ import SelectDosage from '../Screens/SelectDosage/SelectDosage';
 import { RootState } from '../Store';
 import { useSelector } from 'react-redux';
 import DosageVarient from '../Screens/DosageVarient/DosageVarient';
+import SelectPlans from '../Screens/SelectPlans/SelectPlans';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -46,6 +47,7 @@ export type RootStackParamList = {
   SuggestMedicine?: undefined;
   SelectDosage?: undefined;
   DosageVarient?: undefined;
+  SelectPlans?: undefined;
   OrderTracking?: {};
 };
 
@@ -143,6 +145,11 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="DosageVarient"
           component={DosageVarient}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectPlans"
+          component={SelectPlans}
           options={{ headerShown: false }}
         />
         <Stack.Screen

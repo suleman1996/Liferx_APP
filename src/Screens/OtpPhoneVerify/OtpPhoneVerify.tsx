@@ -50,7 +50,7 @@ const OtpPhoneVerify: React.FC<any> = () => {
 
   useEffect(() => {
     fetchOtpCode();
-    dispatch(setVerificationCode('',''))
+    dispatch(setVerificationCode('', ''));
   }, []);
 
   const fetchOtpCode = async () => {
@@ -70,7 +70,10 @@ const OtpPhoneVerify: React.FC<any> = () => {
       })
       .catch((error: string) => {
         setLoading(false);
-        console.log(error, 'error');
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
       });
   };
 

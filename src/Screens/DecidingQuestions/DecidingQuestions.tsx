@@ -7,7 +7,10 @@ import DecidingQuestionsCard from '../../Components/DecidingQuestionsCard/Decidi
 import {
   addDecidingAnswer,
   getDecidingQuestion,
+  getSessionId,
+  saveDecidingAnswers,
   selectedDecidingAnswer,
+  setStartSession,
 } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
@@ -25,7 +28,11 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const currentQuestion = decidingQuestions?.deciding_questions?.[currentIndex];
   const dispatch = useDispatch();
 
-  const handleContinue = (selected: number[] | number) => {
+  useEffect(() => {
+    fetchDecidingQuestions();
+  }, []);
+
+  const handleContinue = async (selected: number[] | number) => {
     if (Array.isArray(selected) && selected?.length === 0) {
       Toast.show({
         type: 'error',
@@ -49,7 +56,36 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('SelectState');
+      const session_id = await fetchSessionID();
+      if (!session_id) {
+        setLoading(false);
+        return;
+      }
+      const body = {
+        answers: selectedAnswer?.[serviceId]?.map(
+          ({ serviceId, ...rest }) => rest,
+        ),
+        session_id,
+      };
+      setLoading(true);
+      dispatch(saveDecidingAnswers(body))
+        .then((response: any) => {
+          if (response?.value?.status === 200) {
+            Toast.show({
+              type: 'success',
+              text2: response?.value?.data?.message,
+            });
+            navigation.navigate('SelectState');
+          }
+          setLoading(false);
+        })
+        .catch((error: string) => {
+          setLoading(false);
+          Toast.show({
+            type: 'error',
+            text2: error,
+          });
+        });
     }
   };
 
@@ -72,9 +108,26 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchDecidingQuestions();
-  }, []);
+
+const fetchSessionID = async (): Promise<string | null > => {
+  const body = {
+    questionnaire_id: decidingQuestions?.questionnaire_id,
+  };
+  try {
+    const response = await dispatch(setStartSession(body));
+    if (response?.value?.status === 200) {
+      const id = response?.value?.data?.session_id;
+      dispatch(getSessionId(id));
+      return id; 
+    }
+  } catch (error: any) {
+    Toast.show({
+      type: 'error',
+      text2: error,
+    });
+  }
+  return null; 
+};
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
