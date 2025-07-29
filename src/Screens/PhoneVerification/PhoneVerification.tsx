@@ -19,9 +19,10 @@ import PhoneNumberInput from '../../Components/ PhoneNumberInput/ PhoneNumberInp
 import { ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
-import { setError, setPhoneNumber } from './actions';
+import { sendPhoneNumber, setError, setPhoneNumber } from './actions';
 import Colors from '../../utils/Colors/Colors';
 import Toast from 'react-native-toast-message';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const PhoneVerification: React.FC<any> = () => {
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
@@ -29,6 +30,7 @@ const PhoneVerification: React.FC<any> = () => {
     (state: RootState) => state.phoneVerifyReducer.phoneNumber?.[userId] || '',
   );
   const { error } = useSelector((state: RootState) => state.phoneVerifyReducer);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
 
@@ -47,7 +49,25 @@ const PhoneVerification: React.FC<any> = () => {
       });
       return;
     }
-    navigation.navigate('OtpPhoneVerify');
+    setLoading(true);
+    dispatch(sendPhoneNumber(phoneNumber))
+      .then((response: any) => {
+        if (response?.value?.status === 200) {
+          Toast.show({
+            type: 'success',
+            text2: response?.value?.data,
+          });
+          navigation.navigate('OtpPhoneVerify');
+        }
+        setLoading(false);
+      })
+      .catch((error: string) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
+      });
   };
 
   return (
@@ -55,6 +75,7 @@ const PhoneVerification: React.FC<any> = () => {
       style={styles.safeAreaView}
       onTouchStart={() => Keyboard.dismiss()}
     >
+      <CustomLoader visible={loading} />
       <Header title="Phone Verification" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}

@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     width: w(120),
     marginVertical: h(30),
   },
-  subHeading:{
-     color: Colors.APP_COLOR,
-    fontSize: w(20),
+  subHeading: {
+    color: Colors.APP_COLOR,
+    fontSize: w(18),
     fontFamily: FONTS.MONTSERRAT_REGULAR,
-    marginTop:h(15)
-  }
+    marginTop: h(15),
+  },
 });
 export default styles;

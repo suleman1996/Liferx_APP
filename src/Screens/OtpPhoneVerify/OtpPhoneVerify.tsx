@@ -25,6 +25,7 @@ import { RootState } from '../../Store';
 import { sendPhoneOtp, setVerificationCode } from './action';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
+import { verifyOtp } from '../Auth/2StepVerification/actions';
 
 const OtpPhoneVerify: React.FC<any> = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const OtpPhoneVerify: React.FC<any> = () => {
 
   useEffect(() => {
     fetchOtpCode();
-    dispatch(setVerificationCode('', ''));
+    dispatch(setVerificationCode('', userId));
   }, []);
 
   const fetchOtpCode = async () => {
@@ -78,14 +79,41 @@ const OtpPhoneVerify: React.FC<any> = () => {
   };
 
   const verificationCodeHandler = () => {
-    if (typeof verificationCode !== 'string' || verificationCode.length !== 6) {
+    if (!verificationCode || verificationCode.length !== 6) {
       Toast.show({
         type: 'error',
         text2: 'Please enter the complete 6-digit OTP.',
       });
       return;
     }
-    navigation.navigate('SuggestMedicine');
+    setLoading(true);
+    const body = {
+      otp_code: verificationCode,
+    };
+    dispatch(verifyOtp(body, ''))
+      .then((res: any) => {
+        if (res?.value?.status === 200) {
+          Toast.show({
+            type: 'success',
+            text2: res?.value?.data,
+          });
+          navigation.navigate('SuggestMedicine');
+          dispatch(setVerificationCode('', ''));
+        } else {
+          Toast.show({
+            type: 'error',
+            text2: 'Unexpected response from server',
+          });
+        }
+        setLoading(false);
+      })
+      .catch((err: string) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+      });
   };
 
   return (

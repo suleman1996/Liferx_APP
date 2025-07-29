@@ -27,20 +27,23 @@ import {
 import SelectPaymentPlanCard from '../../Components/SelectPaymentPlanCard/SelectPaymentPlanCard';
 
 const SelectPlans: React.FC<any> = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const route = useRoute();
-  const { plansListing } = useSelector(
-    (state: RootState) => state.paymentPlansReducers,
-  );
   const { selectedDosageVarientByList, productId, selectedDosageItem } =
     route?.params;
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
-  const selectedPaymentPlan = useSelector(
+  const { plansListing } = useSelector(
+    (state: RootState) => state.paymentPlansReducers,
+  );
+  const selectedPaymentPlanId = useSelector(
     (state: RootState) =>
       state.paymentPlansReducers.selectedPaymentPlan?.[userId]?.[productId] ||
       '',
   );
+  const selectedPaymentPlan =
+    plansListing.find((plan: any) => plan?.variant_id === selectedPaymentPlanId)
+      ?.variant_id || '';
   const [loading, setLoading] = useState(false);
 
   const fetchPlans = async () => {
@@ -138,6 +141,7 @@ const SelectPlans: React.FC<any> = () => {
                       });
                       return;
                     }
+                    console.log(selectedPaymentPlan, 'selectedPaymentPlan');
                   }}
                 />
               </>

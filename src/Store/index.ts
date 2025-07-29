@@ -55,7 +55,6 @@ const persistConfig = {
     'personalInfoReducer',
     'phoneVerifyReducer',
     'login',
-    'verificationCodeReducer',
     'productMedicineReducer',
     'dosageReducers',
     'dosageVarientReducers',
