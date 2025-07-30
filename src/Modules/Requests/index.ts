@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 
 // BASE URLs
 export const baseUrl = 'https://dev-backend.liferxbackend.pro';
+// export const baseUrl = 'https://men-on-parks-affordable.trycloudflare.com';
 export const imageUrl = 'https://utils-dev.swotsup.com/images/uploadImage';
 
 export const appLink =
@@ -93,6 +94,16 @@ export async function patch<T = any, D = any>(
     const response: ApiResponse<T> = await api.patch(url, data);
     return response.data;
   } catch (error) {
+    throw extractErrorMessage(error);
+  }
+}
+
+export async function put<T = any, D = any>(url: string, data: D): Promise<T> {
+  try {
+    const response: ApiResponse<T> = await api.put(url, data);
+    return response.data;
+  } catch (error) {
+    console.log(error, 'error response');
     throw extractErrorMessage(error);
   }
 }

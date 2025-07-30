@@ -21,6 +21,7 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const { decidingQuestions, selectedAnswer } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -51,7 +52,7 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
             : selected,
       },
     };
-    dispatch(selectedDecidingAnswer({ ...answer, serviceId }));
+    dispatch(selectedDecidingAnswer({ ...answer, serviceId, userId }));
     const nextIndex = currentIndex + 1;
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
@@ -62,8 +63,8 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
         return;
       }
       const body = {
-        answers: selectedAnswer?.[serviceId]?.map(
-          ({ serviceId, ...rest }) => rest,
+        answers: selectedAnswer?.[userId]?.[serviceId]?.map(
+          ({ serviceId, userId, ...rest }) => rest,
         ),
         session_id,
       };
@@ -75,7 +76,9 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
               type: 'success',
               text2: response?.value?.data?.message,
             });
-            navigation.navigate('SelectState');
+            setTimeout(() => {
+              navigation.navigate('SelectState');
+            }, 200);
           }
           setLoading(false);
         })
@@ -109,25 +112,25 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     }
   };
 
-const fetchSessionID = async (): Promise<string | null > => {
-  const body = {
-    questionnaire_id: decidingQuestions?.questionnaire_id,
-  };
-  try {
-    const response = await dispatch(setStartSession(body));
-    if (response?.value?.status === 200) {
-      const id = response?.value?.data?.session_id;
-      dispatch(getSessionId(id));
-      return id; 
+  const fetchSessionID = async (): Promise<string | null> => {
+    const body = {
+      questionnaire_id: decidingQuestions?.questionnaire_id,
+    };
+    try {
+      const response = await dispatch(setStartSession(body));
+      if (response?.value?.status === 200) {
+        const id = response?.value?.data?.session_id;
+        dispatch(getSessionId(id));
+        return id;
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text2: error,
+      });
     }
-  } catch (error: any) {
-    Toast.show({
-      type: 'error',
-      text2: error,
-    });
-  }
-  return null; 
-};
+    return null;
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -139,9 +142,9 @@ const fetchSessionID = async (): Promise<string | null > => {
             data={[currentQuestion]}
             keyExtractor={item => item?.id?.toString()}
             renderItem={({ item }) => {
-              const existingAnswer = selectedAnswer?.[serviceId]?.find(
-                ans => ans.deciding_questions === item?.id,
-              );
+              const existingAnswer = selectedAnswer?.[userId]?.[
+                serviceId
+              ]?.find((ans: any) => ans.deciding_questions === item?.id);
               const alreadySelected = existingAnswer?.json_answer?.selected;
               return (
                 <DecidingQuestionsCard

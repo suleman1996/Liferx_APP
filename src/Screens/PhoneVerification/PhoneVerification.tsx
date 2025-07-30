@@ -19,7 +19,12 @@ import PhoneNumberInput from '../../Components/ PhoneNumberInput/ PhoneNumberInp
 import { ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
-import { sendPhoneNumber, setError, setPhoneNumber } from './actions';
+import {
+  addUserDetails,
+  sendPhoneNumber,
+  setError,
+  setPhoneNumber,
+} from './actions';
 import Colors from '../../utils/Colors/Colors';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
@@ -34,7 +39,7 @@ const PhoneVerification: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
 
-  const handleVerification = () => {
+  const handleVerification = async () => {
     if (!phoneNumber) {
       dispatch(setError('phoneNumber'));
       Toast.show({
@@ -50,6 +55,11 @@ const PhoneVerification: React.FC<any> = () => {
       return;
     }
     setLoading(true);
+    const userDetail = await sendUserDetails();
+    if (!userDetail) {
+      setLoading(false);
+      return;
+    }
     dispatch(sendPhoneNumber(phoneNumber))
       .then((response: any) => {
         if (response?.value?.status === 200) {
@@ -62,12 +72,24 @@ const PhoneVerification: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: string) => {
+        console.log(error, 'error');
         setLoading(false);
         Toast.show({
           type: 'error',
           text2: error,
         });
       });
+  };
+
+  const sendUserDetails = async () => {
+    try {
+      const response = await dispatch(
+        addUserDetails({ phone: `+1${phoneNumber}` }),
+      );
+      return response;
+    } catch (error) {
+      return null;
+    }
   };
 
   return (

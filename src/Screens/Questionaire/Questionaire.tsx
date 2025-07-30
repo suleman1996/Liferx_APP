@@ -3,7 +3,12 @@ import { FlatList, ScrollView, View, SafeAreaView } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import StepProgressBar from '../../Components/StepProgressBar/StepProgressBar';
-import { buildFormDataForImageUpload, h, useTypedNavigation, w } from '../../utils/Helper/Helper';
+import {
+  buildFormDataForImageUpload,
+  h,
+  useTypedNavigation,
+  w,
+} from '../../utils/Helper/Helper';
 import QuestionaireCard from '../../Components/QuestionaireCard/QuestionaireCard';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +24,11 @@ import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 const Questionaire: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { selectedRegularAnswer, regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
-    const { selectedAnswer } = useSelector(
+  const { selectedAnswer } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
@@ -33,7 +39,7 @@ const Questionaire: React.FC<any> = () => {
   const handleContinue = (
     selectedOption: number[] | number,
     simpleText: string,
-    imagePath?: string | null
+    imagePath?: string | null,
   ) => {
     const isSelectionEmpty =
       Array.isArray(selectedOption) && selectedOption?.length === 0;
@@ -74,12 +80,12 @@ const Questionaire: React.FC<any> = () => {
       selectedOption,
       simpleText,
     };
-    dispatch(addQuestionaireAnswer({...answers,serviceId}));
+    dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
     if (currentIndex < regularQuestions?.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
-      console.log(selectedRegularAnswer?.[serviceId],'selectedRegularAnswer')
-      console.log(selectedAnswer?.[serviceId],'selectedAnswer');
+      console.log(selectedRegularAnswer?.[serviceId], 'selectedRegularAnswer');
+      console.log(selectedAnswer?.[serviceId], 'selectedAnswer');
       navigation.navigate('PersonalInformation');
     }
   };

@@ -27,10 +27,18 @@ export default function productMedicineReducer(
         },
       };
     case GET_SUGGESTED_PRODUCTS_LIST:
+        const { data, userId:suggestedUserId, serviceId:suggestedServieId } = action.payload;
+
       return {
         ...state,
         loading: true,
-        suggestedProducts: action.payload,
+        suggestedProducts:{
+          ...state.suggestedProducts,
+          [suggestedUserId]:{
+            ...(state.suggestedProducts?.[suggestedUserId] || {}),
+            [suggestedServieId] : data
+          }
+        },
       };
     default:
       return state;

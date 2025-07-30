@@ -25,6 +25,7 @@ import { RootState } from '../Store';
 import { useSelector } from 'react-redux';
 import DosageVarient from '../Screens/DosageVarient/DosageVarient';
 import SelectPlans from '../Screens/SelectPlans/SelectPlans';
+import AddPaymentMethod from '../Screens/AddPaymentMethod/AddPaymentMethod';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -57,6 +58,7 @@ export type RootStackParamList = {
     productId: string;
     selectedDosageItem: any;
   };
+  AddPaymentMethod?: {};
   OrderTracking?: {};
 };
 
@@ -159,6 +161,11 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="SelectPlans"
           component={SelectPlans}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddPaymentMethod"
+          component={AddPaymentMethod}
           options={{ headerShown: false }}
         />
         <Stack.Screen

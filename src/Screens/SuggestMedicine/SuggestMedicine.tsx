@@ -28,7 +28,7 @@ const SuggestMedicine: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
-  const userId = useSelector((state: RootState) => state.login.userData?.id);
+  const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
@@ -39,7 +39,7 @@ const SuggestMedicine: React.FC<any> = () => {
     (state: RootState) =>
       state.productMedicineReducer.productId?.[userId]?.[serviceId] || '',
   );
-  const rawData = suggestedProducts?.data;
+  const rawData = suggestedProducts?.[userId]?.[serviceId] || [];
   const [loading, setLoading] = useState(false);
   const sortedMedArray = (rawData || []).sort((a: any, b: any) => {
     if (a?.is_suggested) return -1;
@@ -54,9 +54,8 @@ const SuggestMedicine: React.FC<any> = () => {
     setLoading(true);
     await dispatch(getSuggestedProducts(body))
       .then((response: any) => {
-        dispatch(
-          getSuggestedProductsList(response?.value?.data?.suggested_products),
-        );
+        const data = response?.value?.data?.suggested_products;
+        dispatch(getSuggestedProductsList(data, userId, serviceId));
         setLoading(false);
       })
       .catch((error: any) => {
@@ -69,8 +68,11 @@ const SuggestMedicine: React.FC<any> = () => {
   };
 
   useEffect(() => {
-    fetchSuggestedProducts();
-  }, []);
+    if (sessionId && userId && serviceId) {
+      fetchSuggestedProducts();
+    } else {
+    }
+  }, [sessionId, userId, serviceId]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

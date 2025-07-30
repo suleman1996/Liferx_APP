@@ -1,5 +1,3 @@
-// Store/index.ts
-
 import {
   legacy_createStore as createStore,
   combineReducers,
@@ -17,7 +15,6 @@ import RegularQuestionsAnswer from '../Screens/Questionaire/reducer';
 import registerReducer from '../Screens/Auth/Register/reducer';
 import shopReducer from '../Screens/Shop/reducer';
 import personalInfoReducer from '../Screens/PersonalInformation/reducer';
-import { logoutReducer } from '../utils/LogoutReducer/LogoutReducer';
 import phoneVerifyReducer from '../Screens/PhoneVerification/reducer';
 import verificationCodeReducer from '../Screens/OtpPhoneVerify/reducer';
 import productMedicineReducer from '../Screens/SuggestMedicine/reducer';
@@ -25,43 +22,84 @@ import dosageReducers from '../Screens/SelectDosage/reducer';
 import dosageVarientReducers from '../Screens/DosageVarient/reducer';
 import paymentPlansReducers from '../Screens/SelectPlans/reducer';
 
+const PERSIST_WHITELIST = [
+  'login',
+  'decidingQuestionAnswer',
+  'selectYourState',
+  'RegularQuestionsAnswer',
+  'personalInfoReducer',
+  'productMedicineReducer',
+  'dosageReducers',
+  'dosageVarientReducers',
+  'paymentPlansReducers',
+];
+
+// 🔐 enhanced reducer that resets non-persisted state on logout
+const logoutReducer = (reducer: any, key: string) => {
+  const initial = reducer(undefined, { type: '@@INIT' });
+  return (state: any, action: any) => {
+    if (action.type === 'LOGOUT') {
+      if (PERSIST_WHITELIST.includes(key)) {
+        return state; // keep persisted state
+      }
+      return initial; // reset only non-persisted reducers
+    }
+    return reducer(state, action);
+  };
+};
+
 const rootReducer = combineReducers({
-  login: logoutReducer(loginReducer),
-  registerReducer: logoutReducer(registerReducer),
-  twoStepVerification: logoutReducer(twoStepVerificationReducer),
-  decidingQuestionAnswer: logoutReducer(decidingQuestionAnswer),
-  selectYourState: logoutReducer(selectYourState),
-  RegularQuestionsAnswer: logoutReducer(RegularQuestionsAnswer),
-  shopReducer: logoutReducer(shopReducer),
-  personalInfoReducer: logoutReducer(personalInfoReducer),
-  phoneVerifyReducer: logoutReducer(phoneVerifyReducer),
-  verificationCodeReducer: logoutReducer(verificationCodeReducer),
-  productMedicineReducer: logoutReducer(productMedicineReducer),
-  dosageReducers: logoutReducer(dosageReducers),
-  dosageVarientReducers: logoutReducer(dosageVarientReducers),
-  paymentPlansReducers: logoutReducer(paymentPlansReducers),
+  login: logoutReducer(loginReducer, 'login'),
+  registerReducer: logoutReducer(registerReducer, 'registerReducer'),
+  twoStepVerification: logoutReducer(
+    twoStepVerificationReducer,
+    'twoStepVerification',
+  ),
+  decidingQuestionAnswer: logoutReducer(
+    decidingQuestionAnswer,
+    'decidingQuestionAnswer',
+  ),
+  selectYourState: logoutReducer(selectYourState, 'selectYourState'),
+  RegularQuestionsAnswer: logoutReducer(
+    RegularQuestionsAnswer,
+    'RegularQuestionsAnswer',
+  ),
+  shopReducer: logoutReducer(shopReducer, 'shopReducer'),
+  personalInfoReducer: logoutReducer(
+    personalInfoReducer,
+    'personalInfoReducer',
+  ),
+  phoneVerifyReducer: logoutReducer(phoneVerifyReducer, 'phoneVerifyReducer'),
+  verificationCodeReducer: logoutReducer(
+    verificationCodeReducer,
+    'verificationCodeReducer',
+  ),
+  productMedicineReducer: logoutReducer(
+    productMedicineReducer,
+    'productMedicineReducer',
+  ),
+  dosageReducers: logoutReducer(dosageReducers, 'dosageReducers'),
+  dosageVarientReducers: logoutReducer(
+    dosageVarientReducers,
+    'dosageVarientReducers',
+  ),
+  paymentPlansReducers: logoutReducer(
+    paymentPlansReducers,
+    'paymentPlansReducers',
+  ),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-// 🔐 persist config
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: [
-    'decidingQuestionAnswer',
-    'selectYourState',
-    'RegularQuestionsAnswer',
-    'personalInfoReducer',
-    'login',
-    'productMedicineReducer',
-    'dosageReducers',
-    'dosageVarientReducers',
-    'paymentPlansReducers'
-  ], // ← add reducers you want to persist
+  whitelist: PERSIST_WHITELIST,
 };
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store = createStore(persistedReducer, applyMiddleware(promiseMiddleware));
-export const persistor = persistStore(store);
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = createStore(persistedReducer, applyMiddleware(promiseMiddleware));
+
+export const persistor = persistStore(store);
 export default store;

@@ -12,16 +12,22 @@ const initialState = {
 const RegularQuestionsAnswer = (state = initialState, action: any) => {
   switch (action.type) {
     case QUESTIONAIRE_ANSWER: {
-      const { serviceId, question } = action.payload;
-      const existing = state.selectedRegularAnswer?.[serviceId] || [];
+      const { serviceId, userId, question } = action.payload;
+      const existingByUser = state.selectedRegularAnswer?.[userId] || {};
+      const existingByService = existingByUser?.[serviceId] || [];
       return {
         ...state,
         selectedRegularAnswer: {
           ...state.selectedRegularAnswer,
-          [serviceId]: [
-            ...existing.filter((ans: any) => ans.question !== question),
-            action.payload,
-          ],
+          [userId]: {
+            ...existingByUser,
+            [serviceId]: [
+              ...existingByService.filter(
+                (ans: any) => ans.question !== question,
+              ),
+              action.payload,
+            ],
+          },
         },
       };
     }

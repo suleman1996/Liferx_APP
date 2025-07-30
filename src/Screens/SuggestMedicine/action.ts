@@ -19,7 +19,7 @@ export const getSuggestedProducts = (id: object) => ({
   payload: post('/api/v1/save-answers/suggested-products/', id),
 });
 
-export const getSuggestedProductsList = (data: object) => ({
+export const getSuggestedProductsList = (data: object,userId:string, serviceId :string) => ({
   type: GET_SUGGESTED_PRODUCTS_LIST,
-  payload: { data },
+  payload: { data,userId,serviceId },
 });

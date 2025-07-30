@@ -1,3 +1,4 @@
 export const SET_PHONE_NUMBER = 'SET_PHONE_NUMBER'
 export const SET_ERROR = 'SET_ERROR'
 export const SEND_PHONE_NUMBER = 'SEND_PHONE_NUMBER'
+export const ADD_USER_DETAILS = 'ADD_USER_DETAILS'

@@ -20,18 +20,22 @@ const decidingQuestionAnswer = (state = initialState, action: any) => {
         decidingQuestions: action.payload,
       };
     case SELECTED_DECIDING_ANSWERS: {
-      const { serviceId, deciding_questions } = action.payload;
-      const existing = state.selectedAnswer?.[serviceId] || [];
+      const { serviceId, userId, deciding_questions } = action.payload;
+      const existingByUser = state.selectedAnswer?.[userId] || {};
+      const existingByService = existingByUser?.[serviceId] || [];
       return {
         ...state,
         selectedAnswer: {
           ...state.selectedAnswer,
-          [serviceId]: [
-            ...existing.filter(
-              (ans: any) => ans.deciding_questions !== deciding_questions,
-            ),
-            action.payload,
-          ],
+          [userId]: {
+            ...existingByUser,
+            [serviceId]: [
+              ...existingByService.filter(
+                (ans: any) => ans.deciding_questions !== deciding_questions,
+              ),
+              action.payload,
+            ],
+          },
         },
       };
     }

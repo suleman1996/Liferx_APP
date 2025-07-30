@@ -61,7 +61,7 @@ const SelectPaymentPlanCard: React.FC<Props> = ({
           {item?.plan_total_price && item?.plan_duration
             ? `$${(
                 item?.plan_total_price / item?.plan_duration?.match(/\d+/)
-              ).toFixed(2)}/mo*`
+              ).toFixed(2)}/mo`
             : '--'}
         </Text>
       </View>

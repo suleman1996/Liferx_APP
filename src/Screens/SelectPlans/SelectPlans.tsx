@@ -146,6 +146,9 @@ const SelectPlans: React.FC<any> = () => {
                       });
                       return;
                     }
+                    navigation.navigate('AddPaymentMethod', {
+                      matchedPaymentPlan,
+                    });
                   }}
                 />
               </>

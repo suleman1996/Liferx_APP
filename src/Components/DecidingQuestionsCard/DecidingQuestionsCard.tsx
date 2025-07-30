@@ -40,7 +40,7 @@ const DecidingQuestionsCard: React.FC<Props> = ({
     }
   }, [alreadySelected]);
 
-  const toggleSelect = id => {
+  const toggleSelect = (id: any) => {
     const options = item?.options || []; // Get options or an empty array
     const allOption = options.find(opt => opt.select_all)?.id; // Find the "select all" option
     // Check if the toggled id is the "select all" option
