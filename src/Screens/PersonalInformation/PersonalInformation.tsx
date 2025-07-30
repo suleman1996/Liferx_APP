@@ -43,8 +43,8 @@ const PersonalInformation: React.FC<any> = () => {
     gender: state.personalInfoReducer.gender?.[userId] || '',
     error: state.personalInfoReducer.error,
   }));
-  const { selectedState } = useSelector(
-    (state: RootState) => state.selectYourState,
+  const  selectedState  = useSelector(
+    (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );
   const [search, setSearch] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

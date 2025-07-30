@@ -134,14 +134,18 @@ const SelectPlans: React.FC<any> = () => {
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!selectedPaymentPlan) {
+                    const matchedPaymentPlan = plansListing?.find(
+                      (i: any) =>
+                        i?.variant_id?.toString() ===
+                        selectedPaymentPlan?.toString(),
+                    );
+                    if (!selectedPaymentPlan || !matchedPaymentPlan) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select your payment plan',
                       });
                       return;
                     }
-                    console.log(selectedPaymentPlan, 'selectedPaymentPlan');
                   }}
                 />
               </>

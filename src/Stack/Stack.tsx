@@ -45,9 +45,18 @@ export type RootStackParamList = {
   PhoneVerification?: undefined;
   OtpPhoneVerify?: undefined;
   SuggestMedicine?: undefined;
-  SelectDosage?: undefined;
-  DosageVarient?: undefined;
-  SelectPlans?: undefined;
+  SelectDosage?: {
+    productId: string;
+  };
+  DosageVarient?: {
+    selectedDosageItem: any;
+    productId: string;
+  };
+  SelectPlans: {
+    selectedDosageVarientByList: any;
+    productId: string;
+    selectedDosageItem: any;
+  };
   OrderTracking?: {};
 };
 

@@ -14,8 +14,9 @@ import { usStates } from '../../utils/Constants/Constants';
 const SelectState: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const { selectedState } = useSelector(
-    (state: RootState) => state.selectYourState,
+  const userId = useSelector((state:RootState)=>state.login?.userData?.id)
+  const  selectedState  = useSelector(
+    (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const { selectedAnswer, decidingQuestions, sessionId } = useSelector(
@@ -60,7 +61,7 @@ const SelectState: React.FC<any> = () => {
             data?.name?.toLowerCase().includes(search.toLowerCase()),
           )}
           setSelectedItem={text => {
-            dispatch(setState(text));
+            dispatch(setState(text,userId));
           }}
           selectedItem={selectedState}
           setSearch={setSearch}

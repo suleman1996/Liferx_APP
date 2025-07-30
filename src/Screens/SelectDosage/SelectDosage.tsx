@@ -105,16 +105,16 @@ const SelectDosage: React.FC<any> = () => {
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!selectedDosage) {
+                    const selectedDosageItem = doasgeList.find(
+                      (item: any) => item?.id.toString() === selectedDosage?.toString(),
+                    );
+                    if (!selectedDosage || !selectedDosageItem) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select your dosage',
                       });
                       return;
                     }
-                    const selectedDosageItem = doasgeList.find(
-                      (item: any) => item?.id === selectedDosage,
-                    );
                     navigation.navigate('DosageVarient', {
                       selectedDosageItem,
                       productId,

@@ -14,13 +14,16 @@ export default function productMedicineReducer(
 ) {
   switch (action.type) {
     case SET_SELECTED_MEDICINE:
-      const { productId, userId } = action.payload;
+      const { productId, userId, serviceId } = action.payload;
       return {
         ...state,
         loading: false,
         productId: {
           ...state.productId,
-          [userId]: productId,
+          [userId]: {
+            ...(state.productId?.[userId] || {}),
+            [serviceId]: productId,
+          },
         },
       };
     case GET_SUGGESTED_PRODUCTS_LIST:

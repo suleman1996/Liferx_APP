@@ -5,9 +5,13 @@ import {
   SET_SELECTED_MEDICINE,
 } from './actionTypes';
 
-export const setSelectedMedicine = (productId: string, userId: string) => ({
+export const setSelectedMedicine = (
+  productId: string,
+  userId: string,
+  serviceId: string,
+) => ({
   type: SET_SELECTED_MEDICINE,
-  payload: { productId, userId },
+  payload: { productId, userId, serviceId },
 });
 
 export const getSuggestedProducts = (id: object) => ({

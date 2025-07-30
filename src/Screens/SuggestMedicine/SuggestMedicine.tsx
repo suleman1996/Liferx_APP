@@ -27,6 +27,7 @@ import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 const SuggestMedicine: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const userId = useSelector((state: RootState) => state.login.userData?.id);
   const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
@@ -36,17 +37,15 @@ const SuggestMedicine: React.FC<any> = () => {
   );
   const productId = useSelector(
     (state: RootState) =>
-      state.productMedicineReducer.productId?.[userId] || '',
+      state.productMedicineReducer.productId?.[userId]?.[serviceId] || '',
   );
   const rawData = suggestedProducts?.data;
   const [loading, setLoading] = useState(false);
-  const sortedMedArray = [
-    ...rawData?.sort((a: any, b: any) => {
-      if (a?.is_suggested) return -1;
-      if (b?.is_suggested) return 1;
-      return 0;
-    }),
-  ];
+  const sortedMedArray = (rawData || []).sort((a: any, b: any) => {
+    if (a?.is_suggested) return -1;
+    if (b?.is_suggested) return 1;
+    return 0;
+  });
 
   const fetchSuggestedProducts = async () => {
     const body = {
@@ -105,7 +104,9 @@ const SuggestMedicine: React.FC<any> = () => {
                         index={index}
                         selectProduct={productId}
                         setSelectProduct={medId => {
-                          dispatch(setSelectedMedicine(medId, userId));
+                          dispatch(
+                            setSelectedMedicine(medId, userId, serviceId),
+                          );
                         }}
                       />
                     );
@@ -119,7 +120,11 @@ const SuggestMedicine: React.FC<any> = () => {
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!productId) {
+                    const matchedProduct = sortedMedArray.find(
+                      (item: any) =>
+                        item?.id?.toString() === productId?.toString(),
+                    );
+                    if (!productId || !matchedProduct) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select atleast 1 product',

@@ -51,6 +51,8 @@ const DosageVarient: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: string) => {
+        console.log(error, 'errorrrr');
+
         Toast.show({
           type: 'error',
           text2: error,
@@ -116,20 +118,20 @@ const DosageVarient: React.FC<any> = () => {
                   text="Continue"
                   noShadow
                   onPressHandler={() => {
-                    if (!selectedDosageVarient) {
+                    const selectedDosageVarientByList = doasgeVarientList.find(
+                      (i: any) => i?.variant_id?.toString() === selectedDosageVarient?.toString(),
+                    );
+                    if (!selectedDosageVarient || !selectedDosageVarientByList) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select your dosage',
                       });
                       return;
                     }
-                    const selectedDosageVarientByList = doasgeVarientList.find(
-                      (i: any) => i?.variant_id === selectedDosageVarient,
-                    );
                     navigation.navigate('SelectPlans', {
                       selectedDosageVarientByList,
                       productId,
-                      selectedDosageItem
+                      selectedDosageItem,
                     });
                   }}
                 />

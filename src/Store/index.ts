@@ -53,7 +53,6 @@ const persistConfig = {
     'selectYourState',
     'RegularQuestionsAnswer',
     'personalInfoReducer',
-    'phoneVerifyReducer',
     'login',
     'productMedicineReducer',
     'dosageReducers',

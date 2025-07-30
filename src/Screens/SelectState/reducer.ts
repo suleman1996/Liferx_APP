@@ -1,13 +1,19 @@
 import { SET_STATE } from './actionTypes';
 
 const initialState = {
-  selectedState: '',
+  selectedState: {},
 };
 
 const selectYourState = (state = initialState, action: any) => {
   switch (action.type) {
     case SET_STATE:
-      return { ...state, selectedState: action.payload };
+      const { data, userId } = action.payload;
+      return {
+        ...state,
+        selectedState: {
+          [userId]: data,
+        },
+      };
     default:
       return state;
   }
