@@ -70,7 +70,6 @@ const SuggestMedicine: React.FC<any> = () => {
   useEffect(() => {
     if (sessionId && userId && serviceId) {
       fetchSuggestedProducts();
-    } else {
     }
   }, [sessionId, userId, serviceId]);
 

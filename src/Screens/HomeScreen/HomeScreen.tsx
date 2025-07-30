@@ -27,7 +27,7 @@ import { getToken } from '../Auth/Login/actions';
 
 const HomeScreen: React.FC<any> = () => {
   const { userData } = useSelector((state: RootState) => state.login);
-  
+
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
 

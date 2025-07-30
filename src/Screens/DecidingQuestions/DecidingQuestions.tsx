@@ -14,15 +14,19 @@ import {
 } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
 import Toast from 'react-native-toast-message';
-import { RootState } from '../../Store';
+import store, { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const DecidingQuestions: React.FC<any> = ({ route }) => {
-  const { decidingQuestions, selectedAnswer } = useSelector(
+  const { decidingQuestions } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
+  const selectedAnswer = useSelector(
+    (state: RootState) =>
+      state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[serviceId],
+  );
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -62,8 +66,12 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
         setLoading(false);
         return;
       }
+      const updatedSelectedAnswer =
+        store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[userId]?.[
+          serviceId
+        ];
       const body = {
-        answers: selectedAnswer?.[userId]?.[serviceId]?.map(
+        answers: updatedSelectedAnswer?.map(
           ({ serviceId, userId, ...rest }) => rest,
         ),
         session_id,
@@ -142,9 +150,9 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
             data={[currentQuestion]}
             keyExtractor={item => item?.id?.toString()}
             renderItem={({ item }) => {
-              const existingAnswer = selectedAnswer?.[userId]?.[
-                serviceId
-              ]?.find((ans: any) => ans.deciding_questions === item?.id);
+              const existingAnswer = selectedAnswer?.find(
+                (ans: any) => ans?.deciding_questions === item?.id,
+              );
               const alreadySelected = existingAnswer?.json_answer?.selected;
               return (
                 <DecidingQuestionsCard
