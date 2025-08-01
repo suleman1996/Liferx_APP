@@ -26,6 +26,7 @@ import { useSelector } from 'react-redux';
 import DosageVarient from '../Screens/DosageVarient/DosageVarient';
 import SelectPlans from '../Screens/SelectPlans/SelectPlans';
 import AddPaymentMethod from '../Screens/AddPaymentMethod/AddPaymentMethod';
+import Oboarding from '../Screens/Auth/Onboarding/Onboarding';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -60,6 +61,7 @@ export type RootStackParamList = {
   };
   AddPaymentMethod?: {};
   OrderTracking?: {};
+  Oboarding?: {};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,6 +78,11 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="splash"
           component={Splash}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Oboarding"
+          component={Oboarding}
           options={{ headerShown: false }}
         />
         <Stack.Screen

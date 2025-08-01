@@ -170,12 +170,12 @@ const SearchDropDown: React.FC<Props> = React.memo(
         {flatlistData?.length > 0 && isListVisible && (
           <FlatList
             data={flatlistData}
-            nestedScrollEnabled
+            keyboardShouldPersistTaps="handled"
+            nestedScrollEnabled={true}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}
             ListFooterComponent={renderFooter}
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
             onScroll={onScroll}
             style={[
               styles.listContainer,

@@ -8,12 +8,10 @@ import {
   RefreshControl,
   Linking,
   Pressable,
-  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
-import Button from '../../Components/Button/Button';
+import { h, useTypedNavigation } from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getServiceId, getServiceListing, getServices } from './actions';
@@ -151,8 +149,7 @@ const Shop: React.FC<any> = () => {
               />
             }
             keyExtractor={item => item.id.toString()}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: 'space-between' }}
+            // columnWrapperStyle={{ justifyContent: 'space-between' }}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
             style={{ flexGrow: 1 }}

@@ -124,25 +124,27 @@ const Questionaire: React.FC<any> = () => {
           currentStep={currentIndex}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <FlatList
-            data={[regularQuestions[currentIndex]]}
-            keyExtractor={item => item?.id?.toString()}
-            renderItem={({ item }) => {
-              return (
-                <QuestionaireCard
-                  item={item}
-                  handleContinue={(selectedOption, plainText) =>
-                    handleContinue(selectedOption, plainText)
-                  }
-                />
-              );
-            }}
-            contentContainerStyle={[
-              styles.contentContainer,
-              { marginBottom: h(20), paddingHorizontal: w(5) },
-            ]}
-            ItemSeparatorComponent={() => <View style={{ height: h(25) }} />}
-          />
+          {!loading && (
+            <FlatList
+              data={[regularQuestions[currentIndex]]}
+              keyExtractor={item => item?.id?.toString()}
+              renderItem={({ item }) => {
+                return (
+                  <QuestionaireCard
+                    item={item}
+                    handleContinue={(selectedOption, plainText) =>
+                      handleContinue(selectedOption, plainText)
+                    }
+                  />
+                );
+              }}
+              contentContainerStyle={[
+                styles.contentContainer,
+                { marginBottom: h(20), paddingHorizontal: w(5) },
+              ]}
+              ItemSeparatorComponent={() => <View style={{ height: h(25) }} />}
+            />
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>

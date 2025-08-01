@@ -1,4 +1,6 @@
 import {
+  GET_ADDRESS_LISTING,
+  SET_ADDRESS,
   SET_DOB,
   SET_ERROR,
   SET_GENDER,
@@ -12,6 +14,8 @@ const initialState = {
   dateOfBirth: {},
   error: '',
   gender: {},
+  address: {},
+  addressListing: [],
 };
 
 export default function personalInfoReducer(state = initialState, action: any) {
@@ -57,6 +61,17 @@ export default function personalInfoReducer(state = initialState, action: any) {
           [userId]: data,
         },
       };
+    case SET_ADDRESS:
+      return {
+        ...state,
+        loading: false,
+        address: {
+          ...state.address,
+          [userId]: data,
+        },
+      };
+    case GET_ADDRESS_LISTING:
+      return { ...state, loading: false, addressListing: payload };
     default:
       return state;
   }

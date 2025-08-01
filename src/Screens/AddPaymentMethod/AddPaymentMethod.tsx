@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -7,19 +7,23 @@ import {
   Platform,
   KeyboardAvoidingView,
   Image,
-  FlatList,
+  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
-import SelectDosageCard from '../../Components/SelectDosage/SelectDosage';
 import Button from '../../Components/Button/Button';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import Toast from 'react-native-toast-message';
-import SelectPaymentPlanCard from '../../Components/SelectPaymentPlanCard/SelectPaymentPlanCard';
+import { CardField, useStripe } from '@stripe/stripe-react-native';
+import { getClientSecretKey } from './action';
+import Colors from '../../utils/Colors/Colors';
+import TermsCheckbox from '../../Components/TermsCheckbox/TermsCheckbox';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomDialog from '../../Components/CustomDialog/CustomDialog';
 
 const AddPaymentMethod: React.FC<any> = () => {
   const route = useRoute();
@@ -28,8 +32,54 @@ const AddPaymentMethod: React.FC<any> = () => {
   const { matchedPaymentPlan } = route?.params;
   const { userData } = useSelector((state: RootState) => state?.login);
   const [loading, setLoading] = useState(false);
+  const [cardDetails, setCardDetails] = useState(null);
+  const [isCardFocused, setIsCardFocused] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+  const [openTerms, setOpenTerms] = useState(false);
+  const { createPaymentMethod, confirmSetupIntent } = useStripe();
 
-  console.log(matchedPaymentPlan, 'matchedPaymentPlan');
+  const handlePayPress = async () => {
+    if (!cardDetails?.complete) {
+      Toast.show({
+        type: 'error',
+        text2: 'Incomplete Card Details,Please enter all card details',
+      });
+      return;
+    } else if (cardDetails?.complete && !agreed) {
+      Toast.show({
+        type: 'error',
+        text2: 'Terms & condition required',
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      const body = {
+        make_default: 'false',
+        patient_id: userData?.id,
+      };
+      const response: any = await dispatch(getClientSecretKey(body));
+      const clientSecret = response?.value?.data?.client_secret;
+      if (!clientSecret) {
+        throw new Error('Client secret not received from backend');
+      }
+      // ✅ No useStripe here anymore
+      const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
+        paymentMethodType: 'Card',
+      });
+      if (error) {
+        Alert.alert('Setup Intent Error', error.message);
+      } else if (setupIntent?.status === 'Succeeded') {
+        console.log(setupIntent, 'Succeeded');
+      } else {
+        Alert.alert('Failed', 'Card saving failed');
+      }
+    } catch (err: any) {
+      console.log('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -106,6 +156,109 @@ const AddPaymentMethod: React.FC<any> = () => {
             <Text style={[styles.subHeading, { fontSize: w(16) }]}>
               Credit or Debit Card
             </Text>
+
+            <View
+              style={[
+                {
+                  borderColor: isCardFocused ? Colors.APP_COLOR : Colors.GRAY,
+                  borderWidth: 1,
+                  borderRadius: 10,
+                  marginTop: h(15),
+                  marginBottom: h(15),
+                },
+              ]}
+            >
+              <CardField
+                postalCodeEnabled={false}
+                placeholders={{
+                  number: 'Card number',
+                }}
+                cardStyle={styles.cardStyle}
+                style={[
+                  styles.cardContainer,
+                  {
+                    borderColor: isCardFocused ? Colors.APP_COLOR : Colors.GRAY,
+                  },
+                ]}
+                onCardChange={(cardDetails: any) => {
+                  setCardDetails(cardDetails);
+                }}
+                onFocus={() => setIsCardFocused(true)}
+                onBlur={() => setIsCardFocused(false)}
+              />
+            </View>
+            <TermsCheckbox
+              value={agreed}
+              onChange={setAgreed}
+              onPress={() => {
+                setOpenTerms(true);
+              }}
+            />
+            <Button
+              text="$0 Due Now"
+              onPressHandler={handlePayPress}
+              customTextStyles={styles.customTextStyles}
+              customButtonStyles={styles.customButtonStyles}
+            />
+
+            <CustomDialog
+              visible={openTerms}
+              onDismiss={() => setOpenTerms(false)}
+              icon
+            >
+              <Text style={styles.dialogHeading}>
+                Important Subscription Information
+              </Text>
+              <Text style={styles.dialogSubHeading}>
+                By signing up, you agree to our terms and conditions and the
+                following:
+              </Text>
+
+              {[
+                'If you are prescribed medication, your card will be charged immediately.',
+                'If a different medication is prescribed, you will be notified for approval before being charged.',
+                'This is a recurring subscription based on your selected shipping frequency (e.g., 1, 3, or 5 months).',
+                'You will receive two reminders before each refill charge.',
+                'You may cancel or delay any refill before the scheduled charge.',
+                'Taxes and shipping costs may apply.',
+              ].map((item, index) => (
+                <View key={index} style={styles.listView}>
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={20}
+                    color={Colors.APP_COLOR}
+                  />
+                  <Text style={styles.listText}>{item}</Text>
+                </View>
+              ))}
+
+              <Text style={styles.dialogSubHeading}>
+                Estimated Shipping Cost: $10 – $20
+              </Text>
+
+              <Text
+                style={[
+                  styles.listText,
+                  { marginLeft: 0, width: '100%', paddingTop: h(10) },
+                ]}
+              >
+                You may cancel anytime from your patient portal or by contacting
+                us via email or SMS.
+              </Text>
+
+              <View
+                style={{
+                  borderTopWidth: 1,
+                  borderColor: Colors.GRAY,
+                  marginTop: 16,
+                }}
+              />
+
+              <Text style={styles.dialogSubHeading}>
+                By confirming your subscription, you allow LifeRx.md to charge
+                you for future payments in accordance with their terms.
+              </Text>
+            </CustomDialog>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

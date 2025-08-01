@@ -30,6 +30,7 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const currentQuestion = decidingQuestions?.deciding_questions?.[currentIndex];
   const dispatch = useDispatch();
 
@@ -61,9 +62,10 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
+      setSubmitLoading(true);
       const session_id = await fetchSessionID();
       if (!session_id) {
-        setLoading(false);
+        setSubmitLoading(false);
         return;
       }
       const updatedSelectedAnswer =
@@ -76,7 +78,6 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
         ),
         session_id,
       };
-      setLoading(true);
       dispatch(saveDecidingAnswers(body))
         .then((response: any) => {
           if (response?.value?.status === 200) {
@@ -88,10 +89,10 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
               navigation.navigate('SelectState');
             }, 200);
           }
-          setLoading(false);
+          setSubmitLoading(false);
         })
         .catch((error: string) => {
-          setLoading(false);
+          setSubmitLoading(false);
           Toast.show({
             type: 'error',
             text2: error,
@@ -142,32 +143,34 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <CustomLoader visible={loading} />
+      <CustomLoader visible={loading || submitLoading} />
       <Header onBackPress={handleBack} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.mainContainer}>
-          <FlatList
-            data={[currentQuestion]}
-            keyExtractor={item => item?.id?.toString()}
-            renderItem={({ item }) => {
-              const existingAnswer = selectedAnswer?.find(
-                (ans: any) => ans?.deciding_questions === item?.id,
-              );
-              const alreadySelected = existingAnswer?.json_answer?.selected;
-              return (
-                <DecidingQuestionsCard
-                  item={item}
-                  alreadySelected={alreadySelected}
-                  handleContinue={select => handleContinue(select)}
-                />
-              );
-            }}
-            contentContainerStyle={[
-              styles.contentContainer,
-              { marginBottom: h(20), paddingHorizontal: w(5) },
-            ]}
-            ItemSeparatorComponent={() => <View style={{ height: h(25) }} />}
-          />
+          {!loading && (
+            <FlatList
+              data={[currentQuestion]}
+              keyExtractor={item => item?.id?.toString()}
+              renderItem={({ item }) => {
+                const existingAnswer = selectedAnswer?.find(
+                  (ans: any) => ans?.deciding_questions === item?.id,
+                );
+                const alreadySelected = existingAnswer?.json_answer?.selected;
+                return (
+                  <DecidingQuestionsCard
+                    item={item}
+                    alreadySelected={alreadySelected}
+                    handleContinue={select => handleContinue(select)}
+                  />
+                );
+              }}
+              contentContainerStyle={[
+                styles.contentContainer,
+                { marginBottom: h(20), paddingHorizontal: w(5) },
+              ]}
+              ItemSeparatorComponent={() => <View style={{ height: h(25) }} />}
+            />
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

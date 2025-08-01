@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   SafeAreaView,
@@ -22,6 +22,9 @@ import Button from '../../Components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import {
+  getAddress,
+  getAddressList,
+  setAddress,
   setDob,
   setError,
   setFirstName,
@@ -30,7 +33,11 @@ import {
 } from './actions';
 import Toast from 'react-native-toast-message';
 import CustomDropdown from '../../Components/CustomDropdown/CustomDropdown';
-import { genderOptions } from '../../utils/Constants/Constants';
+import {
+  genderOptions,
+  stateAbbreviations,
+} from '../../utils/Constants/Constants';
+import StreetAddressDropdown from '../../Components/StreetAddressDropdown/StreetAddressDropdown';
 
 const PersonalInformation: React.FC<any> = () => {
   const dispatch = useDispatch();
@@ -41,26 +48,17 @@ const PersonalInformation: React.FC<any> = () => {
     lastName: state.personalInfoReducer.lastName?.[userId] || '',
     dateOfBirth: state.personalInfoReducer.dateOfBirth?.[userId] || '',
     gender: state.personalInfoReducer.gender?.[userId] || '',
+    address: state.personalInfoReducer.address?.[userId] || null,
     error: state.personalInfoReducer.error,
+    addressListing: state.personalInfoReducer.addressListing,
   }));
-  const  selectedState  = useSelector(
+  const selectedState = useSelector(
     (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );
   const [search, setSearch] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const stateArray = [
-    { id: 1, name: 'State 1' },
-    { id: 2, name: 'State 2' },
-    { id: 3, name: 'State 3' },
-    { id: 4, name: 'State 4' },
-    { id: 5, name: 'State 5' },
-    { id: 6, name: 'State 6' },
-    { id: 7, name: 'State 7' },
-    { id: 8, name: 'State 8' },
-    { id: 9, name: 'State 9' },
-    { id: 10, name: 'State 10' },
-  ];
+  const [isLoading, setIsLoading] = useState(false);
+  const selectedStateAbbrevation = stateAbbreviations[selectedState?.name];
 
   const personalInfoHandler = () => {
     if (!personalInfo?.firstName) {
@@ -82,10 +80,38 @@ const PersonalInformation: React.FC<any> = () => {
     } else if (!personalInfo?.gender) {
       dispatch(setError('gender'));
       return;
+    } else if (!personalInfo?.address || !personalInfo?.address?.street_line) {
+      dispatch(setError('address'));
+      return;
     }
     navigation.navigate('PhoneVerification');
   };
 
+  const getStreetAddress = async () => {
+    const body = {
+      query: search,
+      include_only_states: selectedStateAbbrevation,
+    };
+    setIsLoading(true);
+    await dispatch(getAddress(body))
+      .then((response: any) => {
+        if (response?.value?.status === 200) {
+          dispatch(getAddressList(response?.value?.data?.suggestions));
+        }
+        setIsLoading(false);
+      })
+      .catch((error: string) => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (search?.length < 3) {
+      dispatch(getAddressList([]));
+      return;
+    }
+    if (search?.length > 0) getStreetAddress();
+  }, [search]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -97,7 +123,7 @@ const PersonalInformation: React.FC<any> = () => {
       >
         <ScrollView
           contentContainerStyle={{
-            paddingBottom: isDropdownOpen ? h(300) : h(60),
+            paddingBottom: isDropdownOpen ? h(100) : h(60),
           }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -227,13 +253,13 @@ const PersonalInformation: React.FC<any> = () => {
               Shipping Address
             </Text>
 
-            <SearchDropDown
+            {/* <SearchDropDown
               placeholder="Enter your street address"
-              flatlistData={stateArray.filter(data =>
-                data?.name?.toLowerCase().includes(search.toLowerCase()),
-              )}
-              // setSelectedItem={setselectedState}
-              // selectedItem={selectedState}
+              flatlistData={personalInfo?.addressListing}
+              setSelectedItem={(text: any) => {
+                dispatch(setAddress(text, userId));
+              }}
+              selectedItem={personalInfo?.address}
               setSearch={setSearch}
               search={search}
               customSearchDropDownContainer={
@@ -246,7 +272,40 @@ const PersonalInformation: React.FC<any> = () => {
               ]}
               customContainerStyle={styles.customAddressContainerStyle}
               onToggleDropdown={setIsDropdownOpen}
+            /> */}
+
+            <StreetAddressDropdown
+              label="Street Address"
+              data={personalInfo?.addressListing}
+              selected={personalInfo?.address}
+              onSelect={(text: any) => {
+                dispatch(setAddress(text, userId));
+                dispatch(setError(''));
+              }}
+              search={search}
+              setSearch={(text: string) => {
+                setSearch(text);
+                if (personalInfo?.error === 'address') {
+                  dispatch(setError(''));
+                }
+              }}
+              isLoading={isLoading}
+              customLabelStyles={[styles.customLabelStyles]}
+              customInputWrapperStyle={{
+                borderColor:
+                  personalInfo?.error === 'address'
+                    ? Colors.error
+                    : personalInfo?.address?.street_line?.length > 0 || search
+                    ? Colors.APP_COLOR
+                    : Colors.GRAY,
+              }}
+              placeholderTextColor={
+                personalInfo?.error === 'address'
+                  ? Colors.error
+                  : Colors.APP_COLOR
+              }
             />
+
             <CustomTextInput
               label="State"
               customLabelStyles={[

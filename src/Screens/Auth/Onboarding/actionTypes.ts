@@ -1,0 +1,1 @@
+export const SET_ON_BOARDING = 'SET_ON_BOARDING';

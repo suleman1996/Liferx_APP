@@ -24,14 +24,9 @@ const styles = StyleSheet.create({
   listContainer: {
     borderWidth: 1,
     backgroundColor: Colors.WHITE,
-    marginLeft: w(20),
     borderRadius: 8,
     marginTop: 10,
     borderColor: Colors.APP_COLOR,
-    position: 'absolute',
-    top: '100%',
-    zIndex: 1000,
-    width: '90%',
   },
   imageHeight: {
     height: w(12),
@@ -71,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     alignItems: 'center',
-    width: '90%',
+    width: '100%',
   },
   noResultsText: {
     fontSize: w(15),
@@ -83,10 +78,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     lineHeight: 18,
   },
-    label: {
+  label: {
     fontSize: w(16),
     color: Colors.BLACK,
-    fontFamily: 'HindSiliguri-Regular',
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
   },
 });
 

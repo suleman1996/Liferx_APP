@@ -11,51 +11,57 @@ import Colors from './src/utils/Colors/Colors';
 import CustomToast from './src/Components/CustomToast/CustomToast';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PersistGate } from 'redux-persist/integration/react';
+import { StripeProvider } from '@stripe/stripe-react-native';
+import { STRIPE_KEY } from './src/utils/Constants/Constants';
 
 const App: React.FC<any> = () => {
   useEffect(() => {
     SplashScreen?.hide();
   }, []);
 
+  const Dev_Stripe_Key = STRIPE_KEY;
+
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor={Colors.WHITE}
-              translucent={true}
-            />
-            <AppStack />
-            <Toast
-              config={{
-                success: props => (
-                  <CustomToast
-                    text1={props.text1}
-                    text2={props.text2}
-                    type="success"
-                  />
-                ),
-                error: props => (
-                  <CustomToast
-                    text1={props.text1}
-                    text2={props.text2}
-                    type="error"
-                  />
-                ),
-                info: props => (
-                  <CustomToast
-                    text1={props.text1}
-                    text2={props.text2}
-                    type="info"
-                  />
-                ),
-              }}
-              topOffset={h('10%')}
-            />
-          </NavigationContainer>
-        </SafeAreaProvider>
+        <StripeProvider publishableKey={Dev_Stripe_Key}>
+          {/* <SafeAreaProvider> */}
+            <NavigationContainer>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor={Colors.WHITE}
+                translucent={true}
+              />
+              <AppStack />
+              <Toast
+                config={{
+                  success: props => (
+                    <CustomToast
+                      text1={props.text1}
+                      text2={props.text2}
+                      type="success"
+                    />
+                  ),
+                  error: props => (
+                    <CustomToast
+                      text1={props.text1}
+                      text2={props.text2}
+                      type="error"
+                    />
+                  ),
+                  info: props => (
+                    <CustomToast
+                      text1={props.text1}
+                      text2={props.text2}
+                      type="info"
+                    />
+                  ),
+                }}
+                topOffset={h('10%')}
+              />
+            </NavigationContainer>
+          {/* </SafeAreaProvider> */}
+        </StripeProvider>
       </PersistGate>
     </Provider>
   );

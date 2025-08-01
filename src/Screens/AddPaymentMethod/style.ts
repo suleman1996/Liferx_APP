@@ -43,5 +43,57 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
     fontSize: w(16),
   },
+  cardContainer: {
+    height: h(60),
+    borderRadius: 10,
+  },
+  cardStyle: {
+    backgroundColor: Colors.WHITE,
+    textColor: Colors.APP_COLOR,
+    placeholderColor: Colors.APP_COLOR,
+    borderRadius: 10,
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    fontSize: w(16),
+    textErrorColor: Colors.error,
+    cursorColor: Colors.APP_COLOR,
+  },
+  customTextStyles: {
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    fontSize: w(16),
+    color: Colors.WHITE,
+  },
+  customButtonStyles: {
+    marginTop: h(20),
+  },
+  dialogHeading: {
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_SEMI_BOLD,
+    fontSize: w(16),
+    paddingTop: h(25),
+  },
+  dialogSubHeading: {
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_MEDIUM,
+    fontSize: w(16),
+    paddingTop: h(15),
+    flexGrow: 1,
+  },
+  listView: {
+    flexDirection: 'row',
+    marginBottom: h(10),
+    marginTop: h(10),
+  },
+  listText: {
+    marginLeft: 8,
+    fontSize: w(14),
+    flexGrow: 1,
+    width: '90%',
+    color: Colors.APP_COLOR,
+    fontFamily: FONTS.MONTSERRAT_REGULAR,
+  },
+  closeIcon: {
+    alignSelf: 'flex-end',
+    marginBottom: h(10),
+  },
 });
 export default styles;

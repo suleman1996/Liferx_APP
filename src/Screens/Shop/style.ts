@@ -3,13 +3,6 @@ import Colors from '../../utils/Colors/Colors';
 import { h, w } from '../../utils/Helper/Helper';
 import { FONTS } from '../../Assets/Fonts/Fonts';
 
-const screenWidth = Dimensions.get('window').width;
-const ITEM_HORIZONTAL_MARGIN = 16;
-const ITEM_SPACING = 20;
-
-const ITEM_WIDTH =
-  (screenWidth - ITEM_HORIZONTAL_MARGIN * 2 - ITEM_SPACING) / 2;
-
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
@@ -27,7 +20,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: Colors.LIGHT_GRAY,
-    width: ITEM_WIDTH,
+    width: '100%',
     borderRadius: 10,
     paddingTop: h(20),
     marginBottom: h(16),
@@ -37,6 +30,7 @@ const styles = StyleSheet.create({
     width: w(100),
     alignSelf: 'flex-end',
     resizeMode: 'cover',
+    borderRadius:10
   },
   text: {
     color: Colors.APP_COLOR,

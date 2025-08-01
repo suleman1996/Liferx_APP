@@ -26,7 +26,7 @@ import { persistor, RootState } from '../../Store';
 import { getToken } from '../Auth/Login/actions';
 
 const HomeScreen: React.FC<any> = () => {
-  const { userData } = useSelector((state: RootState) => state.login);
+  const { userData, token } = useSelector((state: RootState) => state.login);
 
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
@@ -117,13 +117,17 @@ const HomeScreen: React.FC<any> = () => {
         leftImage={require('../../Assets/Images/DefaultIcon.png')}
         leftImageStyle={styles.leftImageStyle}
         rightImage={
-          <LogoutIcon
-            name={'logout'}
-            size={20}
-            color={Colors.APP_COLOR}
-            style={styles.logoutIcon}
-            onPress={() => handleLogout()}
-          />
+          <>
+            {token && (
+              <LogoutIcon
+                name={'logout'}
+                size={20}
+                color={Colors.APP_COLOR}
+                style={styles.logoutIcon}
+                onPress={() => handleLogout()}
+              />
+            )}
+          </>
         }
         profileImageHandler={() => navigation.navigate('Profile')}
       />

@@ -21,6 +21,7 @@ import productMedicineReducer from '../Screens/SuggestMedicine/reducer';
 import dosageReducers from '../Screens/SelectDosage/reducer';
 import dosageVarientReducers from '../Screens/DosageVarient/reducer';
 import paymentPlansReducers from '../Screens/SelectPlans/reducer';
+import onBoardingReducer from '../Screens/Auth/Onboarding/reducer';
 
 const PERSIST_WHITELIST = [
   'login',
@@ -32,6 +33,7 @@ const PERSIST_WHITELIST = [
   'dosageReducers',
   'dosageVarientReducers',
   'paymentPlansReducers',
+  'onBoardingReducer',
 ];
 
 // 🔐 enhanced reducer that resets non-persisted state on logout
@@ -50,6 +52,7 @@ const logoutReducer = (reducer: any, key: string) => {
 
 const rootReducer = combineReducers({
   login: logoutReducer(loginReducer, 'login'),
+  onBoardingReducer: logoutReducer(onBoardingReducer, 'onBoardingReducer'),
   registerReducer: logoutReducer(registerReducer, 'registerReducer'),
   twoStepVerification: logoutReducer(
     twoStepVerificationReducer,
