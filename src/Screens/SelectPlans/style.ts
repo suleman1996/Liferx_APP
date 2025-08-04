@@ -27,5 +27,8 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     marginTop: h(15),
   },
+  customButtonStyles:{
+    marginBottom:w(25)
+  }
 });
 export default styles;

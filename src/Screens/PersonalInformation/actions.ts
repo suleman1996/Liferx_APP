@@ -1,13 +1,17 @@
-import { get, post } from '../../Modules/Requests';
+import { get, post, put } from '../../Modules/Requests';
 import {
+  ADD_USER_DETAILS,
   GET_ADDRESS,
   GET_ADDRESS_LISTING,
+  GET_USER_DATA,
+  GET_USER_DETAILS,
   SET_ADDRESS,
   SET_DOB,
   SET_ERROR,
   SET_GENDER,
   SET_LAST_NAME,
   SET_NAME,
+  SET_STATE,
 } from './actionTypes';
 
 interface streetAddress {
@@ -23,6 +27,10 @@ export const setLastName = (data: string, userId: string) => ({
   type: SET_LAST_NAME,
   payload: { data, userId },
 });
+export const setState = (data: string, userId: string) => ({
+  type: SET_STATE,
+  payload: { data, userId },
+});
 export const setDob = (data: string, userId: string) => ({
   type: SET_DOB,
   payload: { data, userId },
@@ -35,7 +43,7 @@ export const setGender = (data: string, userId: string) => ({
   type: SET_GENDER,
   payload: { data, userId },
 });
-export const setAddress = (data: string, userId: string) => ({
+export const setAddress = (data: object, userId: string) => ({
   type: SET_ADDRESS,
   payload: { data, userId },
 });
@@ -49,4 +57,17 @@ export const getAddress = (data: streetAddress) => ({
 export const getAddressList = (data: any) => ({
   type: GET_ADDRESS_LISTING,
   payload: data,
+});
+
+export const addUserDetails = (data: any) => ({
+  type: ADD_USER_DETAILS,
+  payload: put('/users/v1/users_detail/', data),
+});
+export const getUserDetails = () => ({
+  type: GET_USER_DETAILS,
+  payload: get('/users/v1/users_detail/'),
+});
+export const getUserData = (data: object) => ({
+  type: GET_USER_DATA,
+  payload: { data },
 });

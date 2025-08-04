@@ -1,21 +1,26 @@
 import {
   GET_ADDRESS_LISTING,
+  GET_USER_DATA,
+  GET_USER_DETAILS,
   SET_ADDRESS,
   SET_DOB,
   SET_ERROR,
   SET_GENDER,
   SET_LAST_NAME,
   SET_NAME,
+  SET_STATE,
 } from './actionTypes';
 
 const initialState = {
   firstName: {},
   lastName: {},
   dateOfBirth: {},
+  state: {},
   error: '',
   gender: {},
   address: {},
   addressListing: [],
+  userDetail: {},
 };
 
 export default function personalInfoReducer(state = initialState, action: any) {
@@ -70,8 +75,20 @@ export default function personalInfoReducer(state = initialState, action: any) {
           [userId]: data,
         },
       };
+    case SET_STATE:
+      return {
+        ...state,
+        loading: false,
+        state: {
+          ...state.state,
+          [userId]: data,
+        },
+      };
     case GET_ADDRESS_LISTING:
       return { ...state, loading: false, addressListing: payload };
+    case GET_USER_DATA:
+      return { ...state, loading: false, userDetail: payload };
+
     default:
       return state;
   }

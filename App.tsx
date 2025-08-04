@@ -25,12 +25,11 @@ const App: React.FC<any> = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <StripeProvider publishableKey={Dev_Stripe_Key}>
-          {/* <SafeAreaProvider> */}
             <NavigationContainer>
               <StatusBar
-                barStyle="dark-content"
-                backgroundColor={Colors.WHITE}
-                translucent={true}
+                barStyle="light-content" // White icons/text
+                backgroundColor="black" // Black background (Android only)
+                translucent={false} // Optional: removes overlay effect
               />
               <AppStack />
               <Toast
@@ -60,7 +59,6 @@ const App: React.FC<any> = () => {
                 topOffset={h('10%')}
               />
             </NavigationContainer>
-          {/* </SafeAreaProvider> */}
         </StripeProvider>
       </PersistGate>
     </Provider>

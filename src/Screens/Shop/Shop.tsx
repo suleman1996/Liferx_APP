@@ -8,6 +8,8 @@ import {
   RefreshControl,
   Linking,
   Pressable,
+  ScrollView,
+  Platform,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
@@ -131,30 +133,40 @@ const Shop: React.FC<any> = () => {
       <CustomLoader visible={!refreshing && loading} />
       <Header title="Shop" />
       <View style={styles.mainContainer}>
-        <Text style={styles.title}>Services</Text>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: Platform.select({
+              ios: h(100),
+              android: h(80),
+            }),
+          }}
+        >
+          <Text style={styles.title}>Services</Text>
 
-        {services?.length > 0 && (
-          <FlatList
-            data={services}
-            renderItem={renderItem}
-            refreshControl={
-              <RefreshControl
-                colors={[Colors.APP_COLOR]}
-                refreshing={refreshing}
-                onRefresh={async () => {
-                  setRefreshing(true);
-                  await fetchServices();
-                  setRefreshing(false);
-                }}
-              />
-            }
-            keyExtractor={item => item.id.toString()}
-            // columnWrapperStyle={{ justifyContent: 'space-between' }}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
-            style={{ flexGrow: 1 }}
-          />
-        )}
+          {services?.length > 0 && (
+            <FlatList
+              data={services}
+              renderItem={renderItem}
+              refreshControl={
+                <RefreshControl
+                  colors={[Colors.APP_COLOR]}
+                  refreshing={refreshing}
+                  onRefresh={async () => {
+                    setRefreshing(true);
+                    await fetchServices();
+                    setRefreshing(false);
+                  }}
+                />
+              }
+              keyExtractor={item => item.id.toString()}
+              // columnWrapperStyle={{ justifyContent: 'space-between' }}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
+              style={{ flexGrow: 1 }}
+            />
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   },
   customButtonStyles: {
     marginTop: h(20),
+    marginBottom:w(25)
   },
   dialogHeading: {
     color: Colors.APP_COLOR,

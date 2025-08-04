@@ -1,5 +1,11 @@
 import React from 'react';
-import { FlatList, Platform, View,SafeAreaView } from 'react-native';
+import {
+  FlatList,
+  Platform,
+  View,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, w } from '../../utils/Helper/Helper';
@@ -33,20 +39,30 @@ const Order: React.FC<any> = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Orders" />
       <View style={styles.mainContainer}>
-        <FlatList
-          data={orderItems}
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => <OrderCard item={item} />}
           contentContainerStyle={{
-            paddingHorizontal: w(5),
             paddingBottom: Platform.select({
-              ios: h(100),
-              android: h(20),
+              ios: h(150),
+              android: h(100),
             }),
           }}
-          ItemSeparatorComponent={() => <View style={{ height: h(2) }} />}
-        />
+        >
+          <FlatList
+            data={orderItems}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item.id.toString()}
+            renderItem={({ item }) => <OrderCard item={item} />}
+            contentContainerStyle={{
+              paddingHorizontal: w(5),
+              paddingBottom: Platform.select({
+                ios: h(100),
+                android: h(20),
+              }),
+            }}
+            ItemSeparatorComponent={() => <View style={{ height: h(2) }} />}
+          />
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

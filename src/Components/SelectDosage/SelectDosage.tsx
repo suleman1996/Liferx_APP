@@ -53,7 +53,7 @@ const SelectDosageCard: React.FC<Props> = ({
             {item?.dosage || `${item?.quantity} uses/month`}
           </Text>
         </View>
-        <Text style={styles.price}>
+        <Text style={styles.price} numberOfLines={2} ellipsizeMode='tail'>
           {`starting at $${item?.starting_price || item?.plan_total_price}/mo*`}
         </Text>
       </View>

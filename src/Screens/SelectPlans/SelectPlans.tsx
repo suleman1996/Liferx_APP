@@ -150,6 +150,7 @@ const SelectPlans: React.FC<any> = () => {
                       matchedPaymentPlan,
                     });
                   }}
+                  customButtonStyles={styles.customButtonStyles}
                 />
               </>
             )}

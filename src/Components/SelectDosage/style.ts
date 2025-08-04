@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     fontSize: w(14),
+    flex:1,
+    textAlign:'right'
   },
   iconView3: {
     flexDirection: 'row',

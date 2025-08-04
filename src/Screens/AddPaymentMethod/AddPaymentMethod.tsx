@@ -93,6 +93,12 @@ const AddPaymentMethod: React.FC<any> = () => {
         <ScrollView
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: Platform.select({
+              ios: h(150),
+              android: h(80),
+            }),
+          }}
         >
           <View style={styles.mainContainer}>
             <Image

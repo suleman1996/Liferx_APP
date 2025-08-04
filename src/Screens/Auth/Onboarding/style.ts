@@ -1,9 +1,10 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
 import Colors from '../../../utils/Colors/Colors';
 import { h, w } from '../../../utils/Helper/Helper';
 import { FONTS } from '../../../Assets/Fonts/Fonts';
 
-const { width, height } = Dimensions.get('window');
+const { width, height: windowHeight } = Dimensions.get('window');
+const { height: screenHeight } = Dimensions.get('screen');
 
 const CORNER_IMAGE_WIDTH = width * 1.0;
 const CORNER_IMAGE_HEIGHT = CORNER_IMAGE_WIDTH * (462 / 375);
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
 
   buttonGroup: {
     alignItems: 'center',
+    marginTop: w(20),
   },
   primaryButton: {
     backgroundColor: 'white',
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
   nextButton: {
     position: 'absolute',
     right: 30,
-    bottom: 100,
+    bottom: h(150),
     backgroundColor: 'white',
     width: 50,
     height: 50,
@@ -56,7 +58,9 @@ const styles = StyleSheet.create({
   },
   notiButtonStyles: {
     backgroundColor: Colors.WHITE,
-    width: '80%',
+    width: '100%',
+    marginLeft: w(30),
+    marginRight: w(30),
     marginTop: h(20),
   },
   customTextStyles: {
@@ -67,22 +71,22 @@ const styles = StyleSheet.create({
 
   slide: {
     width,
-    height,
-    position: 'relative',
+    height: Platform.OS === 'android' ? screenHeight : windowHeight,
+    paddingTop: h(50),
   },
   title: {
     fontSize: h(28),
     color: Colors.APP_COLOR,
     fontFamily: FONTS.MONTSERRAT_MEDIUM,
     width: w(275),
-    marginTop: '50%',
+    // marginTop: h(20),
   },
   imageWrapper: {
-    flex: 1,
+    // flex: 1,
   },
   image: {
-    width: CENTER_IMAGE_WIDTH,
-    height: CENTER_IMAGE_HEIGHT,
+    width: 275,
+    height: 342,
     alignSelf: 'center',
     marginTop: h(50),
   },
@@ -96,8 +100,9 @@ const styles = StyleSheet.create({
   },
   getStarted: {
     backgroundColor: Colors.WHITE,
-    width: '70%',
-    marginHorizontal: w(1),
+    width: '100%',
+    marginLeft: w(30),
+    marginRight: w(30),
     marginTop: h(30),
   },
   getStartedText: {

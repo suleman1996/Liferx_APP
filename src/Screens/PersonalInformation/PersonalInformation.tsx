@@ -12,7 +12,6 @@ import Header from '../../Components/Header/Header';
 import Colors from '../../utils/Colors/Colors';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import CustomDatePicker from '../../Components/CustomDatePicker/CustomDatePicker';
-import SearchDropDown from '../../Components/SearchDropDown/SearchDropDown';
 import {
   ageValidation,
   h,
@@ -22,8 +21,11 @@ import Button from '../../Components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import {
+  addUserDetails,
   getAddress,
   getAddressList,
+  getUserData,
+  getUserDetails,
   setAddress,
   setDob,
   setError,
@@ -38,25 +40,30 @@ import {
   stateAbbreviations,
 } from '../../utils/Constants/Constants';
 import StreetAddressDropdown from '../../Components/StreetAddressDropdown/StreetAddressDropdown';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const PersonalInformation: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
+  const { userDetail } = useSelector(
+    (state: RootState) => state.personalInfoReducer,
+  );
   const userId = useSelector((state: RootState) => state.login.userData?.id);
+  const { error, addressListing } = useSelector(
+    (state: RootState) => state?.personalInfoReducer,
+  );
+  const selectedState = useSelector(
+    (state: RootState) => state.selectYourState?.selectedState?.[userId],
+  );
   const personalInfo = useSelector((state: RootState) => ({
     firstName: state.personalInfoReducer.firstName?.[userId] || '',
     lastName: state.personalInfoReducer.lastName?.[userId] || '',
     dateOfBirth: state.personalInfoReducer.dateOfBirth?.[userId] || '',
     gender: state.personalInfoReducer.gender?.[userId] || '',
     address: state.personalInfoReducer.address?.[userId] || null,
-    error: state.personalInfoReducer.error,
-    addressListing: state.personalInfoReducer.addressListing,
   }));
-  const selectedState = useSelector(
-    (state: RootState) => state.selectYourState?.selectedState?.[userId],
-  );
-  const [search, setSearch] = useState('');
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [typedAddress, setTypedAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const selectedStateAbbrevation = stateAbbreviations[selectedState?.name];
 
@@ -80,16 +87,47 @@ const PersonalInformation: React.FC<any> = () => {
     } else if (!personalInfo?.gender) {
       dispatch(setError('gender'));
       return;
-    } else if (!personalInfo?.address || !personalInfo?.address?.street_line) {
+    } else if (
+      !personalInfo?.address?.street_line ||
+      !personalInfo?.address?.city ||
+      !personalInfo?.address?.state ||
+      !personalInfo?.address?.zipcode
+    ) {
       dispatch(setError('address'));
       return;
     }
-    navigation.navigate('PhoneVerification');
+    const body = {
+      apt_suite: selectedStateAbbrevation,
+      city: personalInfo?.address?.city,
+      date_of_birth: personalInfo?.dateOfBirth,
+
+      first_name: personalInfo?.firstName,
+      gender: personalInfo?.gender,
+      last_name: personalInfo?.lastName,
+      state: selectedState?.name,
+      street_address: personalInfo?.address?.street_line,
+      zip_code: personalInfo?.address?.zipcode,
+    };
+    setLoading(true);
+    dispatch(addUserDetails(body))
+      .then((response: any) => {
+        if (response) {
+          navigation.navigate('PhoneVerification');
+        }
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        setLoading(false);
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+      });
   };
 
-  const getStreetAddress = async () => {
+  const getStreetAddress = async (query: string) => {
     const body = {
-      query: search,
+      query: query,
       include_only_states: selectedStateAbbrevation,
     };
     setIsLoading(true);
@@ -100,33 +138,77 @@ const PersonalInformation: React.FC<any> = () => {
         }
         setIsLoading(false);
       })
-      .catch((error: string) => {
-        setIsLoading(false);
+      .catch(() => setIsLoading(false));
+  };
+
+  const getUser = async () => {
+    setLoading(true);
+    await dispatch(getUserDetails())
+      .then((response: any) => {
+        if (response?.value?.status === 200) {
+          const data = response?.value?.data;
+          dispatch(getUserData(data));
+          dispatch(setFirstName(data?.first_name || '', userId));
+          dispatch(setLastName(data?.last_name || '', userId));
+          dispatch(setDob(data?.date_of_birth, userId));
+          dispatch(setGender(data.gender || '', userId));
+          dispatch(
+            setAddress(
+              {
+                street_line: data.street_address || '',
+                city: data.city || '',
+                state: data.state || '',
+                zipcode: data.zip_code || '',
+              },
+              userId,
+            ),
+          );
+        }
+        setLoading(false);
+      })
+      .catch((err: string) => {
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    if (search?.length < 3) {
+    getUser();
+  }, []);
+
+  useEffect(() => {
+    if (!typedAddress || typedAddress.length < 3) {
       dispatch(getAddressList([]));
       return;
     }
-    if (search?.length > 0) getStreetAddress();
-  }, [search]);
+    const timeout = setTimeout(() => {
+      getStreetAddress(typedAddress);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [typedAddress]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Personal Information" />
+      <CustomLoader visible={loading} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 100}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 120}
       >
         <ScrollView
-          contentContainerStyle={{
-            paddingBottom: isDropdownOpen ? h(100) : h(60),
-          }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
+          // contentContainerStyle={{
+          //   paddingBottom: Platform.select({
+          //     ios: h(30),
+          //     android: h(100),
+          //   }),
+          // }}
         >
           <View style={styles.mainContainer}>
             <Text style={styles.heading}>Personal Information</Text>
@@ -139,7 +221,7 @@ const PersonalInformation: React.FC<any> = () => {
                 styles.customInputStyle,
                 {
                   borderColor:
-                    personalInfo?.error === 'firstName'
+                    error === 'firstName'
                       ? Colors.error
                       : personalInfo?.firstName?.length > 0
                       ? Colors.APP_COLOR
@@ -149,9 +231,7 @@ const PersonalInformation: React.FC<any> = () => {
               placeholder="Enter your first name"
               // customErrorStyles={styles.customErrorStyle}
               placeholderTextColor={
-                personalInfo?.error === 'firstName'
-                  ? Colors.error
-                  : Colors.APP_COLOR
+                error === 'firstName' ? Colors.error : Colors.APP_COLOR
               }
               selectionColor={Colors.APP_COLOR}
               containerStyle={styles.inputContainer}
@@ -169,7 +249,7 @@ const PersonalInformation: React.FC<any> = () => {
                 styles.customInputStyle,
                 {
                   borderColor:
-                    personalInfo?.error === 'lastName'
+                    error === 'lastName'
                       ? Colors.error
                       : personalInfo?.lastName?.length > 0
                       ? Colors.APP_COLOR
@@ -179,9 +259,7 @@ const PersonalInformation: React.FC<any> = () => {
               placeholder="Enter your last name"
               // customErrorStyles={styles.customErrorStyle}
               placeholderTextColor={
-                personalInfo?.error === 'lastName'
-                  ? Colors.error
-                  : Colors.APP_COLOR
+                error === 'lastName' ? Colors.error : Colors.APP_COLOR
               }
               selectionColor={Colors.APP_COLOR}
               onChangeText={text => {
@@ -199,7 +277,7 @@ const PersonalInformation: React.FC<any> = () => {
                 styles.customDatePickerInput,
                 {
                   borderColor:
-                    personalInfo?.error === 'dateOfBirth'
+                    error === 'dateOfBirth'
                       ? Colors.error
                       : personalInfo?.dateOfBirth?.length > 0
                       ? Colors.APP_COLOR
@@ -208,9 +286,7 @@ const PersonalInformation: React.FC<any> = () => {
               ]}
               customInputTextStyle={{
                 color:
-                  personalInfo?.error === 'dateOfBirth'
-                    ? Colors.error
-                    : Colors.APP_COLOR,
+                  error === 'dateOfBirth' ? Colors.error : Colors.APP_COLOR,
               }}
               value={personalInfo?.dateOfBirth}
               onChange={text => {
@@ -236,73 +312,47 @@ const PersonalInformation: React.FC<any> = () => {
               style={{
                 marginTop: 0,
                 borderColor:
-                  personalInfo?.error === 'gender'
+                  error === 'gender'
                     ? Colors.error
                     : personalInfo?.gender?.length > 0
                     ? Colors.APP_COLOR
                     : Colors.GRAY,
               }}
               placeholderStyle={{
-                color:
-                  personalInfo?.error === 'gender'
-                    ? Colors.error
-                    : Colors.APP_COLOR,
+                color: error === 'gender' ? Colors.error : Colors.APP_COLOR,
               }}
             />
             <Text style={[styles.heading, { marginTop: h(30) }]}>
               Shipping Address
             </Text>
 
-            {/* <SearchDropDown
-              placeholder="Enter your street address"
-              flatlistData={personalInfo?.addressListing}
-              setSelectedItem={(text: any) => {
-                dispatch(setAddress(text, userId));
-              }}
-              selectedItem={personalInfo?.address}
-              setSearch={setSearch}
-              search={search}
-              customSearchDropDownContainer={
-                styles.customSearchDropDownContainer
-              }
-              label="Street Address"
-              customLabelStyles={[
-                styles.customLabelStyles,
-                { paddingTop: h(25) },
-              ]}
-              customContainerStyle={styles.customAddressContainerStyle}
-              onToggleDropdown={setIsDropdownOpen}
-            /> */}
-
             <StreetAddressDropdown
               label="Street Address"
-              data={personalInfo?.addressListing}
+              data={addressListing}
               selected={personalInfo?.address}
               onSelect={(text: any) => {
                 dispatch(setAddress(text, userId));
                 dispatch(setError(''));
               }}
-              search={search}
-              setSearch={(text: string) => {
-                setSearch(text);
-                if (personalInfo?.error === 'address') {
-                  dispatch(setError(''));
+              onInputChange={(text: string) => {
+                setTypedAddress(text);
+                if (text?.trim().length === 0) {
+                  dispatch(setAddress({}, userId));
                 }
+                dispatch(setError(''));
               }}
               isLoading={isLoading}
               customLabelStyles={[styles.customLabelStyles]}
               customInputWrapperStyle={{
                 borderColor:
-                  personalInfo?.error === 'address'
+                  error === 'address'
                     ? Colors.error
-                    : personalInfo?.address?.street_line?.length > 0 || search
+                    : personalInfo?.address?.street_line?.length > 0
                     ? Colors.APP_COLOR
                     : Colors.GRAY,
               }}
               placeholderTextColor={
-                personalInfo?.error === 'address'
-                  ? Colors.error
-                  : Colors.APP_COLOR
+                error === 'address' ? Colors.error : Colors.APP_COLOR
               }
             />
 
@@ -318,7 +368,7 @@ const PersonalInformation: React.FC<any> = () => {
                   borderColor: Colors.GRAY,
                 },
               ]}
-              value={selectedState?.name}
+              value={selectedState?.name || userDetail?.data?.state}
               placeholderTextColor={Colors.APP_COLOR}
               selectionColor={Colors.APP_COLOR}
               editable={false}

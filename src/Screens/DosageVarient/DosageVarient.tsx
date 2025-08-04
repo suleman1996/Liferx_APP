@@ -51,13 +51,11 @@ const DosageVarient: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: string) => {
-        console.log(error, 'errorrrr');
-
+        setLoading(false);
         Toast.show({
           type: 'error',
           text2: error,
         });
-        setLoading(false);
       });
   };
 

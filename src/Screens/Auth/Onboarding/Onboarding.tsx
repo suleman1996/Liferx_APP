@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  SafeAreaView,
   StatusBar,
   Text,
   View,
@@ -43,7 +44,7 @@ const Oboarding: React.FC<any> = () => {
     {
       id: '3',
       title: 'Allow Notifications to stay up-to-date',
-      image: require('../../../Assets/Images/onBoard3.png'),
+      image: require('../../../Assets/Images/onBoard2.png'),
       backgroundColor: Colors.LIGHT_BROWN,
       showNotificationButtons: true,
       textColor: Colors.WHITE,
@@ -69,74 +70,70 @@ const Oboarding: React.FC<any> = () => {
 
   const renderItem = ({ item }: any) => (
     <View style={[styles.slide, { backgroundColor: item?.backgroundColor }]}>
-      <View style={{ width: '70%', alignSelf: 'center' }}>
-        <Text style={[styles.title, { color: item?.textColor }]}>
-          {item?.title}
-        </Text>
-      </View>
-
-      {item?.showNotificationButtons && (
-        <View style={styles.buttonGroup}>
-          <Button
-            text="Allow Notifications"
-            noShadow
-            customButtonStyles={styles.notiButtonStyles}
-            customTextStyles={styles.customTextStyles}
-            onPressHandler={goToNextSlide}
-          />
-          <Pressable onPress={goToNextSlide}>
-            <Text style={styles.linkText}>Not Allow</Text>
-          </Pressable>
+      <View
+        style={{
+          flex: 1,
+          position: 'relative',
+          marginHorizontal: w(40),
+        }}
+      >
+        <View>
+          <Text style={[styles.title, { color: item?.textColor }]}>
+            {item?.title}
+          </Text>
         </View>
-      )}
 
-      <View style={[styles.imageWrapper, { flex: currentIndex === 3 ? 0 : 1 }]}>
+        {item?.showNotificationButtons && (
+          <View style={styles.buttonGroup}>
+            <Button
+              text="Allow Notifications"
+              noShadow
+              customButtonStyles={styles.notiButtonStyles}
+              customTextStyles={styles.customTextStyles}
+              onPressHandler={goToNextSlide}
+            />
+            <Pressable onPress={goToNextSlide}>
+              <Text style={styles.linkText}>Not Allow</Text>
+            </Pressable>
+          </View>
+        )}
+
         <Image
           source={item?.image}
-          resizeMode="cover"
+          resizeMode="contain"
           borderRadius={10}
-          style={[currentIndex === 2 ? styles.bottomRightImage : styles.image]}
+          style={[styles.image]}
         />
-      </View>
 
-      {item?.showFinalButtons && (
-        <View style={styles.buttonGroup}>
-          <Button
-            text="GET STARTED"
-            customButtonStyles={styles.getStarted}
-            customTextStyles={styles.getStartedText}
-            noShadow
-            onPressHandler={async () => {
-              try {
-                await AsyncStorage.setItem('onBoard', 'true');
-                dispatch(setOnBoarding(true));
+        {item?.showFinalButtons && (
+          <View style={styles.buttonGroup}>
+            <Button
+              text="GET STARTED"
+              customButtonStyles={styles.getStarted}
+              customTextStyles={styles.getStartedText}
+              noShadow
+              onPressHandler={async () => {
+                try {
+                  await AsyncStorage.setItem('onBoard', 'true');
+                  dispatch(setOnBoarding(true));
+                  navigation.navigate('Login');
+                } catch (err) {
+                  console.log('Failed to save onBoarding flag:', err);
+                }
+              }}
+            />
+            <Button
+              text="Already have an account?"
+              customButtonStyles={[styles.getStarted, { marginTop: h(15) }]}
+              customTextStyles={styles.getStartedText}
+              onPressHandler={() => {
                 navigation.navigate('Login');
-              } catch (err) {
-                console.log('Failed to save onBoarding flag:', err);
-              }
-            }}
-          />
-          <Button
-            text="Already have an account?"
-            customButtonStyles={{
-              backgroundColor: Colors.WHITE,
-              width: '70%',
-              marginHorizontal: w(1),
-              marginTop: h(20),
-            }}
-            customTextStyles={{
-              fontSize: w(16),
-              fontFamily: FONTS.MONTSERRAT_MEDIUM,
-              color: Colors.SKY_BLUE,
-            }}
-            onPressHandler={() => {
-              navigation.navigate('Login');
-            }}
-            noShadow
-          />
-        </View>
-      )}
-
+              }}
+              noShadow
+            />
+          </View>
+        )}
+      </View>
       {currentIndex !== 3 && currentIndex !== 2 && (
         <Pressable
           onPress={goToNextSlide}
@@ -159,13 +156,12 @@ const Oboarding: React.FC<any> = () => {
   );
 
   return (
-    <View style={styles.safeAreaView}>
+    <SafeAreaView style={styles.safeAreaView}>
       <StatusBar
         translucent
         backgroundColor="transparent"
         barStyle="dark-content"
       />
-
       <FlatList
         ref={flatListRef}
         data={slides}
@@ -177,7 +173,7 @@ const Oboarding: React.FC<any> = () => {
         keyExtractor={item => item?.id}
         extraData={currentIndex}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 export default Oboarding;

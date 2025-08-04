@@ -21,5 +21,8 @@ const styles = StyleSheet.create({
     width: w(120),
     marginVertical: h(30),
   },
+  customButtonStyles:{
+    marginBottom:h(25)
+  }
 });
 export default styles;

@@ -28,7 +28,6 @@ const PERSIST_WHITELIST = [
   'decidingQuestionAnswer',
   'selectYourState',
   'RegularQuestionsAnswer',
-  'personalInfoReducer',
   'productMedicineReducer',
   'dosageReducers',
   'dosageVarientReducers',
@@ -68,10 +67,7 @@ const rootReducer = combineReducers({
     'RegularQuestionsAnswer',
   ),
   shopReducer: logoutReducer(shopReducer, 'shopReducer'),
-  personalInfoReducer: logoutReducer(
-    personalInfoReducer,
-    'personalInfoReducer',
-  ),
+  personalInfoReducer: logoutReducer(personalInfoReducer, ''),
   phoneVerifyReducer: logoutReducer(phoneVerifyReducer, 'phoneVerifyReducer'),
   verificationCodeReducer: logoutReducer(
     verificationCodeReducer,

@@ -115,8 +115,8 @@ export const stateAbbreviations = {
 };
 
 export const genderOptions = [
-  { label: 'Male', value: 'Male' },
-  { label: 'Female', value: 'Female' },
+  { label: 'Male', value: 'MALE' },
+  { label: 'Female', value: 'FEMALE' },
 ];
 
 export const STRIPE_KEY =

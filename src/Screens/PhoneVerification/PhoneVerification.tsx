@@ -92,6 +92,15 @@ const PhoneVerification: React.FC<any> = () => {
     }
   };
 
+  // const personalInfo = useSelector((state: RootState) => ({
+  //   firstName: state.personalInfoReducer.firstName?.[userId] || '',
+  //   lastName: state.personalInfoReducer.lastName?.[userId] || '',
+  //   dateOfBirth: state.personalInfoReducer.dateOfBirth?.[userId] || '',
+  //   gender: state.personalInfoReducer.gender?.[userId] || '',
+  //   state: state.selectYourState?.selectedState?.[userId]?.name || '',
+  //   address: state.personalInfoReducer.address?.[userId] || null,
+  // }));
+
   return (
     <SafeAreaView
       style={styles.safeAreaView}

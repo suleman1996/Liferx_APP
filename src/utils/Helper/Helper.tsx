@@ -79,11 +79,11 @@ export const formatPhoneNumber = (text: string) => {
   } else if (cleaned.length < 7) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
   } else {
-    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(
+      6,
+    )}`;
   }
 };
-
-
 
 export const getPasswordStrengthLabel = (
   validation: ReturnType<typeof getPasswordValidation>,
@@ -119,8 +119,8 @@ export const getPasswordValidation = (password: string) => {
   };
 };
 
-export  const ageValidation = (dob: string) => {
- const birthDate = moment(dob, 'MM/DD/YYYY');
+export const ageValidation = (dob: string): boolean => {
+  const birthDate = moment(dob, 'YYYY-MM-DD', true); // true = strict parsing
   if (!birthDate.isValid()) return false;
   const age = moment().diff(birthDate, 'years');
   return age >= 18;
@@ -146,7 +146,7 @@ export const buildFormDataForImageUpload = ({
     JSON.stringify({
       selected,
       explanation,
-    })
+    }),
   );
   const file = {
     uri: imagePath,
@@ -157,5 +157,3 @@ export const buildFormDataForImageUpload = ({
   formData.append('file', file);
   return formData;
 };
-
-

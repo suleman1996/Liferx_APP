@@ -13,8 +13,8 @@ interface Props {
   maximumDate?: Date;
   customLabelStyles?: object;
   customContainerStyle?: object;
-  customDatePickerInput?:object;
-  customInputTextStyle?:object
+  customDatePickerInput?: object;
+  customInputTextStyle?: object;
 }
 
 const CustomDatePicker: React.FC<Props> = ({
@@ -38,7 +38,7 @@ const CustomDatePicker: React.FC<Props> = ({
       setTempDate(selectedDate);
       if (Platform.OS === 'android') {
         setShowPicker(false);
-        onChange(moment(selectedDate).format('MM/DD/YYYY'));
+        onChange(moment(selectedDate).format('YYYY-MM-DD'));
       }
     } else if (Platform.OS === 'android') {
       setShowPicker(false);
@@ -46,11 +46,24 @@ const CustomDatePicker: React.FC<Props> = ({
   };
 
   return (
-    <View style={[styles.container,customContainerStyle]}>
+    <View style={[styles.container, customContainerStyle]}>
       {label && <Text style={(styles.label, customLabelStyles)}>{label}</Text>}
 
-      <Pressable style={[styles.input,customDatePickerInput]} onPress={() => setShowPicker(true)}>
-        <Text style={[styles.inputText,customInputTextStyle]}>{value || 'Select date'}</Text>
+      <Pressable
+        style={[styles.input, customDatePickerInput]}
+        onPress={() => {
+          const parsedDate = moment(value, 'YYYY-MM-DD', true);
+          if (parsedDate.isValid()) {
+            setTempDate(parsedDate.toDate());
+          } else {
+            setTempDate(new Date());
+          }
+          setShowPicker(true);
+        }}
+      >
+        <Text style={[styles.inputText, customInputTextStyle]}>
+          {value || 'Select date'}
+        </Text>
       </Pressable>
 
       {showPicker && (
@@ -77,7 +90,7 @@ const CustomDatePicker: React.FC<Props> = ({
               onPress={() => {
                 setShowPicker(false);
                 if (tempDate) {
-                  const formatted = moment(tempDate).format('MM/DD/YYYY');
+                  const formatted = moment(tempDate).format('YYYY-MM-DD');
                   onChange(formatted);
                 }
               }}

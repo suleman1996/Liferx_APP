@@ -134,6 +134,7 @@ const SuggestMedicine: React.FC<any> = () => {
                     }
                     navigation.navigate('SelectDosage', { productId });
                   }}
+                  customButtonStyles={styles.customButtonStyles}
                 />
               </>
             )}

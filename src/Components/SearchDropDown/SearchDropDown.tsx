@@ -146,8 +146,10 @@ const SearchDropDown: React.FC<Props> = React.memo(
               color={Colors.APP_COLOR}
               style={{ right: w(20) }}
               onPress={() => {
+                Keyboard.dismiss();
                 setSearch('');
                 setSelectedItem('');
+                setListVisible(false);
               }}
             />
           ) : (
