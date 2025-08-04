@@ -1,6 +1,5 @@
 import {
   GET_TOKEN,
-  GET_USER_DATA,
   SET_LOGIN_EMAIL,
   SET_LOGIN_ERROR,
   SET_LOGIN_PASSWORD,
@@ -14,7 +13,6 @@ const initialState = {
   error: '',
   token: '',
   prevToken: '',
-  userData: {},
 };
 
 export default function loginReducer(state = initialState, action: any) {
@@ -32,8 +30,6 @@ export default function loginReducer(state = initialState, action: any) {
         prevToken: state.token || '',
         token: action.payload,
       };
-    case GET_USER_DATA:
-      return { ...state, loading: false, userData: action.payload };
     default:
       return state;
   }

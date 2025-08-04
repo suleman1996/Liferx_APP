@@ -17,6 +17,7 @@ import {
   addQuestionaireAnswer,
   getQuestionsListing,
   getRegularQuestions,
+  saveRegularRuestions,
 } from './actions';
 import { QuestionTypes } from '../../utils/Constants/Constants';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
@@ -28,11 +29,14 @@ const Questionaire: React.FC<any> = () => {
   const { selectedRegularAnswer, regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
-  const { selectedAnswer } = useSelector(
+  const { selectedAnswer, sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
+  const [loadingState, setLoadingState] = useState({
+    fetching: false,
+    submitting: false,
+  });
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
-  const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const type = regularQuestions[currentIndex]?.type;
 
@@ -41,6 +45,7 @@ const Questionaire: React.FC<any> = () => {
     simpleText: string,
     imagePath?: string | null,
   ) => {
+    const currentQuestion = regularQuestions[currentIndex];
     const isSelectionEmpty =
       Array.isArray(selectedOption) && selectedOption?.length === 0;
     const isTextEmpty = !simpleText;
@@ -65,7 +70,7 @@ const Questionaire: React.FC<any> = () => {
       Array.isArray(selectedOption) &&
       selectedOption.some(
         id =>
-          regularQuestions[currentIndex]?.options.find(o => o.id === id)
+          regularQuestions[currentIndex]?.options.find((o: any) => o.id === id)
             ?.explanation_required && !simpleText?.[id]?.trim(),
       )
     ) {
@@ -75,17 +80,39 @@ const Questionaire: React.FC<any> = () => {
       });
       return;
     }
+    // if(type === QuestionTypes?.MULTI_MEDIA && imagePath){
+    //       const formData = new FormData();
+    // formData.append('question', currentQuestion?.id);
+    // formData.append('session_id', sessionId);
+    // formData.append('service_id', serviceId);
+    // formData.append('user_id', userId);
+    // formData.append('media', {
+    //   uri: imagePath,
+    //   name: `image_${Date.now()}.jpg`,
+    //   type: 'image/jpeg',
+    // });
+    // }
     const answers = {
-      question: regularQuestions[currentIndex].id,
+      question: currentQuestion?.id,
       selectedOption,
       simpleText,
+      session_id: sessionId,
     };
+    setLoadingState(prev => ({ ...prev, submitting: true }));
     dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
+    dispatch(saveRegularRuestions(answers))
+      .then((response: any) => {
+        if (response?.value?.status === 200) {
+          setLoadingState(prev => ({ ...prev, submitting: false }));
+        }
+      })
+      .catch((error: string) => {
+        setLoadingState(prev => ({ ...prev, submitting: false }));
+        console.log(error, 'error');
+      });
     if (currentIndex < regularQuestions?.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
-      console.log(selectedRegularAnswer?.[serviceId], 'selectedRegularAnswer');
-      console.log(selectedAnswer?.[serviceId], 'selectedAnswer');
       navigation.navigate('PersonalInformation');
     }
   };
@@ -101,13 +128,13 @@ const Questionaire: React.FC<any> = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       if (!serviceId) return;
-      setLoading(true);
+      setLoadingState(prev => ({ ...prev, fetching: true }));
       try {
         await dispatch(getRegularQuestions(serviceId)).then((res: any) => {
           dispatch(getQuestionsListing(res?.value?.data?.questions));
         });
       } finally {
-        setLoading(false);
+        setLoadingState(prev => ({ ...prev, fetching: false }));
       }
     };
     fetchQuestions();
@@ -115,7 +142,9 @@ const Questionaire: React.FC<any> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <CustomLoader visible={loading} />
+      <CustomLoader
+        visible={loadingState.fetching || loadingState.submitting}
+      />
       <Header onBackPress={handleBackPress} />
 
       <View style={styles.mainContainer}>
@@ -124,7 +153,7 @@ const Questionaire: React.FC<any> = () => {
           currentStep={currentIndex}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          {!loading && (
+          {!loadingState?.fetching && (
             <FlatList
               data={[regularQuestions[currentIndex]]}
               keyExtractor={item => item?.id?.toString()}

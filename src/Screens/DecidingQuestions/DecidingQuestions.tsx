@@ -21,11 +21,12 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const { decidingQuestions } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
+  const {serviceId} = route?.params;
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
-  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
+  // const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const selectedAnswer = useSelector(
     (state: RootState) =>
-      state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[serviceId],
+      state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[2],
   );
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -62,6 +63,7 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
+      navigation.navigate('Register',{serviceId})
       setSubmitLoading(true);
       const session_id = await fetchSessionID();
       if (!session_id) {
@@ -113,9 +115,14 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     setLoading(true);
     try {
       await dispatch(getDecidingQuestion(serviceId)).then((res: any) => {
-        const response = res?.value?.data;
+        const response = res?.payload?.data;        
         dispatch(addDecidingAnswer(response));
-      });
+      }).catch((error:any)=>{
+        Toast.show({
+          type : 'error',
+          text2 : error
+        })
+      })
     } finally {
       setLoading(false);
     }
@@ -140,6 +147,7 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     }
     return null;
   };
+  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

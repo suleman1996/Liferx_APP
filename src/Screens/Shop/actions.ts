@@ -15,7 +15,10 @@ export const getServiceId = (data: any) => ({
   payload: data,
 });
 
-export const getServices = () => ({
-  type: GET_SERVICES,
-  payload: get('/users/v1/active-service/'),
-});
+export const getServices = () => {
+  console.log('getServices action called');
+  return {
+    type: GET_SERVICES,
+    payload: get('/users/v1/active-service/'),
+  };
+};

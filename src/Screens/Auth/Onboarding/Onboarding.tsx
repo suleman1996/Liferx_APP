@@ -114,8 +114,8 @@ const Oboarding: React.FC<any> = () => {
               noShadow
               onPressHandler={async () => {
                 try {
-                  await AsyncStorage.setItem('onBoard', 'true');
-                  dispatch(setOnBoarding(true));
+                  // await AsyncStorage.setItem('onBoard', 'true');
+                  // dispatch(setOnBoarding(true));
                   navigation.navigate('Login');
                 } catch (err) {
                   console.log('Failed to save onBoarding flag:', err);
@@ -126,7 +126,9 @@ const Oboarding: React.FC<any> = () => {
               text="Already have an account?"
               customButtonStyles={[styles.getStarted, { marginTop: h(15) }]}
               customTextStyles={styles.getStartedText}
-              onPressHandler={() => {
+              onPressHandler={async () => {
+                await AsyncStorage.setItem('onBoard', 'true');
+                dispatch(setOnBoarding(true));
                 navigation.navigate('Login');
               }}
               noShadow

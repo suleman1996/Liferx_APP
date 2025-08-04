@@ -2,6 +2,7 @@ import { post } from '../../../Modules/Requests';
 import {
   CREATE_TOKEN,
   CREATE_USER,
+  GET_USER_DATA,
   SET_EMAIL,
   SET_ERROR,
   SET_PASSWORD,
@@ -37,3 +38,7 @@ export const createToken = (body: CreateUserRequest) => {
     payload: post('/api/token/', body),
   };
 };
+export const getUserData = (data: string) => ({
+  type: GET_USER_DATA,
+  payload: data,
+});

@@ -40,27 +40,32 @@ const HomeScreen: React.FC<any> = () => {
     {
       id: 1,
       image: require('../../Assets/Images/Product1.png'),
-      text: 'Generic Sildenafil1',
+      // text: 'Generic Sildenafil1',
+      text: 'Fight Hair Loss',
       month: '$17/month',
+      serviceID : 2,
     },
     {
       id: 2,
       image: require('../../Assets/Images/Product2.png'),
-      text: 'Viagra',
+      text: 'Boost Sex Performance',
+      // text: 'Viagra',
       month: '$17/month',
+      serviceID : 3,
     },
     {
       id: 3,
       image: require('../../Assets/Images/Product3.png'),
-      text: 'Generic Tadalfil',
+      text: 'Weight Loss',
+      // text: 'Generic Tadalfil',
       month: '$17/month',
     },
-    {
-      id: 3,
-      image: require('../../Assets/Images/Product3.png'),
-      text: 'Generic Tadalfil',
-      month: '$17/month',
-    },
+    // {
+    //   id: 3,
+    //   image: require('../../Assets/Images/Product3.png'),
+    //   text: 'Generic Tadalfil',
+    //   month: '$17/month',
+    // },
   ];
 
   const teamData = [

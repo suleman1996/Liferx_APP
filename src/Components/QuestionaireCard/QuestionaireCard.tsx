@@ -41,9 +41,9 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
   const userId = useSelector((state: RootState) => state.login?.userData?.id);
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
-    state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[serviceId]?.find(
-      (ans: any) => ans?.question === item?.id,
-    ),
+    state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[
+      serviceId
+    ]?.find((ans: any) => ans?.question === item?.id),
   );
   const [selected, setSelected] = useState<number[]>([]);
   const [explaination, setExplaination] = useState<string>('');
@@ -180,7 +180,7 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
             if (item?.type === QuestionTypes.TEXT) {
               handleContinue?.([], simpleText);
             } else {
-              handleContinue?.(selected, explaination,);
+              handleContinue?.(selected, explaination);
             }
           }}
           customButtonStyles={styles.customButtonStyles}

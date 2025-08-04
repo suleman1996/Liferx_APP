@@ -22,10 +22,11 @@ import {
 } from '../../../utils/Helper/Helper';
 import EyeIcon from 'react-native-vector-icons/Entypo';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../Store';
+import store, { RootState } from '../../../Store';
 import {
   createToken,
   createUser,
+  getUserData,
   setEmail,
   setError,
   setPassword,
@@ -33,12 +34,27 @@ import {
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 import PasswordValidationFeedback from '../../../Components/PasswordValidationFeedback/PasswordValidationFeedback';
+import Header from '../../../Components/Header/Header';
+import {
+  getSessionId,
+  saveDecidingAnswers,
+  setStartSession,
+} from '../../DecidingQuestions/actions';
+import { api } from '../../../Modules/Requests';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Register: React.FC<any> = () => {
+const Register: React.FC<any> = ({ route }) => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
+  const { serviceId } = route?.params;
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.id,
+  );
   const { email, password, error } = useSelector(
     (state: RootState) => state.registerReducer,
+  );
+  const { decidingQuestions } = useSelector(
+    (state: RootState) => state?.decidingQuestionAnswer,
   );
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -70,21 +86,70 @@ const Register: React.FC<any> = () => {
     setLoading(true);
     const body = { email, password };
     dispatch(createUser(body))
-        .then((res:any) => {
-        if (res?.value?.status === 200) {
+      .then(async (res: any) => {
+        if (res?.payload?.status === 200) {
           const tokenBody = {
             username: email,
             password,
           };
           dispatch(createToken(tokenBody))
-            .then(async (res:any) => {
-              const token = res?.value?.data?.token?.access;
+            .then(async (res: any) => {
+              console.log(res,'resssss');
+              if(res?.value?.status === 200){
               if (token) {
                 navigation.navigate('TwoStepVerifiction', { token });
               }
+              }
+              
+              // const session_id = await fetchSessionID();
+              // if (!session_id) {
+              //   return;
+              // }
+              // const newToken = res?.payload?.data?.token?.access;
+              // console.log(newToken);
+              
+              // await AsyncStorage.setItem('token', newToken);
+              // const checkToken = await AsyncStorage.getItem('token');
+              // console.log('✅ Stored Token:', checkToken);
+              // api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+              // dispatch(getUserData(res?.payload?.data?.user));
+              // const updatedSelectedAnswer =
+              //   store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[
+              //     userId
+              //   ]?.[serviceId];
+              // const updatedDecidingAnswers = {
+              //   answers: updatedSelectedAnswer?.map(
+              //     ({ serviceId, userId, ...rest }) => rest,
+              //   ),
+              //   session_id,
+              // };
+              // console.log(updatedDecidingAnswers,'updating');
+              
+              // dispatch(saveDecidingAnswers(updatedDecidingAnswers)).then(
+              //   (response: any) => {
+              //     if (response?.payload?.status === 200) {
+              //       Toast.show({
+              //         type: 'success',
+              //         text2: response?.payload?.data?.message,
+              //       });
+              //       navigation?.navigate('TwoStepVerifiction')
+              //     }
+              //   },
+              // ).catch((err:string)=>{
+              //   Toast.show({
+              //     type:'error',
+              //     text2: err
+              //   })
+              // })
+
+              setLoading(false)
             })
-            .catch((error:string) => {
-              console.log(error, 'token error');
+            .catch((error: string) => {
+              setLoading(false)
+              Toast.show({
+                type: 'error',
+                text2: error,
+              });
             });
           Toast.show({
             type: 'success',
@@ -98,13 +163,34 @@ const Register: React.FC<any> = () => {
         }
         setLoading(false);
       })
-      .catch((err:string) => {
+      .catch((err: string) => {
         setLoading(false);
         Toast.show({
           type: 'error',
           text2: err,
         });
       });
+  };
+
+  const fetchSessionID = async () => {
+    const body = {
+      questionnaire_id: decidingQuestions?.questionnaire_id,
+    };
+    try {
+      const response = await dispatch(setStartSession(body));
+      if (response?.payload?.status === 200) {
+        const id = response?.payload?.data?.session_id;
+        console.log(id,'sessionID');
+        dispatch(getSessionId(id));
+        return id;
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text2: error,
+      });
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -115,6 +201,7 @@ const Register: React.FC<any> = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <CustomLoader visible={loading} />
+      <Header />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}

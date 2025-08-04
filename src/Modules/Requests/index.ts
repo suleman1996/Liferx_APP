@@ -208,3 +208,192 @@ export async function eventLogApi<T = any, D = any>(
     throw extractErrorMessage(error);
   }
 }
+
+
+// api.ts
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+// import { Platform } from 'react-native';
+
+// // BASE URLs
+// export const baseUrl = 'https://dev-backend.liferxbackend.pro';
+// export const imageUrl = 'https://utils-dev.swotsup.com/images/uploadImage';
+
+// export const appLink =
+//   Platform.OS === 'ios'
+//     ? 'itms-apps://apps.apple.com/pk/app/swotsup/id1641071189'
+//     : 'https://play.google.com/store/apps/details?id=com.swotsup&hl=en&gl=US';
+
+// const api: AxiosInstance = axios.create({
+//   baseURL: baseUrl,
+//   headers: {
+//     'Content-Type': 'application/json',
+//     Accept: 'application/json',
+//     'X-CSRFTOKEN': 'FJKrFK5lG1RJlklQqLSdvjfYGZVEchnejsrk8bjqIz4UjQgeBQVLyzumi06uvnUW',
+//   },
+// });
+
+// // Error extractor
+// function extractErrorMessage(error: any): string {
+//   const data = error?.response?.data;
+//   if (typeof data === 'string') return data;
+//   if (data && typeof data === 'object') {
+//     const firstKey = Object.keys(data)[0];
+//     const firstValue = data[firstKey];
+//     if (Array.isArray(firstValue)) return firstValue[0];
+//     if (typeof firstValue === 'string') return firstValue;
+//   }
+//   return error?.message || 'Something went wrong. Please try again.';
+// }
+
+// // Auth header builder
+// async function buildAuthHeaders(withAuth: boolean) {
+//   if (!withAuth) return {};
+//   const token = await AsyncStorage.getItem('token');
+//   return token ? { Authorization: `Bearer ${token}` } : {};
+// }
+
+// // Generic request methods
+// export async function get<T = any>(
+//   url: string,
+//   customHeaders?: Record<string, string>,
+//   withAuth: boolean = true,
+// ): Promise<AxiosResponse<T>> {
+//   try {
+//     const headers = { ...(await buildAuthHeaders(withAuth)), ...(customHeaders || {}) };
+//     return await api.get<T>(url, { headers });
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function post<T = any, D = any>(
+//   url: string,
+//   data?: D,
+//   customHeaders?: Record<string, string>,
+//   withAuth: boolean = true,
+// ): Promise<AxiosResponse<T>> {
+//   try {
+//     const headers = { ...(await buildAuthHeaders(withAuth)), ...(customHeaders || {}) };
+//     return await api.post<T>(url, data, { headers });
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function patch<T = any, D = any>(
+//   url: string,
+//   data: D,
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const headers = await buildAuthHeaders(withAuth);
+//     const response = await api.patch<T>(url, data, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function put<T = any, D = any>(
+//   url: string,
+//   data: D,
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const headers = await buildAuthHeaders(withAuth);
+//     const response = await api.put<T>(url, data, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function deleteRequest<T = any>(
+//   url: string,
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const headers = await buildAuthHeaders(withAuth);
+//     const response = await api.delete<T>(url, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// // Image builder for form data
+// function buildFormData(image: { path: string }) {
+//   const filename = image.path.replace(/^.*[\\\/]/, '');
+//   return {
+//     uri: image.path,
+//     type: 'image/jpeg',
+//     name: filename,
+//   } as any;
+// }
+
+// export async function uploadFile<T = any>(
+//   url: string,
+//   image: { path: string },
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const formData = new FormData();
+//     formData.append('file', buildFormData(image));
+//     const headers = {
+//       'Content-Type': 'multipart/form-data',
+//       ...(await buildAuthHeaders(withAuth)),
+//     };
+//     const response = await api.post<T>(url, formData, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function postReviewApi<T = any>(
+//   url: string,
+//   data: {
+//     text: string;
+//     rating: number;
+//     restaurantId: string;
+//     imageInfo: any[];
+//     images: { path: string }[];
+//   },
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const formData = new FormData();
+//     data.images.forEach(image => {
+//       formData.append('files', buildFormData(image));
+//     });
+//     formData.append('text', data.text);
+//     formData.append('rating', data.rating.toString());
+//     formData.append('restaurantId', data.restaurantId);
+//     formData.append('imageInfo', JSON.stringify(data.imageInfo));
+
+//     const headers = {
+//       'Content-Type': 'multipart/form-data',
+//       ...(await buildAuthHeaders(withAuth)),
+//     };
+//     const response = await api.post(url, formData, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+
+// export async function eventLogApi<T = any, D = any>(
+//   url: string,
+//   data: D,
+//   withAuth: boolean = true,
+// ): Promise<T> {
+//   try {
+//     const headers = await buildAuthHeaders(withAuth);
+//     const response = await api.post<T>(url, data, { headers });
+//     return response.data;
+//   } catch (error) {
+//     throw extractErrorMessage(error);
+//   }
+// }
+

@@ -117,8 +117,12 @@ const Shop: React.FC<any> = () => {
     try {
       await dispatch(getServices()).then((res: any) => {
         const response = res?.value?.data;
+        console.log(response);
+        
         dispatch(getServiceListing(response));
-      });
+      }).catch((error)=>{
+        console.log(error,'error')
+      })
     } finally {
       setLoading(false);
     }

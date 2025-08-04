@@ -32,15 +32,21 @@ LogBox.ignoreAllLogs();
 export type RootStackParamList = {
   splash: undefined;
   Login: undefined;
-  Register: undefined;
-  TwoStepVerifiction?: undefined;
+  Register: {
+    serviceId: string;
+  };
+  TwoStepVerifiction?: {
+    token: string;
+  };
   HomeScreen?: undefined;
   DrawerStack?: undefined;
   ChangePassword?: undefined;
   UpdateAccountDetail?: undefined;
   BottomTab?: undefined;
   Profile?: undefined;
-  DecidingQuestions?: undefined;
+  DecidingQuestions?: {
+    productServiceId: string;
+  };
   SelectState?: undefined;
   Questionaire?: undefined;
   PersonalInformation?: undefined;

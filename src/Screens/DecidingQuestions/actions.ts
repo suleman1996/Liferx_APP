@@ -25,7 +25,7 @@ export const clearDecidingAnswer = () => ({
 
 export const getDecidingQuestion = (id: any) => ({
   type: GET_DECIDING_QUESTIONS,
-  payload: get(`/api/v1/services/${id}/deciding-questions/`),
+  payload: get(`/api/v1/services/${id}/deciding-questions/`,),
 });
 
 export const saveDecidingAnswers = (data: object) => ({
@@ -42,4 +42,3 @@ export const setStartSession = (id: object) => ({
   type: SET_START_SESSION,
   payload: post('/api/v1/save-answers/start-session/', id),
 });
-

@@ -3,10 +3,9 @@ import {
   combineReducers,
   applyMiddleware,
 } from 'redux';
-import promiseMiddleware from 'redux-promise-middleware';
+import promiseMiddleware from 'redux-promise';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
-
 import loginReducer from '../Screens/Auth/Login/reducer';
 import twoStepVerificationReducer from '../Screens/Auth/2StepVerification/reducer';
 import decidingQuestionAnswer from '../Screens/DecidingQuestions/reducer';
