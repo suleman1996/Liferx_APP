@@ -163,7 +163,6 @@ const Register: React.FC<any> = ({ route }) => {
     try {
       const response = await dispatch(setStartSession(body));
       console.log(response, 'resssponseeee');
-
       if (response?.payload?.status === 200) {
         const id = response?.payload?.data?.session_id;
         dispatch(getSessionId(id));

@@ -5,6 +5,8 @@ import Header from '../../Components/Header/Header';
 import StepProgressBar from '../../Components/StepProgressBar/StepProgressBar';
 import {
   buildFormDataForImageUpload,
+  buildMediaFormData,
+  getFileName,
   h,
   useTypedNavigation,
   w,
@@ -17,6 +19,7 @@ import {
   addQuestionaireAnswer,
   getQuestionsListing,
   getRegularQuestions,
+  saveMultiMedia,
   saveRegularRuestions,
 } from './actions';
 import { QuestionTypes } from '../../utils/Constants/Constants';
@@ -26,12 +29,12 @@ const Questionaire: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
   const userId = useSelector(
-    (state: RootState) => state.registerReducer?.userData?.id,
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
-  const { selectedRegularAnswer, regularQuestions } = useSelector(
+  const { regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
-  const { selectedAnswer, sessionId } = useSelector(
+  const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );
   const [loadingState, setLoadingState] = useState({
@@ -42,7 +45,7 @@ const Questionaire: React.FC<any> = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const type = regularQuestions[currentIndex]?.type;
 
-  const handleContinue = (
+  const handleContinue = async (
     selectedOption: number[] | number,
     simpleText: string,
     imagePath?: string | null,
@@ -83,22 +86,48 @@ const Questionaire: React.FC<any> = () => {
       return;
     }
     if (type === QuestionTypes?.MULTI_MEDIA && imagePath) {
-      const formData = new FormData();
-      formData.append('question', currentQuestion?.id);
-      formData.append('session_id', sessionId);
-      formData.append('service_id', serviceId);
-      formData.append('user_id', userId);
-      formData.append('media', {
-        uri: imagePath,
-        name: `image_${Date.now()}.jpg`,
-        type: 'image/jpeg',
+      const formData = await buildMediaFormData({
+        sessionId,
+        questionId: currentQuestion?.id,
+        userId,
+        imagePath,
       });
+      setLoadingState(prev => ({ ...prev, submitting: true }));
+      dispatch(saveMultiMedia(formData))
+        .then((res: any) => {
+          if (res?.payload.status === 200) {
+            Toast.show({
+              type: 'success',
+              text2: res?.payload?.data?.message,
+            });
+          }
+          setLoadingState(prev => ({ ...prev, submitting: false }));
+        })
+        .catch((error: string) => {
+          setLoadingState(prev => ({ ...prev, submitting: false }));
+          Toast.show({
+            type: 'error',
+            text2: error,
+          });
+        });
     } else {
       const answers = {
-        question: currentQuestion?.id,
-        selectedOption,
-        simpleText,
         session_id: sessionId,
+        question: currentQuestion?.id,
+        user: userId,
+        json_answer:
+          type === QuestionTypes.SINGLE_SELECT
+            ? { selected: selectedOption }
+            : type === QuestionTypes.MULTI_SELECT
+            ? { selected: selectedOption } // array if API accepts arrays
+            : type === QuestionTypes.TEXT
+            ? { text: simpleText }
+            : type === QuestionTypes.MULTI_TEXT
+            ? {
+                selected: selectedOption,
+                explanation: simpleText, // if it's an object like { [optionId]: explanation }
+              }
+            : {},
       };
       setLoadingState(prev => ({ ...prev, submitting: true }));
       dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
@@ -110,7 +139,6 @@ const Questionaire: React.FC<any> = () => {
         })
         .catch((error: string) => {
           setLoadingState(prev => ({ ...prev, submitting: false }));
-          console.log(error, 'error');
         });
     }
     if (currentIndex < regularQuestions?.length - 1) {
@@ -145,9 +173,7 @@ const Questionaire: React.FC<any> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <CustomLoader
-        visible={loadingState.fetching || loadingState.submitting}
-      />
+      <CustomLoader visible={loadingState.fetching} />
       <Header onBackPress={handleBackPress} />
 
       <View style={styles.mainContainer}>
@@ -164,8 +190,9 @@ const Questionaire: React.FC<any> = () => {
                 return (
                   <QuestionaireCard
                     item={item}
-                    handleContinue={(selectedOption, plainText) =>
-                      handleContinue(selectedOption, plainText)
+                    isLoading={loadingState.submitting}
+                    handleContinue={(selectedOption, plainText, imagePath) =>
+                      handleContinue(selectedOption, plainText, imagePath)
                     }
                   />
                 );

@@ -19,18 +19,31 @@ import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import Toast from 'react-native-toast-message';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import { getClientSecretKey } from './action';
+import {
+  createOrder,
+  getClientSecretKey,
+  saveCompleteQuestion,
+} from './action';
 import Colors from '../../utils/Colors/Colors';
 import TermsCheckbox from '../../Components/TermsCheckbox/TermsCheckbox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDialog from '../../Components/CustomDialog/CustomDialog';
+import { setIsProfileCompleted } from '../Auth/Register/actions';
 
 const AddPaymentMethod: React.FC<any> = () => {
   const route = useRoute();
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
   const { matchedPaymentPlan } = route?.params;
-  const { userData } = useSelector((state: RootState) => state?.registerReducer);
+  const userData = useSelector(
+    (state: RootState) => state?.registerReducer?.userData?.data,
+  );
+  const { shippingAddress } = useSelector(
+    (state: RootState) => state?.personalInfoReducer,
+  );
+  const { sessionId } = useSelector(
+    (state: RootState) => state?.decidingQuestionAnswer,
+  );
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState(null);
   const [isCardFocused, setIsCardFocused] = useState(false);
@@ -56,7 +69,7 @@ const AddPaymentMethod: React.FC<any> = () => {
       setLoading(true);
       const body = {
         make_default: 'false',
-        patient_id: userData?.data?.id,
+        patient_id: userData?.id,
       };
       const response: any = await dispatch(getClientSecretKey(body));
       const clientSecret = response?.payload?.data?.client_secret;
@@ -66,13 +79,35 @@ const AddPaymentMethod: React.FC<any> = () => {
       // ✅ No useStripe here anymore
       const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
         paymentMethodType: 'Card',
+        paymentMethodData: {
+          billingDetails: {
+            name: 'User Name',
+          },
+        },
       });
       if (error) {
-        Alert.alert('Setup Intent Error', error.message);
+        Toast.show({
+          type: 'error',
+          text2: error.message,
+        });
       } else if (setupIntent?.status === 'Succeeded') {
-        console.log(setupIntent, 'Succeeded');
+        const body = {
+          patient: userData?.id,
+          product_variant_id: matchedPaymentPlan?.variant_id,
+          shipping_address_id: shippingAddress?.data?.id,
+          shipping_price: matchedPaymentPlan?.shipping_price,
+          total_price: matchedPaymentPlan?.plan_total_price,
+        };
+        dispatch(createOrder(body)).then((response: any) => {
+          if (response?.payload?.status === 200) {
+            dispatch(setIsProfileCompleted());
+          }
+        });
       } else {
-        Alert.alert('Failed', 'Card saving failed');
+        Toast.show({
+          type: 'error',
+          text2: 'Failed,Card saving failed',
+        });
       }
     } catch (err: any) {
       console.log('Error:', err);

@@ -1,7 +1,7 @@
 import {
   GET_ADDRESS_LISTING,
+  GET_SHIPPING_ADDRESS,
   GET_USER_DATA,
-  GET_USER_DETAILS,
   SET_ADDRESS,
   SET_DOB,
   SET_ERROR,
@@ -21,6 +21,7 @@ const initialState = {
   address: {},
   addressListing: [],
   userDetail: {},
+  shippingAddress: {},
 };
 
 export default function personalInfoReducer(state = initialState, action: any) {
@@ -88,7 +89,8 @@ export default function personalInfoReducer(state = initialState, action: any) {
       return { ...state, loading: false, addressListing: payload };
     case GET_USER_DATA:
       return { ...state, loading: false, userDetail: payload };
-
+    case GET_SHIPPING_ADDRESS:
+      return { ...state, loading: false, shippingAddress: payload };
     default:
       return state;
   }

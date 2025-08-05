@@ -157,3 +157,48 @@ export const buildFormDataForImageUpload = ({
   formData.append('file', file);
   return formData;
 };
+
+export const getFileName=(imagePath:string)=>{
+  return imagePath?.split('/').pop() || `image_${Date.now()}.jpg`
+}
+
+// utils/formDataBuilder.ts
+export async function buildMediaFormData({
+  sessionId,
+  questionId,
+  userId,
+  imagePath,
+}: {
+  sessionId: number;
+  questionId: number;
+  userId: number;
+  imagePath: string;
+}): Promise<FormData> {
+  const filename = getFileName(imagePath);
+  const stats = await fetch(imagePath);
+  const blob = await stats.blob();
+
+  const fileSize = blob.size;
+  const fileType = blob.type;
+
+  const jsonAnswer = JSON.stringify({
+    has_photo: true,
+    file_name: filename,
+    file_size: fileSize,
+    file_type: fileType,
+    timestamp: new Date().toISOString(),
+  });
+  const formData = new FormData();
+  formData.append('session_id', sessionId.toString());
+  formData.append('question', questionId.toString());
+  formData.append('user', userId.toString());
+  formData.append('json_answer', jsonAnswer);
+  formData.append('file', {
+    uri: imagePath.startsWith('file://') ? imagePath : `file://${imagePath}`,
+    name: filename,
+    type: fileType,
+  } as any);
+
+  return formData;
+}
+

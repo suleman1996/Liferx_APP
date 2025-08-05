@@ -1,5 +1,6 @@
 import {
   GET_USER_DATA,
+  IS_PROFILE_COMPLETED,
   SET_EMAIL,
   SET_ERROR,
   SET_PASSWORD,
@@ -23,7 +24,19 @@ export default function registerReducer(state = initialState, action: any) {
     case SET_ERROR:
       return { ...state, loading: false, error: action.payload };
     case GET_USER_DATA:
-      return { ...state, loading: false, userData: action.payload };
+      return { ...state, loading: false, userData: { data: action.payload } };
+    case IS_PROFILE_COMPLETED:
+      return {
+        ...state,
+        loading: false,
+        userData: {
+          ...state.userData,
+          data: {
+            ...state.userData.data,
+            is_profile_completed: true,
+          },
+        },
+      };
     default:
       return state;
   }

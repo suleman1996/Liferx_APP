@@ -24,7 +24,9 @@ import { usStates } from '../../utils/Constants/Constants';
 const SelectState: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);  
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
+  );
   const selectedState = useSelector(
     (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );
@@ -51,8 +53,8 @@ const SelectState: React.FC<any> = () => {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 80 : 0}
-        onTouchStart={()=>{
-          Keyboard.dismiss()
+        onTouchStart={() => {
+          Keyboard.dismiss();
         }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -84,7 +86,7 @@ const SelectState: React.FC<any> = () => {
                 selectedItem={selectedState}
                 setSearch={setSearch}
                 search={search}
-                customContainerStyle={{marginHorizontal:20}}
+                customContainerStyle={{ marginHorizontal: 20 }}
               />
 
               <View>

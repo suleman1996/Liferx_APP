@@ -31,6 +31,9 @@ const SuggestMedicine: React.FC<any> = () => {
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
+
+  console.log(userId,'suggest med');
+  
   const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );

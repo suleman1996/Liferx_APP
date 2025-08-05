@@ -28,13 +28,12 @@ import {
 import Colors from '../../utils/Colors/Colors';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
+import { getUserData } from '../PersonalInformation/actions';
 
 const PhoneVerification: React.FC<any> = () => {
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
-  );
-  console.log(userId,'phon');
-  
+  );  
   const phoneNumber = useSelector(
     (state: RootState) => state.phoneVerifyReducer.phoneNumber?.[userId] || '',
   );
@@ -67,6 +66,7 @@ const PhoneVerification: React.FC<any> = () => {
     dispatch(sendPhoneNumber(phoneNumber))
       .then((response: any) => {
         if (response?.payload?.status === 200) {
+          // dispatch(getUserData(response.payload))
           Toast.show({
             type: 'success',
             text2: response?.payload?.data,

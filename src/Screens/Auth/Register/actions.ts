@@ -3,6 +3,7 @@ import {
   CREATE_TOKEN,
   CREATE_USER,
   GET_USER_DATA,
+  IS_PROFILE_COMPLETED,
   SET_EMAIL,
   SET_ERROR,
   SET_PASSWORD,
@@ -41,4 +42,8 @@ export const createToken = (body: CreateUserRequest) => {
 export const getUserData = (data: string) => ({
   type: GET_USER_DATA,
   payload: data,
+});
+
+export const setIsProfileCompleted = () => ({
+  type: IS_PROFILE_COMPLETED,
 });

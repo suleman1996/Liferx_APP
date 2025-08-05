@@ -28,7 +28,9 @@ import {
 const DosageVarient: React.FC<any> = () => {
   const route = useRoute();
   const { selectedDosageItem, productId } = route?.params || {};
-  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
+  );
   const { doasgeVarientList } = useSelector(
     (state: RootState) => state.dosageVarientReducers,
   );
@@ -46,7 +48,9 @@ const DosageVarient: React.FC<any> = () => {
     await dispatch(getDosageVarients(productId, selectedDosageItem?.dosage))
       .then((res: any) => {
         if (res?.payload?.status === 200) {
-          dispatch(getDosageVarientsListing(res?.payload?.data?.usage_variants));
+          dispatch(
+            getDosageVarientsListing(res?.payload?.data?.usage_variants),
+          );
         }
         setLoading(false);
       })
@@ -61,11 +65,7 @@ const DosageVarient: React.FC<any> = () => {
 
   useEffect(() => {
     fetchDosageVarients();
-    console.log(userId,'userId');
-    
   }, []);
-
-
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -121,9 +121,14 @@ const DosageVarient: React.FC<any> = () => {
                   noShadow
                   onPressHandler={() => {
                     const selectedDosageVarientByList = doasgeVarientList.find(
-                      (i: any) => i?.variant_id?.toString() === selectedDosageVarient?.toString(),
+                      (i: any) =>
+                        i?.variant_id?.toString() ===
+                        selectedDosageVarient?.toString(),
                     );
-                    if (!selectedDosageVarient || !selectedDosageVarientByList) {
+                    if (
+                      !selectedDosageVarient ||
+                      !selectedDosageVarientByList
+                    ) {
                       Toast.show({
                         type: 'error',
                         text2: 'Please select your dosage',

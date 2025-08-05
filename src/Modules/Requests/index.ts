@@ -143,10 +143,12 @@ function buildFormData(image: { path: string }) {
   } as any;
 }
 
-export const postMultipart = (url: string, data: FormData) => {
-  return axios.post(url, data, {
+export const postMultipart = async (url: string, data: FormData) => {
+  const token = await AsyncStorage.getItem('token');
+  return axios.post(baseUrl + url, data, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
     },
   });
 };

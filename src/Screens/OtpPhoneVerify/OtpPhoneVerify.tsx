@@ -31,6 +31,8 @@ const OtpPhoneVerify: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
   const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
+  console.log(userId,'otp phone verify');
+  
   const verificationCode = useSelector(
     (state: RootState) =>
       state.verificationCodeReducer.verificationCode?.[userId] || '',

@@ -1,8 +1,10 @@
 import { get, post, put } from '../../Modules/Requests';
 import {
+  ADD_SHIPPING_ADDRESS,
   ADD_USER_DETAILS,
   GET_ADDRESS,
   GET_ADDRESS_LISTING,
+  GET_SHIPPING_ADDRESS,
   GET_USER_DATA,
   GET_USER_DETAILS,
   SET_ADDRESS,
@@ -69,5 +71,14 @@ export const getUserDetails = () => ({
 });
 export const getUserData = (data: object) => ({
   type: GET_USER_DATA,
+  payload: { data },
+});
+
+export const addShippingAddress = (data: object) => ({
+  type: ADD_SHIPPING_ADDRESS,
+  payload: post('/api/v1/shipping_address/', data),
+});
+export const getShippingAddress = (data: object) => ({
+  type: GET_SHIPPING_ADDRESS,
   payload: { data },
 });

@@ -21,10 +21,11 @@ import Button from '../../Components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import {
+  addShippingAddress,
   addUserDetails,
   getAddress,
   getAddressList,
-  getUserData,
+  getShippingAddress,
   getUserDetails,
   setAddress,
   setDob,
@@ -41,17 +42,15 @@ import {
 } from '../../utils/Constants/Constants';
 import StreetAddressDropdown from '../../Components/StreetAddressDropdown/StreetAddressDropdown';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
+import { getUserData } from '../Auth/Register/actions';
 
 const PersonalInformation: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const { userDetail } = useSelector(
-    (state: RootState) => state.personalInfoReducer,
-  );
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
-  );  
-  const { error, addressListing } = useSelector(
+  );
+  const { error, addressListing, userDetail } = useSelector(
     (state: RootState) => state?.personalInfoReducer,
   );
   const selectedState = useSelector(
@@ -68,6 +67,31 @@ const PersonalInformation: React.FC<any> = () => {
   const [typedAddress, setTypedAddress] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const selectedStateAbbrevation = stateAbbreviations[selectedState?.name];
+
+  const getShippingAddres = () => {
+    const body = {
+      country: 'United States',
+      patient: userId,
+      apt_suite: selectedStateAbbrevation,
+      city: personalInfo?.address?.city,
+      date_of_birth: personalInfo?.dateOfBirth,
+      first_name: personalInfo?.firstName,
+      gender: personalInfo?.gender,
+      last_name: personalInfo?.lastName,
+      state: selectedState?.name,
+      street_address: personalInfo?.address?.street_line,
+      zip_code: personalInfo?.address?.zipcode,
+    };
+    dispatch(addShippingAddress(body))
+      .then((response: any) => {
+        if (response) {
+          dispatch(getShippingAddress(response?.payload?.data));
+        }
+      })
+      .catch((err: string) => {
+        console.log(err, 'err');
+      });
+  };
 
   const personalInfoHandler = () => {
     if (!personalInfo?.firstName) {
@@ -102,7 +126,6 @@ const PersonalInformation: React.FC<any> = () => {
       apt_suite: selectedStateAbbrevation,
       city: personalInfo?.address?.city,
       date_of_birth: personalInfo?.dateOfBirth,
-
       first_name: personalInfo?.firstName,
       gender: personalInfo?.gender,
       last_name: personalInfo?.lastName,
@@ -114,6 +137,8 @@ const PersonalInformation: React.FC<any> = () => {
     dispatch(addUserDetails(body))
       .then((response: any) => {
         if (response) {
+          dispatch(getUserData(response?.payload));
+          getShippingAddres();
           navigation.navigate('PhoneVerification');
         }
         setLoading(false);
@@ -149,7 +174,6 @@ const PersonalInformation: React.FC<any> = () => {
       .then((response: any) => {
         if (response?.payload?.status === 200) {
           const data = response?.payload?.data;
-          dispatch(getUserData(data));
           dispatch(setFirstName(data?.first_name || '', userId));
           dispatch(setLastName(data?.last_name || '', userId));
           dispatch(setDob(data?.date_of_birth, userId));
@@ -189,7 +213,6 @@ const PersonalInformation: React.FC<any> = () => {
     const timeout = setTimeout(() => {
       getStreetAddress(typedAddress);
     }, 500);
-
     return () => clearTimeout(timeout);
   }, [typedAddress]);
 

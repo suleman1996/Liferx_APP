@@ -25,7 +25,7 @@ import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const navigation = useTypedNavigation();
   const userId = useSelector(
-    (state: RootState) => state.registerReducer?.userData?.id,
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
   const { token } = route?.params;
   const { email } = useSelector((state: RootState) => state?.registerReducer);

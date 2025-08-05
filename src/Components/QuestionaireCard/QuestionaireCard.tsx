@@ -30,15 +30,26 @@ interface QuestionItem {
 
 interface Props {
   item?: QuestionItem;
-  handleContinue?: (selected: number[], explaination: string) => void;
+  isLoading?: boolean;
+  handleContinue?: (
+    selected: number[],
+    explaination: string,
+    imagePath?: string | null,
+  ) => void;
   existingAnswer?: {
     selectedOption: number[] | number;
     simpleText: string;
   };
 }
 
-const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
-  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);
+const QuestionaireCard: React.FC<Props> = ({
+  item,
+  handleContinue,
+  isLoading,
+}) => {
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
+  );
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
     state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[
@@ -179,6 +190,8 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
           onPressHandler={() => {
             if (item?.type === QuestionTypes.TEXT) {
               handleContinue?.([], simpleText);
+            } else if (item?.type === QuestionTypes.MULTI_MEDIA) {
+              handleContinue?.([], '', imagePath);
             } else {
               handleContinue?.(selected, explaination);
             }
@@ -186,6 +199,7 @@ const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
           customButtonStyles={styles.customButtonStyles}
           customTextStyles={styles.customTextStyles}
           noShadow
+          loading={isLoading}
         />
       )}
     </View>

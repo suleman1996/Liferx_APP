@@ -19,7 +19,6 @@ import store, { persistor, RootState } from '../../../Store';
 import {
   createLogin,
   getToken,
-  getUserData,
   setEmail,
   setError,
   setPassword,
@@ -33,7 +32,7 @@ const Login: React.FC<any> = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { email, password, error,userData } = useSelector(
+  const { email, password, error} = useSelector(
     (state: RootState) => state?.login,
   );
   const navigation = useTypedNavigation();
@@ -53,14 +52,12 @@ const Login: React.FC<any> = () => {
     };
     dispatch(createLogin(body))
       .then(async (res: any) => {
-        const response = res?.value;
+        const response = res?.payload;
         if (response?.status === 200) {
-          const newToken = response?.data?.token?.access;
-          const newUser = response?.data?.user; 
-          await AsyncStorage.setItem('token', newToken);
-          dispatch(getToken(newToken));
-          dispatch(getUserData(newUser));
-          navigation.navigate('BottomTab');
+          // const newToken = response?.payload?.token?.access;
+          // await AsyncStorage.setItem('token', newToken);
+          // dispatch(getToken(newToken));
+          // navigation.navigate('BottomTab');
           Toast.show({
             type: 'success',
             text2: 'Login successfully',

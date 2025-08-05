@@ -24,6 +24,7 @@ import onBoardingReducer from '../Screens/Auth/Onboarding/reducer';
 
 const PERSIST_WHITELIST = [
   'login',
+  'registerReducer',
   'decidingQuestionAnswer',
   'selectYourState',
   'RegularQuestionsAnswer',
