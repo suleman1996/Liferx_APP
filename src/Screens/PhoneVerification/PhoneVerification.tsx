@@ -30,7 +30,11 @@ import Toast from 'react-native-toast-message';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const PhoneVerification: React.FC<any> = () => {
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
+  );
+  console.log(userId,'phon');
+  
   const phoneNumber = useSelector(
     (state: RootState) => state.phoneVerifyReducer.phoneNumber?.[userId] || '',
   );
@@ -62,10 +66,10 @@ const PhoneVerification: React.FC<any> = () => {
     }
     dispatch(sendPhoneNumber(phoneNumber))
       .then((response: any) => {
-        if (response?.value?.status === 200) {
+        if (response?.payload?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: response?.value?.data,
+            text2: response?.payload?.data,
           });
           navigation.navigate('OtpPhoneVerify');
         }
@@ -91,15 +95,6 @@ const PhoneVerification: React.FC<any> = () => {
       return null;
     }
   };
-
-  // const personalInfo = useSelector((state: RootState) => ({
-  //   firstName: state.personalInfoReducer.firstName?.[userId] || '',
-  //   lastName: state.personalInfoReducer.lastName?.[userId] || '',
-  //   dateOfBirth: state.personalInfoReducer.dateOfBirth?.[userId] || '',
-  //   gender: state.personalInfoReducer.gender?.[userId] || '',
-  //   state: state.selectYourState?.selectedState?.[userId]?.name || '',
-  //   address: state.personalInfoReducer.address?.[userId] || null,
-  // }));
 
   return (
     <SafeAreaView

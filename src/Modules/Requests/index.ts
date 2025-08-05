@@ -25,12 +25,28 @@ const api: AxiosInstance = axios.create({
 
 // Add token from AsyncStorage
 api.interceptors.request.use(async config => {
-  const token = await AsyncStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const skipAuth = config.headers?.skipAuth;
+
+  if (!skipAuth) {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
   }
+
+  // Remove custom flag so it doesn't go to backend
+  delete config.headers.skipAuth;
+
   return config;
 });
+
+// api.interceptors.request.use(async config => {
+//   const token = await AsyncStorage.getItem('token');
+//   if (token) {
+//     config.headers.Authorization = `Bearer ${token}`;
+//   }
+//   return config;
+// });
 
 // Extract user-friendly error
 function extractErrorMessage(error: any): string {
@@ -126,6 +142,14 @@ function buildFormData(image: { path: string }) {
     name: filename,
   } as any;
 }
+
+export const postMultipart = (url: string, data: FormData) => {
+  return axios.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 export async function uploadFile<T = any>(
   url: string,

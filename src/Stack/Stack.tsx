@@ -32,9 +32,7 @@ LogBox.ignoreAllLogs();
 export type RootStackParamList = {
   splash: undefined;
   Login: undefined;
-  Register: {
-    serviceId: string;
-  };
+  Register: undefined;
   TwoStepVerifiction?: {
     token: string;
   };

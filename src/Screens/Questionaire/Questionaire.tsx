@@ -25,7 +25,9 @@ import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 const Questionaire: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.id,
+  );
   const { selectedRegularAnswer, regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
@@ -80,36 +82,37 @@ const Questionaire: React.FC<any> = () => {
       });
       return;
     }
-    // if(type === QuestionTypes?.MULTI_MEDIA && imagePath){
-    //       const formData = new FormData();
-    // formData.append('question', currentQuestion?.id);
-    // formData.append('session_id', sessionId);
-    // formData.append('service_id', serviceId);
-    // formData.append('user_id', userId);
-    // formData.append('media', {
-    //   uri: imagePath,
-    //   name: `image_${Date.now()}.jpg`,
-    //   type: 'image/jpeg',
-    // });
-    // }
-    const answers = {
-      question: currentQuestion?.id,
-      selectedOption,
-      simpleText,
-      session_id: sessionId,
-    };
-    setLoadingState(prev => ({ ...prev, submitting: true }));
-    dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
-    dispatch(saveRegularRuestions(answers))
-      .then((response: any) => {
-        if (response?.value?.status === 200) {
-          setLoadingState(prev => ({ ...prev, submitting: false }));
-        }
-      })
-      .catch((error: string) => {
-        setLoadingState(prev => ({ ...prev, submitting: false }));
-        console.log(error, 'error');
+    if (type === QuestionTypes?.MULTI_MEDIA && imagePath) {
+      const formData = new FormData();
+      formData.append('question', currentQuestion?.id);
+      formData.append('session_id', sessionId);
+      formData.append('service_id', serviceId);
+      formData.append('user_id', userId);
+      formData.append('media', {
+        uri: imagePath,
+        name: `image_${Date.now()}.jpg`,
+        type: 'image/jpeg',
       });
+    } else {
+      const answers = {
+        question: currentQuestion?.id,
+        selectedOption,
+        simpleText,
+        session_id: sessionId,
+      };
+      setLoadingState(prev => ({ ...prev, submitting: true }));
+      dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
+      dispatch(saveRegularRuestions(answers))
+        .then((response: any) => {
+          if (response?.payload?.status === 200) {
+            setLoadingState(prev => ({ ...prev, submitting: false }));
+          }
+        })
+        .catch((error: string) => {
+          setLoadingState(prev => ({ ...prev, submitting: false }));
+          console.log(error, 'error');
+        });
+    }
     if (currentIndex < regularQuestions?.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
@@ -131,7 +134,7 @@ const Questionaire: React.FC<any> = () => {
       setLoadingState(prev => ({ ...prev, fetching: true }));
       try {
         await dispatch(getRegularQuestions(serviceId)).then((res: any) => {
-          dispatch(getQuestionsListing(res?.value?.data?.questions));
+          dispatch(getQuestionsListing(res?.payload?.data?.questions));
         });
       } finally {
         setLoadingState(prev => ({ ...prev, fetching: false }));

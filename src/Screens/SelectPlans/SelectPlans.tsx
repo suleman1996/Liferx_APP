@@ -32,7 +32,7 @@ const SelectPlans: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const { selectedDosageVarientByList, productId, selectedDosageItem } =
     route?.params;
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
   const { plansListing } = useSelector(
     (state: RootState) => state.paymentPlansReducers,
   );
@@ -56,9 +56,9 @@ const SelectPlans: React.FC<any> = () => {
       ),
     )
       .then((response: any) => {
-        if (response?.value?.status === 200) {
+        if (response?.payload?.status === 200) {
           dispatch(
-            getPaymentPlansListing(response?.value?.data?.plan_variants),
+            getPaymentPlansListing(response?.payload?.data?.plan_variants),
           );
         }
         setLoading(false);

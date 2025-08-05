@@ -107,7 +107,7 @@ useEffect(() => {
         )}
       </View>
 
-      {isOpen && input.trim() !== '' && data.length > 0 && (
+      {isOpen && input?.trim() !== '' && data?.length > 0 && (
         <FlatList
           data={data}
           keyExtractor={(item, index) =>

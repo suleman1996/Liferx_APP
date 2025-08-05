@@ -24,7 +24,7 @@ import { usStates } from '../../utils/Constants/Constants';
 const SelectState: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);  
   const selectedState = useSelector(
     (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );

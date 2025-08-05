@@ -116,7 +116,7 @@ const Oboarding: React.FC<any> = () => {
                 try {
                   // await AsyncStorage.setItem('onBoard', 'true');
                   // dispatch(setOnBoarding(true));
-                  navigation.navigate('Login');
+                  navigation.navigate('BottomTab');
                 } catch (err) {
                   console.log('Failed to save onBoarding flag:', err);
                 }

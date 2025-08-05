@@ -30,7 +30,7 @@ import { verifyOtp } from '../Auth/2StepVerification/actions';
 const OtpPhoneVerify: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
   const verificationCode = useSelector(
     (state: RootState) =>
       state.verificationCodeReducer.verificationCode?.[userId] || '',
@@ -61,10 +61,10 @@ const OtpPhoneVerify: React.FC<any> = () => {
     setLoading(true);
     await dispatch(sendPhoneOtp(body))
       .then((res: any) => {
-        if (res?.value?.status === 200) {
+        if (res?.payload?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: res?.value?.data,
+            text2: res?.payload?.data,
           });
         }
         setLoading(false);
@@ -92,10 +92,10 @@ const OtpPhoneVerify: React.FC<any> = () => {
     };
     dispatch(verifyOtp(body, ''))
       .then((res: any) => {
-        if (res?.value?.status === 200) {
+        if (res?.payload?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: res?.value?.data,
+            text2: res?.payload?.data,
           });
           navigation.navigate('SuggestMedicine');
           dispatch(setVerificationCode('', ''));

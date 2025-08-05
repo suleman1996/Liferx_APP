@@ -38,7 +38,7 @@ interface Props {
 }
 
 const QuestionaireCard: React.FC<Props> = ({ item, handleContinue }) => {
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
     state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[

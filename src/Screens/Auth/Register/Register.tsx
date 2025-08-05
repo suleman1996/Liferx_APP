@@ -40,16 +40,13 @@ import {
   saveDecidingAnswers,
   setStartSession,
 } from '../../DecidingQuestions/actions';
-import { api } from '../../../Modules/Requests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Register: React.FC<any> = ({ route }) => {
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
-  const { serviceId } = route?.params;
-  const userId = useSelector(
-    (state: RootState) => state.registerReducer?.userData?.id,
-  );
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
+  const userId = store.getState().registerReducer?.userData?.id;
   const { email, password, error } = useSelector(
     (state: RootState) => state.registerReducer,
   );
@@ -94,58 +91,45 @@ const Register: React.FC<any> = ({ route }) => {
           };
           dispatch(createToken(tokenBody))
             .then(async (res: any) => {
-              console.log(res,'resssss');
-              if(res?.value?.status === 200){
-              if (token) {
-                navigation.navigate('TwoStepVerifiction', { token });
+              const token = res?.payload?.data?.token?.access;
+              await AsyncStorage.setItem('token', token);
+              const session_id = await fetchSessionID();
+              if (!session_id) {
+                return;
               }
+              if (res?.payload?.status === 200) {
+                dispatch(getUserData(res?.payload?.data?.user));
+                const updatedSelectedAnswer =
+                  store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[
+                    userId
+                  ]?.[serviceId];
+                const updatedDecidingAnswers = {
+                  answers: updatedSelectedAnswer?.map(
+                    ({ serviceId, userId, ...rest }) => rest,
+                  ),
+                  session_id,
+                };
+                dispatch(saveDecidingAnswers(updatedDecidingAnswers))
+                  .then((response: any) => {
+                    if (response?.payload?.status === 200) {
+                      Toast.show({
+                        type: 'success',
+                        text2: response?.payload?.data?.message,
+                      });
+                      navigation?.navigate('TwoStepVerifiction', { token });
+                    }
+                  })
+                  .catch((err: string) => {
+                    Toast.show({
+                      type: 'error',
+                      text2: err,
+                    });
+                  });
               }
-              
-              // const session_id = await fetchSessionID();
-              // if (!session_id) {
-              //   return;
-              // }
-              // const newToken = res?.payload?.data?.token?.access;
-              // console.log(newToken);
-              
-              // await AsyncStorage.setItem('token', newToken);
-              // const checkToken = await AsyncStorage.getItem('token');
-              // console.log('✅ Stored Token:', checkToken);
-              // api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-              // dispatch(getUserData(res?.payload?.data?.user));
-              // const updatedSelectedAnswer =
-              //   store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[
-              //     userId
-              //   ]?.[serviceId];
-              // const updatedDecidingAnswers = {
-              //   answers: updatedSelectedAnswer?.map(
-              //     ({ serviceId, userId, ...rest }) => rest,
-              //   ),
-              //   session_id,
-              // };
-              // console.log(updatedDecidingAnswers,'updating');
-              
-              // dispatch(saveDecidingAnswers(updatedDecidingAnswers)).then(
-              //   (response: any) => {
-              //     if (response?.payload?.status === 200) {
-              //       Toast.show({
-              //         type: 'success',
-              //         text2: response?.payload?.data?.message,
-              //       });
-              //       navigation?.navigate('TwoStepVerifiction')
-              //     }
-              //   },
-              // ).catch((err:string)=>{
-              //   Toast.show({
-              //     type:'error',
-              //     text2: err
-              //   })
-              // })
-
-              setLoading(false)
+              setLoading(false);
             })
             .catch((error: string) => {
-              setLoading(false)
+              setLoading(false);
               Toast.show({
                 type: 'error',
                 text2: error,
@@ -178,9 +162,10 @@ const Register: React.FC<any> = ({ route }) => {
     };
     try {
       const response = await dispatch(setStartSession(body));
+      console.log(response, 'resssponseeee');
+
       if (response?.payload?.status === 200) {
         const id = response?.payload?.data?.session_id;
-        console.log(id,'sessionID');
         dispatch(getSessionId(id));
         return id;
       }

@@ -28,7 +28,7 @@ import {
 const DosageVarient: React.FC<any> = () => {
   const route = useRoute();
   const { selectedDosageItem, productId } = route?.params || {};
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
   const { doasgeVarientList } = useSelector(
     (state: RootState) => state.dosageVarientReducers,
   );
@@ -45,8 +45,8 @@ const DosageVarient: React.FC<any> = () => {
     setLoading(true);
     await dispatch(getDosageVarients(productId, selectedDosageItem?.dosage))
       .then((res: any) => {
-        if (res?.value?.status === 200) {
-          dispatch(getDosageVarientsListing(res?.value?.data?.usage_variants));
+        if (res?.payload?.status === 200) {
+          dispatch(getDosageVarientsListing(res?.payload?.data?.usage_variants));
         }
         setLoading(false);
       })
@@ -61,7 +61,11 @@ const DosageVarient: React.FC<any> = () => {
 
   useEffect(() => {
     fetchDosageVarients();
+    console.log(userId,'userId');
+    
   }, []);
+
+
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

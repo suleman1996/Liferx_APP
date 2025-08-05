@@ -26,7 +26,7 @@ const SelectDosage: React.FC<any> = () => {
   const navigation = useTypedNavigation();
   const route = useRoute();
   const { productId } = route?.params;
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
   const selectedDosage = useSelector(
     (state: RootState) =>
       state.dosageReducers.selectDosage?.[userId]?.[productId] || '',
@@ -40,8 +40,8 @@ const SelectDosage: React.FC<any> = () => {
     setLoading(true);
     await dispatch(getDosage(productId))
       .then((res: any) => {
-        if (res?.value?.status === 200) {
-          dispatch(getDosageListing(res?.value?.data?.dosages));
+        if (res?.payload?.status === 200) {
+          dispatch(getDosageListing(res?.payload?.data?.dosages));
         }
         setLoading(false);
       })

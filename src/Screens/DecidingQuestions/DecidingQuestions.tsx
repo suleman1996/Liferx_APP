@@ -21,12 +21,11 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const { decidingQuestions } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
-  const {serviceId} = route?.params;
-  const userId = useSelector((state: RootState) => state.login?.userData?.id);
-  // const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);  
   const selectedAnswer = useSelector(
     (state: RootState) =>
-      state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[2],
+      state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[serviceId],
   );
   const navigation = useTypedNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,43 +62,43 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('Register',{serviceId})
-      setSubmitLoading(true);
-      const session_id = await fetchSessionID();
-      if (!session_id) {
-        setSubmitLoading(false);
-        return;
-      }
-      const updatedSelectedAnswer =
-        store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[userId]?.[
-          serviceId
-        ];
-      const body = {
-        answers: updatedSelectedAnswer?.map(
-          ({ serviceId, userId, ...rest }) => rest,
-        ),
-        session_id,
-      };
-      dispatch(saveDecidingAnswers(body))
-        .then((response: any) => {
-          if (response?.value?.status === 200) {
-            Toast.show({
-              type: 'success',
-              text2: response?.value?.data?.message,
-            });
-            setTimeout(() => {
-              navigation.navigate('SelectState');
-            }, 200);
-          }
-          setSubmitLoading(false);
-        })
-        .catch((error: string) => {
-          setSubmitLoading(false);
-          Toast.show({
-            type: 'error',
-            text2: error,
-          });
-        });
+      navigation.navigate('Register')
+      // setSubmitLoading(true);
+      // const session_id = await fetchSessionID();
+      // if (!session_id) {
+      //   setSubmitLoading(false);
+      //   return;
+      // }
+      // const updatedSelectedAnswer =
+      //   store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[userId]?.[
+      //     serviceId
+      //   ];
+      // const body = {
+      //   answers: updatedSelectedAnswer?.map(
+      //     ({ serviceId, userId, ...rest }) => rest,
+      //   ),
+      //   session_id,
+      // };
+      // dispatch(saveDecidingAnswers(body))
+      //   .then((response: any) => {
+      //     if (response?.value?.status === 200) {
+      //       Toast.show({
+      //         type: 'success',
+      //         text2: response?.value?.data?.message,
+      //       });
+      //       setTimeout(() => {
+      //         navigation.navigate('SelectState');
+      //       }, 200);
+      //     }
+      //     setSubmitLoading(false);
+      //   })
+      //   .catch((error: string) => {
+      //     setSubmitLoading(false);
+      //     Toast.show({
+      //       type: 'error',
+      //       text2: error,
+      //     });
+      //   });
     }
   };
 
@@ -128,25 +127,26 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
     }
   };
 
-  const fetchSessionID = async (): Promise<string | null> => {
-    const body = {
-      questionnaire_id: decidingQuestions?.questionnaire_id,
-    };
-    try {
-      const response = await dispatch(setStartSession(body));
-      if (response?.value?.status === 200) {
-        const id = response?.value?.data?.session_id;
-        dispatch(getSessionId(id));
-        return id;
-      }
-    } catch (error: any) {
-      Toast.show({
-        type: 'error',
-        text2: error,
-      });
-    }
-    return null;
-  };
+  // const fetchSessionID = async (): Promise<string | null> => {
+  //   const body = {
+  //     questionnaire_id: decidingQuestions?.questionnaire_id,
+  //   };
+  //   try {
+  //     const response = await dispatch(setStartSession(body));
+  //     if (response?.value?.status === 200) {
+  //       const id = response?.value?.data?.session_id;
+  //       dispatch(getSessionId(id));
+  //       return id;
+  //     }
+  //   } catch (error: any) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text2: error,
+  //     });
+  //   }
+  //   return null;
+  // };
+  
   
 
   return (

@@ -48,7 +48,9 @@ const PersonalInformation: React.FC<any> = () => {
   const { userDetail } = useSelector(
     (state: RootState) => state.personalInfoReducer,
   );
-  const userId = useSelector((state: RootState) => state.login.userData?.id);
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.data?.id,
+  );  
   const { error, addressListing } = useSelector(
     (state: RootState) => state?.personalInfoReducer,
   );
@@ -133,8 +135,8 @@ const PersonalInformation: React.FC<any> = () => {
     setIsLoading(true);
     await dispatch(getAddress(body))
       .then((response: any) => {
-        if (response?.value?.status === 200) {
-          dispatch(getAddressList(response?.value?.data?.suggestions));
+        if (response?.payload?.status === 200) {
+          dispatch(getAddressList(response?.payload?.data?.suggestions));
         }
         setIsLoading(false);
       })
@@ -145,8 +147,8 @@ const PersonalInformation: React.FC<any> = () => {
     setLoading(true);
     await dispatch(getUserDetails())
       .then((response: any) => {
-        if (response?.value?.status === 200) {
-          const data = response?.value?.data;
+        if (response?.payload?.status === 200) {
+          const data = response?.payload?.data;
           dispatch(getUserData(data));
           dispatch(setFirstName(data?.first_name || '', userId));
           dispatch(setLastName(data?.last_name || '', userId));

@@ -3,6 +3,8 @@ import { View, Text, Image, Pressable, Alert, Linking } from 'react-native';
 import styles from './style';
 import { useTypedNavigation, w } from '../../utils/Helper/Helper';
 import { weightLossUrl } from '../../utils/Constants/Constants';
+import { useDispatch } from 'react-redux';
+import { getServiceId } from '../../Screens/Shop/actions';
 
 interface ProductItem {
   id: number;
@@ -19,6 +21,7 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({ item, index }) => {
   const navigation = useTypedNavigation();
+  const dispatch = useDispatch();
   return (
     <Pressable
       style={[styles.card, index > 0 && { marginLeft: w(20) }]}
@@ -26,9 +29,9 @@ const ProductCard: React.FC<Props> = ({ item, index }) => {
         if (index === 2) {
           Linking.openURL(weightLossUrl);
         } else {
-          navigation.navigate('DecidingQuestions', {
-            serviceId: item?.serviceID,
-          });
+          dispatch(getServiceId(item?.serviceID));
+
+          navigation.navigate('DecidingQuestions');
         }
       }}
     >

@@ -30,7 +30,7 @@ const AddPaymentMethod: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
   const { matchedPaymentPlan } = route?.params;
-  const { userData } = useSelector((state: RootState) => state?.login);
+  const { userData } = useSelector((state: RootState) => state?.registerReducer);
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState(null);
   const [isCardFocused, setIsCardFocused] = useState(false);
@@ -56,10 +56,10 @@ const AddPaymentMethod: React.FC<any> = () => {
       setLoading(true);
       const body = {
         make_default: 'false',
-        patient_id: userData?.id,
+        patient_id: userData?.data?.id,
       };
       const response: any = await dispatch(getClientSecretKey(body));
-      const clientSecret = response?.value?.data?.client_secret;
+      const clientSecret = response?.payload?.data?.client_secret;
       if (!clientSecret) {
         throw new Error('Client secret not received from backend');
       }

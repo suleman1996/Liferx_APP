@@ -24,6 +24,9 @@ import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 
 const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const navigation = useTypedNavigation();
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.id,
+  );
   const { token } = route?.params;
   const { email } = useSelector((state: RootState) => state?.registerReducer);
   const { code } = useSelector(
@@ -44,7 +47,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
 
   const createOtp = () => {
     dispatch(sendOtp(token))
-      .then((res:any) => {
+      .then((res: any) => {
         if (res?.value?.status === 200) {
           Toast.show({
             type: 'success',
@@ -52,7 +55,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
           });
         }
       })
-      .catch((error:string) => {
+      .catch((error: string) => {
         Toast.show({
           type: 'error',
           text2: error,
@@ -78,14 +81,14 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
     const body = {
       otp_code: code,
     };
-    dispatch(verifyOtp(body,token))
-      .then((res:any) => {
-        if (res?.value?.status === 200) {
+    dispatch(verifyOtp(body, token))
+      .then((res: any) => {
+        if (res?.payload?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: res?.value?.data,
+            text2: res?.payload?.data,
           });
-          navigation.navigate('Login');
+          navigation.navigate('SelectState');
           dispatch(setCode(''));
         } else {
           Toast.show({
@@ -95,7 +98,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
         }
         setLoading(false);
       })
-      .catch((err:string) => {
+      .catch((err: string) => {
         setLoading(false);
         Toast.show({
           type: 'error',
@@ -104,9 +107,9 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
       });
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(setCode(''));
-  },[])
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
