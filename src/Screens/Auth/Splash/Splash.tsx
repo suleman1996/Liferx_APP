@@ -2,16 +2,27 @@ import React, { useEffect } from 'react';
 import { ImageBackground, View } from 'react-native';
 import styles from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Store';
 
 const Splash: React.FC<any> = ({ navigation }) => {
+  const { userData } = useSelector(
+    (state: RootState) => state?.registerReducer,
+  );
+
+  console.log(JSON.stringify(userData),'userdata splash');
+  
+
   useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('token');
       const onBoard = await AsyncStorage.getItem('onBoard');
 
+      console.log(onBoard,'onBoard');
+      
       if (onBoard === 'true') {
         if (token) {
-          navigation.replace('BottomTab');
+          navigation.replace('HomeScreen');
         } else {
           navigation.replace('Login');
         }

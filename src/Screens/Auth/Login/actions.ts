@@ -24,11 +24,6 @@ export const setError = (data: string) => ({
   type: SET_LOGIN_ERROR,
   payload: data,
 });
-export const getToken = (data: string) => ({
-  type: GET_TOKEN,
-  payload: data,
-});
-
 export const createLogin = (data: CreateLoginRequest) => ({
   type: CREATE_LOGIN,
   payload: post('/api/token/', data),

@@ -1,4 +1,5 @@
 import {
+  GET_TOKEN,
   GET_USER_DATA,
   IS_PROFILE_COMPLETED,
   SET_EMAIL,
@@ -13,6 +14,8 @@ const initialState = {
   password: '',
   error: '',
   userData: {},
+  token: '',
+  prevToken: '',
 };
 
 export default function registerReducer(state = initialState, action: any) {
@@ -26,16 +29,24 @@ export default function registerReducer(state = initialState, action: any) {
     case GET_USER_DATA:
       return { ...state, loading: false, userData: { data: action.payload } };
     case IS_PROFILE_COMPLETED:
+      console.log('✅ Reducer updated is_profile_completed');
       return {
         ...state,
         loading: false,
         userData: {
           ...state.userData,
           data: {
-            ...state.userData.data,
+            ...(state.userData?.data || {}),
             is_profile_completed: true,
           },
         },
+      };
+    case GET_TOKEN:
+      return {
+        ...state,
+        loading: false,
+        prevToken: state.token || '',
+        token: action.payload,
       };
     default:
       return state;

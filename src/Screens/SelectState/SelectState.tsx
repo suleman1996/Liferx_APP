@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
@@ -17,24 +18,33 @@ import Button from '../../Components/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import { setState } from './actions';
-import { useTypedNavigation } from '../../utils/Helper/Helper';
+import {
+  usePreviousRouteName,
+  useTypedNavigation,
+} from '../../utils/Helper/Helper';
 import Toast from 'react-native-toast-message';
 import { usStates } from '../../utils/Constants/Constants';
+import { useNavigationState } from '@react-navigation/native';
+import LogoutModal from '../../Components/LogoutModal/LogoutModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getToken } from '../Auth/Register/actions';
+import { clearDecidingAnswer } from '../DecidingQuestions/actions';
 
 const SelectState: React.FC<any> = () => {
+  const prevRouteName = usePreviousRouteName();
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
+  const { token, userData } = useSelector(
+    (state: RootState) => state.registerReducer,
+  );
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
   const selectedState = useSelector(
     (state: RootState) => state.selectYourState?.selectedState?.[userId],
   );
-  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
-  const { selectedAnswer, decidingQuestions, sessionId } = useSelector(
-    (state: RootState) => state.decidingQuestionAnswer,
-  );
   const [search, setSearch] = useState(selectedState?.name || '');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleContinue = () => {
     if (!selectedState) {
@@ -47,6 +57,17 @@ const SelectState: React.FC<any> = () => {
     navigation.navigate('Questionaire');
   };
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    dispatch(getToken(''));
+    dispatch(clearDecidingAnswer());
+    setShowLogoutModal(false);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }],
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <KeyboardAvoidingView
@@ -57,13 +78,25 @@ const SelectState: React.FC<any> = () => {
           Keyboard.dismiss();
         }}
       >
+        <LogoutModal
+          visible={showLogoutModal}
+          onCancel={() => setShowLogoutModal(false)}
+          onLogout={handleLogout}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
           >
-            <Header title="State" />
+            <Header
+              title="State"
+              // onBackPress={() => {
+              //   if (prevRouteName === 'Login' && token) {
+              //     setShowLogoutModal(true);
+              //   }
+              // }}
+            />
             <View style={styles.mainContainer}>
               <Image
                 source={require('../../Assets/Images/logo.png')}

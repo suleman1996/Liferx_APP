@@ -125,7 +125,7 @@ const Questionaire: React.FC<any> = () => {
             : type === QuestionTypes.MULTI_TEXT
             ? {
                 selected: selectedOption,
-                explanation: simpleText, // if it's an object like { [optionId]: explanation }
+                additional_texts: simpleText, // if it's an object like { [optionId]: explanation }
               }
             : {},
       };
@@ -170,6 +170,7 @@ const Questionaire: React.FC<any> = () => {
     };
     fetchQuestions();
   }, [serviceId]);
+  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

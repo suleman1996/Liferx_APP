@@ -23,7 +23,7 @@ import paymentPlansReducers from '../Screens/SelectPlans/reducer';
 import onBoardingReducer from '../Screens/Auth/Onboarding/reducer';
 
 const PERSIST_WHITELIST = [
-  'login',
+  // 'login',
   'registerReducer',
   'decidingQuestionAnswer',
   'selectYourState',

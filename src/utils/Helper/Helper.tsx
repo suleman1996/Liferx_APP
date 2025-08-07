@@ -3,11 +3,15 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { PixelRatio } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ImagePicker from 'react-native-image-crop-picker';
 import { RootStackParamList } from '../../Stack/Stack';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setOnBoarding } from '../../Screens/Auth/Onboarding/action';
+import { useDispatch } from 'react-redux';
+
 
 // Responsive width: accepts px or percentage string
 export const w = (value: number | string): number => {
@@ -201,4 +205,22 @@ export async function buildMediaFormData({
 
   return formData;
 }
+
+
+export const usePreviousRouteName = (): string | null => {
+  return useNavigationState((state) => {
+    const routes = state?.routes;
+    const currentIndex = state?.index;
+    if (currentIndex > 0) {
+      return routes[currentIndex - 1]?.name || null;
+    }
+    return null;
+  });
+};
+
+  export const skipOnBoarding = async (dispatch : any) => {
+    await AsyncStorage.setItem('onBoard', 'true');
+    dispatch(setOnBoarding(true));
+  };
+
 

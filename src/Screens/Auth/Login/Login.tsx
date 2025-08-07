@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -7,6 +7,7 @@ import {
   Text,
   View,
   Image,
+  Alert,
 } from 'react-native';
 import styles from './style';
 import CustomTextInput from '../../../Components/TextInput/TextInput';
@@ -16,26 +17,69 @@ import { FONTS } from '../../../Assets/Fonts/Fonts';
 import { h, useTypedNavigation } from '../../../utils/Helper/Helper';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { persistor, RootState } from '../../../Store';
-import {
-  createLogin,
-  getToken,
-  setEmail,
-  setError,
-  setPassword,
-} from './actions';
+import { createLogin, setEmail, setError, setPassword } from './actions';
 import EyeIcon from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
+import {
+  getSessionId,
+  saveDecidingAnswers,
+  setStartSession,
+} from '../../DecidingQuestions/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getToken, getUserData } from '../Register/actions';
+import Header from '../../../Components/Header/Header';
 
-const Login: React.FC<any> = () => {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+const Login: React.FC<any> = ({route}) => {
   const dispatch = useDispatch();
-  const { email, password, error} = useSelector(
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { userData, token } = useSelector(
+    (state: RootState) => state?.registerReducer,
+  );
+  const [loading, setLoading] = useState(false);
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
+  const userId = store.getState().registerReducer?.userData?.id;
+  const { email, password, error } = useSelector(
     (state: RootState) => state?.login,
   );
+  const { decidingQuestions } = useSelector(
+    (state: RootState) => state?.decidingQuestionAnswer,
+  );
   const navigation = useTypedNavigation();
+  const {fromHome} = route?.params || {};
+
+  const addDecidingAnswers = async () => {
+    const session_id = await fetchSessionID();
+    if (!session_id) {
+      return;
+    }
+    const updatedSelectedAnswer =
+      store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[userId]?.[
+        serviceId
+      ];
+    const updatedDecidingAnswers = {
+      answers: updatedSelectedAnswer?.map(
+        ({ serviceId, userId, ...rest }) => rest,
+      ),
+      session_id,
+    };    
+    dispatch(saveDecidingAnswers(updatedDecidingAnswers))
+      .then((response: any) => {
+        if (response?.payload?.status === 200) {
+          console.log(response, 'save answers of deciding');
+          Toast.show({
+            type: 'success',
+            text2: response?.payload?.data?.message,
+          });
+        }
+      })
+      .catch((err: string) => {
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+      });
+  };
 
   const handleLogin = () => {
     if (!email) {
@@ -53,10 +97,37 @@ const Login: React.FC<any> = () => {
     dispatch(createLogin(body))
       .then(async (res: any) => {
         const response = res?.payload;
+        const token = response?.data?.token?.access;
+        const user = response?.data?.user;
+        await AsyncStorage.setItem('token', token);
+        dispatch(getToken(token));
+        dispatch(getUserData(user));
         if (response?.status === 200) {
-          // const newToken = response?.payload?.token?.access;
-          // await AsyncStorage.setItem('token', newToken);
-          // dispatch(getToken(newToken));
+          if (
+            token &&
+            user?.is_email_verified === true &&
+            user?.is_profile_completed === true
+          ) {
+            Alert.alert('comming soon');
+            //  navigation.reset({
+            //     index: 0,
+            //     routes: [{ name: 'DrawerStack' }],
+            //   });
+          } else if (
+            token &&
+            user?.is_email_verified === true &&
+            user?.is_profile_completed === false
+          ) {
+            addDecidingAnswers();
+            navigation.navigate('SelectState');
+          } else if (
+            token &&
+            user?.is_email_verified === false &&
+            user?.is_profile_completed === false
+          ) {
+            addDecidingAnswers();
+            navigation.navigate('TwoStepVerifiction', { token });
+          }
           // navigation.navigate('BottomTab');
           Toast.show({
             type: 'success',
@@ -79,8 +150,30 @@ const Login: React.FC<any> = () => {
       });
   };
 
+  const fetchSessionID = async () => {
+    const body = {
+      questionnaire_id: decidingQuestions?.questionnaire_id,
+    };
+    try {
+      const response = await dispatch(setStartSession(body));
+      console.log(response, 'fetch session');
+      if (response?.payload?.status === 200) {
+        const id = response?.payload?.data?.session_id;
+        dispatch(getSessionId(id));
+        return id;
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text2: error,
+      });
+    }
+    return null;
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <Header/>
       <CustomLoader visible={loading} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -171,25 +264,26 @@ const Login: React.FC<any> = () => {
               }}
             />
 
-            <Text style={styles.text}>
-              If you don't have an account?{' '}
-              <Text
-                style={[styles.text, { fontFamily: FONTS.MONTSERRAT_BOLD }]}
-                onPress={() => {
-                  dispatch(setEmail(''));
-                  dispatch(setPassword(''));
-                  dispatch(setError(''));
-                  navigation.navigate('Register');
-                }}
-              >
-                Sign up
+            {fromHome && (
+              <Text style={styles.text}>
+                If you don't have an account?{' '}
+                <Text
+                  style={[styles.text, { fontFamily: FONTS.MONTSERRAT_BOLD }]}
+                  onPress={() => {
+                    dispatch(setEmail(''));
+                    dispatch(setPassword(''));
+                    dispatch(setError(''));
+                    navigation.navigate('Register');
+                  }}
+                >
+                  Sign up
+                </Text>
               </Text>
-            </Text>
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
-
 export default Login;

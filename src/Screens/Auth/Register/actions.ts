@@ -2,6 +2,7 @@ import { post } from '../../../Modules/Requests';
 import {
   CREATE_TOKEN,
   CREATE_USER,
+  GET_TOKEN,
   GET_USER_DATA,
   IS_PROFILE_COMPLETED,
   SET_EMAIL,
@@ -46,4 +47,8 @@ export const getUserData = (data: string) => ({
 
 export const setIsProfileCompleted = () => ({
   type: IS_PROFILE_COMPLETED,
+});
+export const getToken = (data: string) => ({
+  type: GET_TOKEN,
+  payload: data,
 });

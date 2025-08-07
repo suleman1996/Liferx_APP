@@ -26,6 +26,7 @@ import store, { RootState } from '../../../Store';
 import {
   createToken,
   createUser,
+  getToken,
   getUserData,
   setEmail,
   setError,
@@ -91,8 +92,9 @@ const Register: React.FC<any> = ({ route }) => {
           };
           dispatch(createToken(tokenBody))
             .then(async (res: any) => {
-              const token = res?.payload?.data?.token?.access;
+              const token = res?.payload?.data?.token?.access;              
               await AsyncStorage.setItem('token', token);
+              dispatch(getToken(token));
               const session_id = await fetchSessionID();
               if (!session_id) {
                 return;
@@ -109,6 +111,8 @@ const Register: React.FC<any> = ({ route }) => {
                   ),
                   session_id,
                 };
+                console.log(updatedDecidingAnswers,'updatedDecidingAnswers');
+                
                 dispatch(saveDecidingAnswers(updatedDecidingAnswers))
                   .then((response: any) => {
                     if (response?.payload?.status === 200) {
@@ -162,7 +166,7 @@ const Register: React.FC<any> = ({ route }) => {
     };
     try {
       const response = await dispatch(setStartSession(body));
-      console.log(response, 'resssponseeee');
+      console.log(response, 'fetch session');
       if (response?.payload?.status === 200) {
         const id = response?.payload?.data?.session_id;
         dispatch(getSessionId(id));

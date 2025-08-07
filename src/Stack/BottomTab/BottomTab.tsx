@@ -9,6 +9,9 @@ import { FONTS } from '../../Assets/Fonts/Fonts';
 import Colors from '../../utils/Colors/Colors';
 import Shop from '../../Screens/Shop/Shop';
 import Order from '../../Screens/Order/Order';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../Store';
+import { Pressable } from 'react-native';
 
 type TabParamList = {
   Home?: undefined;
@@ -20,6 +23,8 @@ type TabParamList = {
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const BottomTabs: React.FC = () => {
+  const token = useSelector((state: RootState) => state.registerReducer?.token);
+
   return (
     <Tab.Navigator
       screenOptions={{

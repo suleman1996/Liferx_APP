@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -8,28 +8,29 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import DrawerHeaderBar from '../../Components/DrawerHeader/DrawerHeader';
-import LogoutIcon from 'react-native-vector-icons/AntDesign';
-import { DrawerActions } from '@react-navigation/native';
 import CustomTextInput from '../../Components/TextInput/TextInput';
 import Colors from '../../utils/Colors/Colors';
 import CustomCarousel from '../../Components/Carousel/Carousel';
 import ProductCard from '../../Components/ProductCard/ProductCard';
 import TeamCard from '../../Components/TeamCard/TeamCard';
 import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
-import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { persistor, RootState } from '../../Store';
-import { getToken } from '../Auth/Login/actions';
+import { getToken } from '../Auth/Register/actions';
+import LoginIcon from 'react-native-vector-icons/Entypo';
+import { RootState } from '../../Store';
 
 const HomeScreen: React.FC<any> = () => {
-  const { userData, token } = useSelector((state: RootState) => state.login);
-
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
+    const { userData } = useSelector(
+    (state: RootState) => state?.registerReducer,
+  );
+
+  console.log(userData,'userDatauserData');
+  
 
   const images = [
     { id: '1', image: require('../../Assets/Images/Banner.png') },
@@ -43,7 +44,7 @@ const HomeScreen: React.FC<any> = () => {
       // text: 'Generic Sildenafil1',
       text: 'Fight Hair Loss',
       month: '$17/month',
-      serviceID : 2,
+      serviceID: 2,
     },
     {
       id: 2,
@@ -51,7 +52,7 @@ const HomeScreen: React.FC<any> = () => {
       text: 'Boost Sex Performance',
       // text: 'Viagra',
       month: '$17/month',
-      serviceID : 3,
+      serviceID: 3,
     },
     {
       id: 3,
@@ -119,19 +120,20 @@ const HomeScreen: React.FC<any> = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <Header
         title="Home"
-        leftImage={require('../../Assets/Images/DefaultIcon.png')}
+        // leftImage={require('../../Assets/Images/DefaultIcon.png')}
+        hideBackButton
         leftImageStyle={styles.leftImageStyle}
         rightImage={
           <>
-            {token && (
-              <LogoutIcon
-                name={'logout'}
-                size={20}
-                color={Colors.APP_COLOR}
-                style={styles.logoutIcon}
-                onPress={() => handleLogout()}
-              />
-            )}
+            {/* {token && ( */}
+            <LoginIcon
+              name={'login'}
+              size={20}
+              color={Colors.APP_COLOR}
+              style={styles.logoutIcon}
+              onPress={() => navigation.navigate('Login',{fromHome : false})}
+            />
+            {/* )} */}
           </>
         }
         profileImageHandler={() => navigation.navigate('Profile')}

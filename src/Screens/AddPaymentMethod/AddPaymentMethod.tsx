@@ -7,7 +7,6 @@ import {
   Platform,
   KeyboardAvoidingView,
   Image,
-  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
@@ -22,7 +21,6 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import {
   createOrder,
   getClientSecretKey,
-  saveCompleteQuestion,
 } from './action';
 import Colors from '../../utils/Colors/Colors';
 import TermsCheckbox from '../../Components/TermsCheckbox/TermsCheckbox';
@@ -41,80 +39,80 @@ const AddPaymentMethod: React.FC<any> = () => {
   const { shippingAddress } = useSelector(
     (state: RootState) => state?.personalInfoReducer,
   );
-  const { sessionId } = useSelector(
-    (state: RootState) => state?.decidingQuestionAnswer,
-  );
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState(null);
   const [isCardFocused, setIsCardFocused] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [openTerms, setOpenTerms] = useState(false);
-  const { createPaymentMethod, confirmSetupIntent } = useStripe();
+  const { confirmSetupIntent } = useStripe();
 
   const handlePayPress = async () => {
-    if (!cardDetails?.complete) {
-      Toast.show({
-        type: 'error',
-        text2: 'Incomplete Card Details,Please enter all card details',
-      });
-      return;
-    } else if (cardDetails?.complete && !agreed) {
-      Toast.show({
-        type: 'error',
-        text2: 'Terms & condition required',
-      });
-      return;
-    }
-    try {
-      setLoading(true);
-      const body = {
-        make_default: 'false',
-        patient_id: userData?.id,
-      };
-      const response: any = await dispatch(getClientSecretKey(body));
-      const clientSecret = response?.payload?.data?.client_secret;
-      if (!clientSecret) {
-        throw new Error('Client secret not received from backend');
-      }
-      // ✅ No useStripe here anymore
-      const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
-        paymentMethodType: 'Card',
-        paymentMethodData: {
-          billingDetails: {
-            name: 'User Name',
-          },
-        },
-      });
-      if (error) {
-        Toast.show({
-          type: 'error',
-          text2: error.message,
-        });
-      } else if (setupIntent?.status === 'Succeeded') {
-        const body = {
-          patient: userData?.id,
-          product_variant_id: matchedPaymentPlan?.variant_id,
-          shipping_address_id: shippingAddress?.data?.id,
-          shipping_price: matchedPaymentPlan?.shipping_price,
-          total_price: matchedPaymentPlan?.plan_total_price,
-        };
-        dispatch(createOrder(body)).then((response: any) => {
-          if (response?.payload?.status === 200) {
-            dispatch(setIsProfileCompleted());
-          }
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text2: 'Failed,Card saving failed',
-        });
-      }
-    } catch (err: any) {
-      console.log('Error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+                navigation.replace('BottomTab')
+
+    // if (!cardDetails?.complete) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text2: 'Incomplete Card Details,Please enter all card details',
+    //   });
+    //   return;
+    // } else if (cardDetails?.complete && !agreed) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text2: 'Terms & condition required',
+    //   });
+    //   return;
+    // }
+    // try {
+    //   setLoading(true);
+    //   const body = {
+    //     make_default: 'false',
+    //     patient_id: userData?.id,
+    //   };
+    //   const response: any = await dispatch(getClientSecretKey(body));
+    //   const clientSecret = response?.payload?.data?.client_secret;
+    //   if (!clientSecret) {
+    //     throw new Error('Client secret not received from backend');
+    //   }
+    //   // ✅ No useStripe here anymore
+    //   const { setupIntent, error } = await confirmSetupIntent(clientSecret, {
+    //     paymentMethodType: 'Card',
+    //     paymentMethodData: {
+    //       billingDetails: {
+    //         name: 'User Name',
+    //       },
+    //     },
+    //   });
+    //   if (error) {
+    //     Toast.show({
+    //       type: 'error',
+    //       text2: error.message,
+    //     });
+    //   } else if (setupIntent?.status === 'Succeeded') {
+    //     const body = {
+    //       patient: userData?.id,
+    //       product_variant_id: matchedPaymentPlan?.variant_id,
+    //       shipping_address_id: shippingAddress?.data?.id,
+    //       shipping_price: matchedPaymentPlan?.shipping_price,
+    //       total_price: matchedPaymentPlan?.plan_total_price,
+    //     };
+    //     dispatch(createOrder(body)).then((response: any) => {          
+    //       if (response?.payload?.status === 201) {
+    //         dispatch(setIsProfileCompleted());
+    //         navigation.navigate('BottomTab')
+    //       }
+    //     });
+    //   } else {
+    //     Toast.show({
+    //       type: 'error',
+    //       text2: 'Failed,Card saving failed',
+    //     });
+    //   }
+    // } catch (err: any) {
+    //   console.log('Error:', err);
+    // } finally {
+    //   setLoading(false);
+    // }
+  };  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

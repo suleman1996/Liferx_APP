@@ -5,6 +5,7 @@ import { useTypedNavigation, w } from '../../utils/Helper/Helper';
 import { weightLossUrl } from '../../utils/Constants/Constants';
 import { useDispatch } from 'react-redux';
 import { getServiceId } from '../../Screens/Shop/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ProductItem {
   id: number;
@@ -25,12 +26,12 @@ const ProductCard: React.FC<Props> = ({ item, index }) => {
   return (
     <Pressable
       style={[styles.card, index > 0 && { marginLeft: w(20) }]}
-      onPress={() => {
+      onPress={async () => {
         if (index === 2) {
           Linking.openURL(weightLossUrl);
         } else {
+          await AsyncStorage.setItem('serviceId',JSON.stringify(item?.serviceID))
           dispatch(getServiceId(item?.serviceID));
-
           navigation.navigate('DecidingQuestions');
         }
       }}

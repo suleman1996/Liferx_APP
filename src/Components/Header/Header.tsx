@@ -22,6 +22,7 @@ interface HeaderProps {
   onRightImagePress?: () => void;
   profileImageHandler?: () => void;
   onBackPress?: () => void;
+  hideBackButton?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -29,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({
   leftImage,
   rightImage,
   leftImageStyle,
+  hideBackButton,
   onBackPress,
   profileImageHandler,
 }) => {
@@ -41,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({
           <Pressable onPress={profileImageHandler}>
             <Image source={leftImage} style={[styles.image, leftImageStyle]} />
           </Pressable>
-        ) : (
+        ) : !hideBackButton ? (
           <Pressable onPress={onBackPress ?? (() => navigation.goBack())}>
             <BackArrowIcon
               name="arrow-left-long"
@@ -50,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
               style={styles.arrowIcon}
             />
           </Pressable>
-        )}
+        ) : null}
       </View>
 
       <View style={styles.center}>

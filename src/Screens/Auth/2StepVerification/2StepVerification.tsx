@@ -10,6 +10,8 @@ import styles from './style';
 import {
   formatTime,
   h,
+  skipOnBoarding,
+  usePreviousRouteName,
   useTypedNavigation,
 } from '../../../utils/Helper/Helper';
 import OtpInputField from '../../../Components/Otp/Otp';
@@ -21,14 +23,20 @@ import { sendOtp, setCode, verifyOtp } from './actions';
 import Header from '../../../Components/Header/Header';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createToken, getToken, getUserData } from '../Register/actions';
+import { clearDecidingAnswer } from '../../DecidingQuestions/actions';
+import LogoutModal from '../../../Components/LogoutModal/LogoutModal';
+import { setOnBoarding } from '../Onboarding/action';
 
 const TwoStepVerifiction: React.FC<any> = ({ route }) => {
+  const prevRouteName = usePreviousRouteName();
   const navigation = useTypedNavigation();
-  const userId = useSelector(
-    (state: RootState) => state.registerReducer?.userData?.data?.id,
-  );
   const { token } = route?.params;
-  const { email } = useSelector((state: RootState) => state?.registerReducer);
+  const { email, password } = useSelector(
+    (state: RootState) => state?.registerReducer,
+  );
+  const { email: loginEmail } = useSelector((state: RootState) => state?.login);
   const { code } = useSelector(
     (state: RootState) => state?.twoStepVerification,
   );
@@ -36,6 +44,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const dispatch = useDispatch();
   const [timer, setTimer] = useState(30);
   const [loading, setLoading] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   useEffect(() => {
     if (timer === 0) return;
@@ -48,10 +57,10 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const createOtp = () => {
     dispatch(sendOtp(token))
       .then((res: any) => {
-        if (res?.value?.status === 200) {
+        if (res?.payload?.status === 200) {
           Toast.show({
             type: 'success',
-            text2: res?.value?.data,
+            text2: res?.payload?.data,
           });
         }
       })
@@ -69,6 +78,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
     }
   }, [token]);
 
+
   const handleTwoStepAuthentication = () => {
     if (code?.length !== 6) {
       Toast.show({
@@ -84,10 +94,24 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
     dispatch(verifyOtp(body, token))
       .then((res: any) => {
         if (res?.payload?.status === 200) {
-          Toast.show({
-            type: 'success',
-            text2: res?.payload?.data,
-          });
+          dispatch(
+            createToken({
+              username: email || loginEmail,
+              password,
+            }),
+          ).then((res: any) => {
+            const user = res?.payload?.data?.user;
+            console.log(user,'user');
+            
+             if(token && user?.is_email_verified === true){
+              skipOnBoarding(dispatch);
+             }
+            dispatch(getUserData(user));
+          }),
+            Toast.show({
+              type: 'success',
+              text2: res?.payload?.data,
+            });
           navigation.navigate('SelectState');
           dispatch(setCode(''));
         } else {
@@ -107,6 +131,17 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
       });
   };
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    dispatch(getToken(''));
+    dispatch(clearDecidingAnswer());
+    setShowLogoutModal(false);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'BottomTab' }],
+    });
+  };
+
   useEffect(() => {
     dispatch(setCode(''));
   }, []);
@@ -114,7 +149,19 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <CustomLoader visible={loading} />
-      <Header />
+      <Header
+      // onBackPress={() => {
+      //   if (prevRouteName === 'Login' && token) {
+      //     setShowLogoutModal(true);
+      //   }
+      // }}
+      />
+
+      <LogoutModal
+        visible={showLogoutModal}
+        onCancel={() => setShowLogoutModal(false)}
+        onLogout={handleLogout}
+      />
       <Image
         source={require('../../../Assets/Images/logo.png')}
         style={styles.logo}
@@ -123,7 +170,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
         <Text style={styles.title}>Two-step authentication</Text>
         <Text style={styles.title1}>
           Enter the verification code sent to your email{' '}
-          <Text style={styles.email}>{email}</Text>
+          <Text style={styles.email}>{email || loginEmail}</Text>
         </Text>
 
         <OtpInputField

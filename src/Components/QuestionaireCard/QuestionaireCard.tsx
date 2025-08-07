@@ -50,6 +50,8 @@ const QuestionaireCard: React.FC<Props> = ({
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
+  console.log(userId,'userId');
+  
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
     state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[
@@ -108,6 +110,10 @@ const QuestionaireCard: React.FC<Props> = ({
     }
   };
 
+  useEffect(() => {
+  console.log('Selected state:', selected);
+}, [selected]);
+
   return (
     <View style={styles.mainContainer}>
       <Image
@@ -158,6 +164,7 @@ const QuestionaireCard: React.FC<Props> = ({
                   borderWidth: 1,
                 },
               ]}
+              disabled={isLoading}
               onPress={() => toggleSelect(option?.id)}
             >
               <Text style={styles.options}>{option?.text}</Text>
@@ -177,6 +184,7 @@ const QuestionaireCard: React.FC<Props> = ({
                 ]}
                 customInputStyles={styles.customInputStyles}
                 customLabelStyles={styles.customLabelStyles}
+                editable={!isLoading}
               />
             )}
           </View>

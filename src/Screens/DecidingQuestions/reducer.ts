@@ -15,7 +15,7 @@ const initialState = {
 const decidingQuestionAnswer = (state = initialState, action: any) => {
   switch (action.type) {
     case DECIDING_ANSWER:
-        console.log('🔥 DECIDING_ANSWER triggered', action.payload);
+      console.log('🔥 DECIDING_ANSWER triggered', action.payload);
       return {
         ...state,
         decidingQuestions: action.payload,
@@ -46,7 +46,9 @@ const decidingQuestionAnswer = (state = initialState, action: any) => {
     case CLEAR_DECIDING_ANSWERS:
       return {
         ...state,
-        answers: [],
+        selectedAnswer: [], // <- important
+        decidingQuestions: [],
+        sessionId: '',
       };
     default:
       return state;

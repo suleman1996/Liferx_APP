@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -22,7 +22,8 @@ import { RootState } from '../../../Store';
 const Oboarding: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const { token } = useSelector((state: RootState) => state?.login);
+  const { userData } = useSelector((state: RootState) => state.registerReducer);
+  const { token } = useSelector((state: RootState) => state.registerReducer);
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = React.useRef<FlatList>(null);
 
@@ -113,13 +114,15 @@ const Oboarding: React.FC<any> = () => {
               customTextStyles={styles.getStartedText}
               noShadow
               onPressHandler={async () => {
-                try {
-                  // await AsyncStorage.setItem('onBoard', 'true');
-                  // dispatch(setOnBoarding(true));
-                  navigation.navigate('BottomTab');
-                } catch (err) {
-                  console.log('Failed to save onBoarding flag:', err);
-                }
+                navigation.navigate('HomeScreen');
+                // try {
+                //   if (token && userData?.data?.is_email_verified === true) {
+                //     await AsyncStorage.setItem('onBoard', 'true');
+                //     dispatch(setOnBoarding(true));
+                //   }
+                // } catch (err) {
+                //   console.log('Failed to save onBoarding flag:', err);
+                // }
               }}
             />
             <Button

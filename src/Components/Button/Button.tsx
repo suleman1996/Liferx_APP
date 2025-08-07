@@ -9,6 +9,7 @@ import {
   ImageStyle,
   TextStyle,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import styles from './style';
 import Colors from '../../utils/Colors/Colors';
@@ -39,7 +40,7 @@ const Button: React.FC<HeaderProps> = ({
   onPressHandler,
 }) => {
   return (
-    <Pressable
+    <TouchableOpacity
       style={[
         styles.buttonView,
         !noShadow && styles.shadow,
@@ -65,7 +66,7 @@ const Button: React.FC<HeaderProps> = ({
       {imageSource && !loading && (
         <Image source={imageSource} style={imageStyles} />
       )}
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

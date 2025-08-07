@@ -2,4 +2,3 @@ export const SET_LOGIN_EMAIL = 'SET_LOGIN_EMAIL';
 export const SET_LOGIN_PASSWORD = 'SET_LOGIN_PASSWORD';
 export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR';
 export const CREATE_LOGIN = 'CREATE_LOGIN';
-export const GET_TOKEN = 'GET_TOKEN';

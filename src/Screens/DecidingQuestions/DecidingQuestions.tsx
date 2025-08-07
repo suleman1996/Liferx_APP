@@ -21,8 +21,12 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const { decidingQuestions } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
-  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.id);
-  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);  
+  const { userData } = useSelector((state: RootState) => state.registerReducer);
+  const { token } = useSelector((state: RootState) => state.registerReducer);
+  const userId = useSelector(
+    (state: RootState) => state.registerReducer?.userData?.id,
+  );
+  const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const selectedAnswer = useSelector(
     (state: RootState) =>
       state.decidingQuestionAnswer.selectedAnswer?.[userId]?.[serviceId],
@@ -56,13 +60,13 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
             ? selected[0]
             : selected,
       },
-    };
+    };    
     dispatch(selectedDecidingAnswer({ ...answer, serviceId, userId }));
     const nextIndex = currentIndex + 1;
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
     } else {
-      navigation.navigate('Register')
+      navigation.navigate('Register');
       // setSubmitLoading(true);
       // const session_id = await fetchSessionID();
       // if (!session_id) {
@@ -113,15 +117,17 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const fetchDecidingQuestions = async () => {
     setLoading(true);
     try {
-      await dispatch(getDecidingQuestion(serviceId)).then((res: any) => {
-        const response = res?.payload?.data;        
-        dispatch(addDecidingAnswer(response));
-      }).catch((error:any)=>{
-        Toast.show({
-          type : 'error',
-          text2 : error
+      await dispatch(getDecidingQuestion(serviceId))
+        .then((res: any) => {
+          const response = res?.payload?.data;
+          dispatch(addDecidingAnswer(response));
         })
-      })
+        .catch((error: any) => {
+          Toast.show({
+            type: 'error',
+            text2: error,
+          });
+        });
     } finally {
       setLoading(false);
     }
@@ -146,8 +152,6 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   //   }
   //   return null;
   // };
-  
-  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>

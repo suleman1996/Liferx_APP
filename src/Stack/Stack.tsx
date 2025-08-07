@@ -69,16 +69,10 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 const AppStack: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Stack.Navigator
-        initialRouteName="splash"
-        screenOptions={{
-          gestureEnabled: false,
-        }}
-      >
+      <Stack.Navigator screenOptions={{ gestureEnabled: false }}>
         <Stack.Screen
           name="splash"
           component={Splash}
@@ -89,6 +83,12 @@ const AppStack: React.FC = () => {
           component={Oboarding}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name="SelectState"
+          component={SelectState}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -97,16 +97,6 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="Register"
           component={Register}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TwoStepVerifiction"
-          component={TwoStepVerifiction}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="OrderTracking"
-          component={OrderTracking}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -127,11 +117,6 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="DecidingQuestions"
           component={DecidingQuestions}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectState"
-          component={SelectState}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -180,20 +165,32 @@ const AppStack: React.FC = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="OrderTracking"
+          component={OrderTracking}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TwoStepVerifiction"
+          component={TwoStepVerifiction}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="BottomTab"
           component={BottomTabs}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      /> */}
-        {/* <Stack.Screen
-        name="DrawerStack"
-        component={DrawerStack}
-        options={{ headerShown: false }}
-      /> */}
+
+        {/* 
+        <Stack.Screen
+          name="DrawerStack"
+          component={DrawerStack}
+          options={{ headerShown: false }}
+        /> */}
       </Stack.Navigator>
     </SafeAreaView>
   );
