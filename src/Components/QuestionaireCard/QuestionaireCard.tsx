@@ -36,10 +36,10 @@ interface Props {
     explaination: string,
     imagePath?: string | null,
   ) => void;
-  existingAnswer?: {
-    selectedOption: number[] | number;
-    simpleText: string;
-  };
+  // existingAnswer?: {
+  //   selectedOption: number[] | number;
+  //   simpleText: string;
+  // };
 }
 
 const QuestionaireCard: React.FC<Props> = ({
@@ -50,30 +50,57 @@ const QuestionaireCard: React.FC<Props> = ({
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
-  console.log(userId,'userId');
-  
+  console.log(userId, 'userId');
+
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const existingAnswer = useSelector((state: RootState) =>
     state?.RegularQuestionsAnswer?.selectedRegularAnswer?.[userId]?.[
       serviceId
     ]?.find((ans: any) => ans?.question === item?.id),
   );
+  console.log(existingAnswer, 'exist');
+
   const [selected, setSelected] = useState<number[]>([]);
   const [explaination, setExplaination] = useState<string>('');
   const [simpleText, setSimpleText] = useState<string>('');
   const [imagePath, setImagePath] = useState<string | null>(null);
 
+
   useEffect(() => {
-    if (existingAnswer) {
-      if (Array.isArray(existingAnswer?.selectedOption)) {
-        setSelected(existingAnswer?.selectedOption);
-      } else {
-        setSelected([existingAnswer?.selectedOption]);
-      }
-      setSimpleText(existingAnswer?.simpleText || '');
-      setExplaination(existingAnswer?.simpleText || '');
+  if (existingAnswer) {
+    const type = item?.type;
+
+    if (type === QuestionTypes.SINGLE_SELECT || type === QuestionTypes.MULTI_SELECT) {
+      const selectedValues = existingAnswer?.json_answer?.selected || [];
+      setSelected(Array.isArray(selectedValues) ? selectedValues : [selectedValues]);
     }
-  }, [existingAnswer]);
+
+    if (type === QuestionTypes.TEXT) {
+      setSimpleText(existingAnswer?.json_answer?.text || '');
+    }
+
+    if (type === QuestionTypes.MULTI_TEXT) {
+      const selectedValues = existingAnswer?.json_answer?.selected || [];
+      setSelected(Array.isArray(selectedValues) ? selectedValues : [selectedValues]);
+      setExplaination(existingAnswer?.json_answer?.additional_texts || {});
+    }
+
+    if (type === QuestionTypes.MULTI_MEDIA) {}
+  }
+}, [existingAnswer]);
+
+
+  // useEffect(() => {
+  //   if (existingAnswer) {
+  //     if (Array.isArray(existingAnswer?.selectedOption)) {
+  //       setSelected(existingAnswer?.selectedOption);
+  //     } else {
+  //       setSelected([existingAnswer?.selectedOption]);
+  //     }
+  //     setSimpleText(existingAnswer?.simpleText || '');
+  //     setExplaination(existingAnswer?.additional_texts || '');
+  //   }
+  // }, [existingAnswer]);
 
   const toggleSelect = (id: number) => {
     if (
@@ -111,8 +138,8 @@ const QuestionaireCard: React.FC<Props> = ({
   };
 
   useEffect(() => {
-  console.log('Selected state:', selected);
-}, [selected]);
+    console.log('Selected state:', selected);
+  }, [selected]);
 
   return (
     <View style={styles.mainContainer}>

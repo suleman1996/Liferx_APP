@@ -31,6 +31,8 @@ const Questionaire: React.FC<any> = () => {
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
+  console.log(userId, 'userId');
+
   const { regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );
@@ -43,7 +45,7 @@ const Questionaire: React.FC<any> = () => {
   });
   const { serviceId } = useSelector((state: RootState) => state.shopReducer);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const type = regularQuestions[currentIndex]?.type;
+  const type = regularQuestions?.[currentIndex]?.type;
 
   const handleContinue = async (
     selectedOption: number[] | number,
@@ -119,16 +121,16 @@ const Questionaire: React.FC<any> = () => {
           type === QuestionTypes.SINGLE_SELECT
             ? { selected: selectedOption }
             : type === QuestionTypes.MULTI_SELECT
-            ? { selected: selectedOption } // array if API accepts arrays
+            ? { selected: selectedOption } 
             : type === QuestionTypes.TEXT
             ? { text: simpleText }
             : type === QuestionTypes.MULTI_TEXT
             ? {
                 selected: selectedOption,
-                additional_texts: simpleText, // if it's an object like { [optionId]: explanation }
+                additional_texts: simpleText,
               }
             : {},
-      };
+      };      
       setLoadingState(prev => ({ ...prev, submitting: true }));
       dispatch(addQuestionaireAnswer({ ...answers, serviceId, userId }));
       dispatch(saveRegularRuestions(answers))
@@ -170,7 +172,6 @@ const Questionaire: React.FC<any> = () => {
     };
     fetchQuestions();
   }, [serviceId]);
-  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -185,7 +186,7 @@ const Questionaire: React.FC<any> = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           {!loadingState?.fetching && (
             <FlatList
-              data={[regularQuestions[currentIndex]]}
+              data={[regularQuestions?.[currentIndex]]}
               keyExtractor={item => item?.id?.toString()}
               renderItem={({ item }) => {
                 return (
