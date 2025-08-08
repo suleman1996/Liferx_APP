@@ -21,6 +21,9 @@ import dosageReducers from '../Screens/SelectDosage/reducer';
 import dosageVarientReducers from '../Screens/DosageVarient/reducer';
 import paymentPlansReducers from '../Screens/SelectPlans/reducer';
 import onBoardingReducer from '../Screens/Auth/Onboarding/reducer';
+import addPaymentMethodReducer from '../Screens/AddPaymentMethod/reducer';
+import orderTrackingReducer from '../Screens/Order/OrderTracking/reducer';
+import ordersReducer from '../Screens/Order/reducer';
 
 const PERSIST_WHITELIST = [
   // 'login',
@@ -86,6 +89,15 @@ const rootReducer = combineReducers({
     paymentPlansReducers,
     'paymentPlansReducers',
   ),
+  addPaymentMethodReducer: logoutReducer(
+    addPaymentMethodReducer,
+    'addPaymentMethodReducer',
+  ),
+  orderTrackingReducer: logoutReducer(
+    orderTrackingReducer,
+    'orderTrackingReducer',
+  ),
+  ordersReducer: logoutReducer(ordersReducer, 'ordersReducer'),
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

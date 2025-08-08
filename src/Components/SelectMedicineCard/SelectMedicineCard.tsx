@@ -7,6 +7,7 @@ import ImageWithLoader from '../ImageWithLoader/ImageWithLoader';
 
 interface ProductVariant {
   image?: string;
+  image_urls?: string;
 }
 
 interface ProductItem {

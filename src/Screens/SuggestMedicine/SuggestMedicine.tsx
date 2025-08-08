@@ -30,10 +30,7 @@ const SuggestMedicine: React.FC<any> = () => {
   const { serviceId } = useSelector((state: RootState) => state?.shopReducer);
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
-  );
-
-  console.log(serviceId,'suggest med');
-  
+  );  
   const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
   );

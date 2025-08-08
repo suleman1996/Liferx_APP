@@ -33,7 +33,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const prevRouteName = usePreviousRouteName();
   const navigation = useTypedNavigation();
   const { token } = route?.params || {};
-  const {fromHome} = route?.params || {};
+  const { fromHome } = route?.params || {};
   const { email, password } = useSelector(
     (state: RootState) => state?.registerReducer,
   );
@@ -79,10 +79,6 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
     }
   }, [token]);
 
-
-  console.log(fromHome);
-  
-
   const handleTwoStepAuthentication = () => {
     if (code?.length !== 6) {
       Toast.show({
@@ -103,8 +99,7 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
               username: email || loginEmail,
               password,
             }),
-          ).then((res: any) => {
-            console.log(res, 'normal res');
+          ).then(async (res: any) => {
             const user = res?.payload?.data?.user;
             dispatch(getUserData(user));
             if (
@@ -113,15 +108,13 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
               user?.is_email_verified === true &&
               fromHome === false
             ) {
-              console.log('else if matched');
               dispatch(clearDecidingAnswer());
               navigation.navigate('ShopNow', { fromHome });
             } else if (token && user?.is_email_verified === true) {
-              console.log('first if matched');
-              skipOnBoarding(dispatch);
+              await AsyncStorage.setItem('onboardingShown', 'true');
+              // dispatch(setOnBoarding(true));
               navigation.navigate('SelectState');
             }
-
             dispatch(setCode(''));
           });
           Toast.show({

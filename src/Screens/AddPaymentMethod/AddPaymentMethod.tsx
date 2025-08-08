@@ -18,7 +18,7 @@ import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import Toast from 'react-native-toast-message';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
-import { createOrder, getClientSecretKey } from './action';
+import { createOrder, getClientSecretKey, getCreateOrderData } from './action';
 import Colors from '../../utils/Colors/Colors';
 import TermsCheckbox from '../../Components/TermsCheckbox/TermsCheckbox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -92,8 +92,22 @@ const AddPaymentMethod: React.FC<any> = () => {
         };
         dispatch(createOrder(body)).then((response: any) => {
           if (response?.payload?.status === 201) {
+            dispatch(getCreateOrderData(response?.payload?.data));
             dispatch(setIsProfileCompleted());
-            navigation.navigate('BottomTab');
+            navigation.reset({
+  index: 1,
+  routes: [
+    { name: 'Order' }, // This navigates to Order tab
+    {
+      name: 'OrderTracking',
+      params: { orderId: response?.payload?.data?.id },
+    },
+  ],
+});
+
+            // navigation.navigate('OrderTracking', {
+            //   orderId: response?.payload?.data?.id,
+            // });
           }
         });
       } else {
@@ -102,7 +116,9 @@ const AddPaymentMethod: React.FC<any> = () => {
           text2: 'Failed,Card saving failed',
         });
       }
+      setLoading(false);
     } catch (err: any) {
+      setLoading(false);
       console.log('Error:', err);
     } finally {
       setLoading(false);

@@ -12,6 +12,8 @@ import Order from '../../Screens/Order/Order';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import { Pressable } from 'react-native';
+import OrderStack from '../OrderStack';
+import { CommonActions } from '@react-navigation/native';
 
 type TabParamList = {
   Home?: undefined;
@@ -23,8 +25,6 @@ type TabParamList = {
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const BottomTabs: React.FC = () => {
-  const token = useSelector((state: RootState) => state.registerReducer?.token);
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -70,12 +70,34 @@ const BottomTabs: React.FC = () => {
       />
       <Tab.Screen
         name="Order"
-        component={Order}
+        component={OrderStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon name="person" size={25} color={color} />
           ),
         }}
+        listeners={({ navigation }: any) => ({
+          tabPress: (e: any) => {
+            e.preventDefault();
+            navigation.navigate('Order', {
+              screen: 'OrderScreen',
+            });
+
+            // navigation.dispatch(
+            //   CommonActions.reset({
+            //     index: 0,
+            //     routes: [
+            //       {
+            //         name: 'Order',
+            //         params: {
+            //           screen: 'OrderScreen',
+            //         },
+            //       },
+            //     ],
+            //   }),
+            // );
+          },
+        })}
       />
       {/* <Tab.Screen
         name="Profile"
@@ -89,5 +111,4 @@ const BottomTabs: React.FC = () => {
     </Tab.Navigator>
   );
 };
-
 export default BottomTabs;

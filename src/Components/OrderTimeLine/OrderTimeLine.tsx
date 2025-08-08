@@ -23,12 +23,12 @@ const OrderTimeline: React.FC<Props> = ({ steps }) => {
             <View style={[styles.circle, step.isActive && styles.activeCircle]}>
               <Image source={step.icon} style={styles.icon} />
             </View>
-            {index !== steps.length - 1 && (
+            {index !== steps?.length - 1 && (
               <View
                 style={[
                   styles.verticalLineBottom,
                   {
-                    backgroundColor: step.isActive
+                    backgroundColor: step?.isActive
                       ? Colors.APP_COLOR
                       : Colors.GRAY,
                   },
@@ -38,7 +38,14 @@ const OrderTimeline: React.FC<Props> = ({ steps }) => {
           </View>
 
           <View style={styles.labelColumn}>
-            <Text style={styles.labelText}>{step.label}</Text>
+            <Text
+              style={[
+                styles.labelText,
+                { color: step?.isActive ? Colors.APP_COLOR : Colors.GRAY },
+              ]}
+            >
+              {step.label}
+            </Text>
           </View>
         </View>
       ))}

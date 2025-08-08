@@ -36,13 +36,13 @@ export type RootStackParamList = {
   Register: undefined;
   TwoStepVerifiction?: {
     token: string;
-    fromHome:boolean
+    fromHome: boolean;
   };
   HomeScreen?: undefined;
   DrawerStack?: undefined;
   ChangePassword?: undefined;
   UpdateAccountDetail?: undefined;
-  BottomTab?: undefined;
+  BottomTab?: {};
   Profile?: undefined;
   DecidingQuestions?: {
     productServiceId: string;
@@ -69,7 +69,7 @@ export type RootStackParamList = {
   OrderTracking?: {};
   Oboarding?: {};
   ShopNow?: {
-    fromHome?:boolean
+    fromHome?: boolean;
   };
 };
 

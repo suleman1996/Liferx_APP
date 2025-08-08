@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
-import { h, useTypedNavigation } from '../../utils/Helper/Helper';
+import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { getServiceId, getServiceListing, getServices } from './actions';
@@ -25,11 +25,15 @@ import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getToken } from '../Auth/Register/actions';
 import { clearDecidingAnswer } from '../DecidingQuestions/actions';
+import { FONTS } from '../../Assets/Fonts/Fonts';
+import LogoutModal from '../../Components/LogoutModal/LogoutModal';
 
 const Shop: React.FC<any> = () => {
   const { services } = useSelector((state: RootState) => state.shopReducer);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
 
@@ -138,16 +142,16 @@ const Shop: React.FC<any> = () => {
     fetchServices();
   }, []);
 
-  //   const handleLogout = async () => {
-  //   await AsyncStorage.removeItem('token');
-  //   dispatch(getToken(''));
-  //   dispatch(clearDecidingAnswer());
-  //   setShowLogoutModal(false);
-  //   navigation.reset({
-  //     index: 0,
-  //     routes: [{ name: 'BottomTab' }],
-  //   });
-  // };
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('token');
+    dispatch(getToken(''));
+    dispatch(clearDecidingAnswer());
+    setShowLogoutModal(false);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeScreen' }],
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -157,25 +161,22 @@ const Shop: React.FC<any> = () => {
         hideBackButton
         rightImage={
           <>
-            {/* {token && ( */}
             <LogoutIcon
               name={'logout'}
               size={20}
               color={Colors.APP_COLOR}
               style={styles.logoutIcon}
               onPress={async () => {
-                await AsyncStorage.removeItem('token');
-                dispatch(clearDecidingAnswer());
-                dispatch(getToken(''));
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'HomeScreen' }],
-                });
+                setShowLogoutModal(true);
               }}
             />
-            {/* )} */}
           </>
         }
+      />
+      <LogoutModal
+        visible={showLogoutModal}
+        onCancel={() => setShowLogoutModal(false)}
+        onLogout={handleLogout}
       />
       <View style={styles.mainContainer}>
         <ScrollView
@@ -187,30 +188,43 @@ const Shop: React.FC<any> = () => {
             }),
           }}
         >
-          <Text style={styles.title}>Services</Text>
+          {/* <Text style={styles.title}>Services</Text> */}
 
-          {services?.length > 0 && (
-            <FlatList
-              data={services}
-              renderItem={renderItem}
-              refreshControl={
-                <RefreshControl
-                  colors={[Colors.APP_COLOR]}
-                  refreshing={refreshing}
-                  onRefresh={async () => {
-                    setRefreshing(true);
-                    await fetchServices();
-                    setRefreshing(false);
+          <FlatList
+            data={[]}
+            renderItem={renderItem}
+            refreshControl={
+              <RefreshControl
+                colors={[Colors.APP_COLOR]}
+                refreshing={refreshing}
+                onRefresh={async () => {
+                  setRefreshing(true);
+                  await fetchServices();
+                  setRefreshing(false);
+                }}
+              />
+            }
+            ListEmptyComponent={() => {
+              return (
+                <Text
+                  style={{
+                    color: Colors.APP_COLOR,
+                    fontFamily: FONTS.MONTSERRAT_SEMI_BOLD,
+                    fontSize: w(25),
+                    alignSelf: 'center',
+                    marginTop: h(50),
                   }}
-                />
-              }
-              keyExtractor={item => item.id.toString()}
-              // columnWrapperStyle={{ justifyContent: 'space-between' }}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
-              style={{ flexGrow: 1 }}
-            />
-          )}
+                >
+                  Coming Soon..
+                </Text>
+              );
+            }}
+            keyExtractor={item => item?.id.toString()}
+            // columnWrapperStyle={{ justifyContent: 'space-between' }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
+            style={{ flexGrow: 1 }}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>

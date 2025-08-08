@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: h(160),
+    width:w(160),
     alignSelf: 'center',
     resizeMode: 'contain',
   },

@@ -1,7 +1,7 @@
 import { SET_ON_BOARDING } from './actionTypes';
 
 const initialState = {
-  isOnBoarding: false,
+  isOnBoarding: null,
 };
 
 export default function onBoardingReducer(state = initialState, action: any) {

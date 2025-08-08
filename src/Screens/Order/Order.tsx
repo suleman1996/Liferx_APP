@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Platform,
@@ -10,61 +10,56 @@ import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, w } from '../../utils/Helper/Helper';
 import OrderCard from '../../Components/OrdersCard/OrdersCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
+import { getOrderListing, getOrdersList } from './action';
+import Toast from 'react-native-toast-message';
+import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
-const Order: React.FC<any> = () => {  
-  const orderItems = [
-    {
-      id: 1,
-      image: require('../../Assets/Images/SildenafilOralTablets.png'),
-      title: 'Better Sex treatment',
-      orderDate: 'July 4, 2025',
-      orderNumber: '37',
-      shippingAddress: '101 1/2 N 5th St, Williams, AZ, 86046, United States',
-      totalAmount: '74.5',
-      nextOrderDate: '-',
-    },
-    {
-      id: 2,
-      image: require('../../Assets/Images/sprayLotion.png'),
-      title: 'Regrow Hair treatment',
-      orderDate: 'July 4, 2025',
-      orderNumber: '36',
-      shippingAddress: '123 2nd St, Juneau, Alaska, 99801, United States',
-      totalAmount: '83.05',
-      nextOrderDate: '-',
-    },
-  ];
+const Order: React.FC<any> = () => {
+  const dispatch = useDispatch();
+  const { ordersList } = useSelector((state: RootState) => state.ordersReducer);
+  const [loading, setloading] = useState(false);
+
+  const getOrderList = async () => {
+    setloading(true);
+    await dispatch(getOrderListing())
+      .then((response: any) => {
+        dispatch(getOrdersList(response?.payload?.data?.results));
+        setloading(false);
+      })
+      .catch((error: any) => {
+        setloading(false);
+        Toast.show({
+          type: 'error',
+          text2: error,
+        });
+      });
+  };
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Orders" hideBackButton/>
+      <Header title="Orders" hideBackButton />
+      <CustomLoader visible={loading} />
       <View style={styles.mainContainer}>
-        <ScrollView
+        <FlatList
+          data={ordersList}
           showsVerticalScrollIndicator={false}
+          keyExtractor={item => item?.id.toString()}
+          renderItem={({ item }) => <OrderCard item={item} />}
           contentContainerStyle={{
+            paddingHorizontal: w(5),
             paddingBottom: Platform.select({
-              ios: h(150),
-              android: h(100),
+              ios: h(100),
+              android: h(50),
             }),
           }}
-        >
-          <FlatList
-            data={orderItems}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({ item }) => <OrderCard item={item} />}
-            contentContainerStyle={{
-              paddingHorizontal: w(5),
-              paddingBottom: Platform.select({
-                ios: h(100),
-                android: h(20),
-              }),
-            }}
-            ItemSeparatorComponent={() => <View style={{ height: h(2) }} />}
-          />
-        </ScrollView>
+          ItemSeparatorComponent={() => <View style={{ height: h(2) }} />}
+        />
       </View>
     </SafeAreaView>
   );

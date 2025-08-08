@@ -3,26 +3,58 @@ import {
   View,
   Text,
   Image,
-  ImageSourcePropType,
   Pressable,
+  ImageSourcePropType,
 } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import styles from './style';
 import Button from '../Button/Button';
-import { useTypedNavigation, w } from '../../utils/Helper/Helper';
+import { useTypedNavigation } from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
 import CustomDialog from '../CustomDialog/CustomDialog';
 import ViewOrderHistory from '../ViewOrderHistory/ViewOrderHistory';
+import moment from 'moment';
 
+// Types for product
+interface Product {
+  name?: string;
+  image?: string;
+}
+
+// Types for product variant
+interface ProductVariant {
+  image?: string;
+  product?: Product;
+}
+
+// Types for order
+interface Order {
+  total_price?: string;
+  product_variant?: ProductVariant;
+}
+
+// Types for shipping address
+interface ShippingAddress {
+  street_address?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  country?: string;
+  created_at?: string;
+}
+
+// Types for latest order (just need id and shipping_address)
+interface LatestOrder {
+  id?: number;
+  shipping_address?: ShippingAddress;
+}
+
+// Full item type
 interface ProductItem {
   id?: number;
   image?: ImageSourcePropType;
-  title?: string;
-  orderNumber?: string;
-  nextOrderDate?: string;
-  orderDate?: string;
-  shippingAddress?: string;
-  totalAmount?: string;
+  orders?: Order[];
+  latest_order?: LatestOrder;
 }
 
 interface Props {
@@ -33,23 +65,27 @@ const OrderCard: React.FC<Props> = ({ item }) => {
   const navigation = useTypedNavigation();
   const [visible, setIsVisible] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const rawImage = item?.orders?.[0]?.product_variant?.image;
 
-  const imageData = item?.image
-    ? [{ uri: Image.resolveAssetSource(item?.image as any).uri }]
-    : [];
+  const imageUri =
+    typeof rawImage === 'number'
+      ? Image.resolveAssetSource(rawImage).uri
+      : typeof rawImage === 'string'
+      ? rawImage
+      : undefined;
+
+  const imageData = imageUri ? [{ uri: imageUri }] : [];
 
   return (
     <View style={styles.card}>
       {isPopUpOpen && (
         <CustomDialog visible={isPopUpOpen}>
-          <ViewOrderHistory
-            item={item}
-            onClose={() => setIsPopUpOpen(false)}
-          />
+          <ViewOrderHistory item={item} onClose={() => setIsPopUpOpen(false)} />
         </CustomDialog>
       )}
-      <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-        {item?.title}
+
+      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+        {item?.orders?.[0]?.product_variant?.product?.name}
       </Text>
 
       <Pressable
@@ -59,28 +95,38 @@ const OrderCard: React.FC<Props> = ({ item }) => {
         }}
       >
         <View style={styles.imageView}>
-          <Image source={item?.image} style={styles.image} />
+          <Image source={{ uri: rawImage }} style={styles.image} />
         </View>
       </Pressable>
 
       <View style={styles.row}>
         <Text style={styles.label}>Order Date :</Text>
-        <Text style={styles.value}>{item?.orderDate}</Text>
+        <Text style={styles.value}>
+          {moment(item?.latest_order?.shipping_address?.created_at).format(
+            'MM-DD-YYYY',
+          )}
+        </Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>Order Number :</Text>
-        <Text style={styles.value}>{`# ${item?.orderNumber}`}</Text>
+        <Text style={styles.value}>{`# ${item?.latest_order?.id}`}</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>Shipping Address :</Text>
-        <Text style={styles.value}>{item?.shippingAddress}</Text>
+        <Text style={styles.value}>
+          {`${item?.latest_order?.shipping_address?.street_address || ''}, ${
+            item?.latest_order?.shipping_address?.city || ''
+          }, ${item?.latest_order?.shipping_address?.state || ''}, ${
+            item?.latest_order?.shipping_address?.zip_code || ''
+          }, ${item?.latest_order?.shipping_address?.country || ''}`}
+        </Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>Total Amount :</Text>
-        <Text style={styles.value}>{`$${item?.totalAmount}`}</Text>
+        <Text style={styles.value}>{`$${item?.orders?.[0]?.total_price}`}</Text>
       </View>
 
       <View style={styles.buttonView}>
@@ -109,10 +155,11 @@ const OrderCard: React.FC<Props> = ({ item }) => {
           ]}
           noShadow
           onPressHandler={() => {
-            navigation.navigate('OrderTracking', { item });
+            navigation.navigate('OrderTracking', { orderId:item?.latest_order?.id });
           }}
         />
       </View>
+
       <ImageView
         images={imageData}
         imageIndex={0}

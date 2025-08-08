@@ -6,21 +6,23 @@ import { FONTS } from '../../Assets/Fonts/Fonts';
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    marginRight: 12,
+    // marginRight: 12,
     borderRadius: 16,
     backgroundColor: Colors.WHITE,
     paddingLeft: w(20),
     paddingRight:w(20),
-    marginTop: h(20),
+    marginTop: h(30),
     paddingBottom: h(20),
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 4,
+    height:'auto'
   },
   image: {
     height: h(160),
+    width:w(160),
     alignSelf: 'center',
     resizeMode: 'contain',
   },
