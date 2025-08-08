@@ -49,24 +49,22 @@ api.interceptors.request.use(async config => {
 // });
 
 // Extract user-friendly error
-function extractErrorMessage(error: any): string {
+function extractErrorMessage(error: any): string {  
+  console.log('Full API error:', JSON.stringify(error?.response?.data, null, 2));
   const data = error?.response?.data;
-
   if (typeof data === 'string') return data;
-
+  
   if (data && typeof data === 'object') {
     const firstKey = Object.keys(data)[0];
     const firstValue = data[firstKey];
-
+    
     if (Array.isArray(firstValue)) {
       return firstValue[0]; // e.g., ["Invalid email"] -> "Invalid email"
     }
-
     if (typeof firstValue === 'string') {
       return firstValue;
     }
   }
-
   return error?.message || 'Something went wrong. Please try again.';
 }
 
@@ -119,7 +117,6 @@ export async function put<T = any, D = any>(url: string, data: D): Promise<T> {
     const response: ApiResponse<T> = await api.put(url, data);
     return response.data;
   } catch (error) {
-    console.log(error, 'error response');
     throw extractErrorMessage(error);
   }
 }

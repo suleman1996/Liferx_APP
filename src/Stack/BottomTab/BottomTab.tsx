@@ -50,7 +50,7 @@ const BottomTabs: React.FC = () => {
         tabBarInactiveTintColor: Colors.GRAY,
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -58,7 +58,7 @@ const BottomTabs: React.FC = () => {
             <Icon name="home" size={25} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Shop"
         component={Shop}

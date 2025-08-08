@@ -18,11 +18,11 @@ import store, { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 
 const DecidingQuestions: React.FC<any> = ({ route }) => {
+  const { fromHome } = route?.params || {};
   const { decidingQuestions } = useSelector(
     (state: RootState) => state?.decidingQuestionAnswer,
   );
-  const { userData } = useSelector((state: RootState) => state.registerReducer);
-  const { token } = useSelector((state: RootState) => state.registerReducer);
+  const { userData,token } = useSelector((state: RootState) => state.registerReducer);
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.id,
   );
@@ -39,8 +39,62 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchDecidingQuestions();
+    fetchDecidingQuestions();    
   }, []);
+
+  const addDecidingAnswers = async () => {
+    const session_id = await fetchSessionID();
+    if (!session_id) {
+      return;
+    }
+    const updatedSelectedAnswer =
+      store?.getState()?.decidingQuestionAnswer?.selectedAnswer?.[userId]?.[
+        serviceId
+      ];
+    const updatedDecidingAnswers = {
+      answers: updatedSelectedAnswer?.map(
+        ({ serviceId, userId, ...rest }) => rest,
+      ),
+      session_id,
+    };
+    dispatch(saveDecidingAnswers(updatedDecidingAnswers))
+      .then((response: any) => {
+        if (response?.payload?.status === 200) {
+          console.log(response, 'save answers of deciding');
+          Toast.show({
+            type: 'success',
+            text2: response?.payload?.data?.message,
+          });
+        }
+      })
+      .catch((err: string) => {
+        Toast.show({
+          type: 'error',
+          text2: err,
+        });
+      });
+  };
+
+  const fetchSessionID = async () => {
+    const body = {
+      questionnaire_id: decidingQuestions?.questionnaire_id,
+    };
+    try {
+      const response = await dispatch(setStartSession(body));
+      console.log(response, 'fetch session');
+      if (response?.payload?.status === 200) {
+        const id = response?.payload?.data?.session_id;
+        dispatch(getSessionId(id));
+        return id;
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text2: error,
+      });
+    }
+    return null;
+  };
 
   const handleContinue = async (selected: number[] | number) => {
     if (Array.isArray(selected) && selected?.length === 0) {
@@ -60,13 +114,21 @@ const DecidingQuestions: React.FC<any> = ({ route }) => {
             ? selected[0]
             : selected,
       },
-    };    
+    };
     dispatch(selectedDecidingAnswer({ ...answer, serviceId, userId }));
     const nextIndex = currentIndex + 1;
     if (currentIndex < decidingQuestions?.deciding_questions?.length - 1) {
       setCurrentIndex(nextIndex);
-    } else {
-      navigation.navigate('Register');
+    } else if (
+        userData?.data?.is_email_verified === true &&
+        userData?.data?.is_profile_completed === false &&
+        token &&
+        fromHome === false
+      ) {
+        addDecidingAnswers();
+        navigation.navigate('SelectState');
+      } else {
+        navigation.navigate('Register');
       // setSubmitLoading(true);
       // const session_id = await fetchSessionID();
       // if (!session_id) {

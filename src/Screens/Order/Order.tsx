@@ -10,8 +10,10 @@ import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, w } from '../../utils/Helper/Helper';
 import OrderCard from '../../Components/OrdersCard/OrdersCard';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../Store';
 
-const Order: React.FC<any> = () => {
+const Order: React.FC<any> = () => {  
   const orderItems = [
     {
       id: 1,
@@ -37,7 +39,7 @@ const Order: React.FC<any> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header title="Orders" />
+      <Header title="Orders" hideBackButton/>
       <View style={styles.mainContainer}>
         <ScrollView
           showsVerticalScrollIndicator={false}

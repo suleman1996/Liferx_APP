@@ -216,8 +216,6 @@ const PersonalInformation: React.FC<any> = () => {
     return () => clearTimeout(timeout);
   }, [typedAddress]);
 
-  console.log(userId,'userId');
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <Header title="Personal Information" />

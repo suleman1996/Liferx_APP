@@ -31,8 +31,6 @@ const Questionaire: React.FC<any> = () => {
   const userId = useSelector(
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
-  console.log(userId, 'userId');
-
   const { regularQuestions } = useSelector(
     (state: RootState) => state.RegularQuestionsAnswer,
   );

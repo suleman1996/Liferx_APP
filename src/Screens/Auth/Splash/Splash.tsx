@@ -10,25 +10,24 @@ const Splash: React.FC<any> = ({ navigation }) => {
     (state: RootState) => state?.registerReducer,
   );
 
-  console.log(JSON.stringify(userData),'userdata splash');
-  
 
   useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem('token');
       const onBoard = await AsyncStorage.getItem('onBoard');
-
-      console.log(onBoard,'onBoard');
+      console.log(token,'token');
       
-      if (onBoard === 'true') {
-        if (token) {
-          navigation.replace('HomeScreen');
+        if (
+          token &&
+          userData?.data?.is_profile_completed === true &&
+          userData?.data?.is_email_verified === true
+        ) {
+          navigation.replace('BottomTab');
         } else {
-          navigation.replace('Login');
+          navigation.replace('HomeScreen');
         }
-      } else {
-        navigation.replace('Oboarding');
-      }
+  
+      // navigation.replace('Oboarding');
     };
     const timeout = setTimeout(checkToken, 2000);
     return () => clearTimeout(timeout);

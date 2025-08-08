@@ -27,10 +27,7 @@ const HomeScreen: React.FC<any> = () => {
   const dispatch = useDispatch();
     const { userData } = useSelector(
     (state: RootState) => state?.registerReducer,
-  );
-
-  console.log(userData,'userDatauserData');
-  
+  );  
 
   const images = [
     { id: '1', image: require('../../Assets/Images/Banner.png') },

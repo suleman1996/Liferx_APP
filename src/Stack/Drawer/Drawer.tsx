@@ -30,11 +30,11 @@ const DrawerStack: React.FC = () => {
         drawerType: 'slide',
       }}
     >
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Home"
         component={HomeScreen}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Drawer.Screen
         name="Order"
         component={Order}

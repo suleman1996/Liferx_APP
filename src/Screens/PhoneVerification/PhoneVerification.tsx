@@ -64,7 +64,7 @@ const PhoneVerification: React.FC<any> = () => {
       return;
     }
     dispatch(sendPhoneNumber(phoneNumber))
-      .then((response: any) => {
+      .then((response: any) => {        
         if (response?.payload?.status === 200) {
           // dispatch(getUserData(response.payload))
           Toast.show({
@@ -76,7 +76,6 @@ const PhoneVerification: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: string) => {
-        console.log(error, 'error');
         setLoading(false);
         Toast.show({
           type: 'error',

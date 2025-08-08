@@ -30,9 +30,7 @@ import { verifyOtp } from '../Auth/2StepVerification/actions';
 const OtpPhoneVerify: React.FC<any> = () => {
   const dispatch = useDispatch();
   const navigation = useTypedNavigation();
-  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);
-  console.log(userId,'otp phone verify');
-  
+  const userId = useSelector((state: RootState) => state.registerReducer?.userData?.data?.id);  
   const verificationCode = useSelector(
     (state: RootState) =>
       state.verificationCodeReducer.verificationCode?.[userId] || '',

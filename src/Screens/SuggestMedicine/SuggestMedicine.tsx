@@ -32,7 +32,7 @@ const SuggestMedicine: React.FC<any> = () => {
     (state: RootState) => state.registerReducer?.userData?.data?.id,
   );
 
-  console.log(userId,'suggest med');
+  console.log(serviceId,'suggest med');
   
   const { sessionId } = useSelector(
     (state: RootState) => state.decidingQuestionAnswer,
@@ -56,8 +56,6 @@ const SuggestMedicine: React.FC<any> = () => {
     const body = {
       session_id: sessionId,
     };
-    console.log(body, 'body');
-
     setLoading(true);
     await dispatch(getSuggestedProducts(body))
       .then((response: any) => {
@@ -66,8 +64,6 @@ const SuggestMedicine: React.FC<any> = () => {
         setLoading(false);
       })
       .catch((error: any) => {
-        console.log(error, 'err');
-
         setLoading(false);
         Toast.show({
           type: 'error',

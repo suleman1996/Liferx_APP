@@ -27,6 +27,7 @@ import DosageVarient from '../Screens/DosageVarient/DosageVarient';
 import SelectPlans from '../Screens/SelectPlans/SelectPlans';
 import AddPaymentMethod from '../Screens/AddPaymentMethod/AddPaymentMethod';
 import Oboarding from '../Screens/Auth/Onboarding/Onboarding';
+import ShopNow from '../Screens/ShopNow/ShopNow';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -35,6 +36,7 @@ export type RootStackParamList = {
   Register: undefined;
   TwoStepVerifiction?: {
     token: string;
+    fromHome:boolean
   };
   HomeScreen?: undefined;
   DrawerStack?: undefined;
@@ -66,13 +68,19 @@ export type RootStackParamList = {
   AddPaymentMethod?: {};
   OrderTracking?: {};
   Oboarding?: {};
+  ShopNow?: {
+    fromHome?:boolean
+  };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppStack: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Stack.Navigator screenOptions={{ gestureEnabled: false }}>
+      <Stack.Navigator
+        screenOptions={{ gestureEnabled: false }}
+        initialRouteName="splash"
+      >
         <Stack.Screen
           name="splash"
           component={Splash}
@@ -182,6 +190,11 @@ const AppStack: React.FC = () => {
         <Stack.Screen
           name="BottomTab"
           component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ShopNow"
+          component={ShopNow}
           options={{ headerShown: false }}
         />
 

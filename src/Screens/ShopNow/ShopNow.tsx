@@ -10,13 +10,13 @@ import {
   Pressable,
   ScrollView,
   Platform,
+  Alert,
 } from 'react-native';
 import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation } from '../../utils/Helper/Helper';
 import Colors from '../../utils/Colors/Colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { getServiceId, getServiceListing, getServices } from './actions';
 import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
 import { weightLossUrl } from '../../utils/Constants/Constants';
@@ -24,14 +24,40 @@ import LogoutIcon from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getToken } from '../Auth/Register/actions';
-import { clearDecidingAnswer } from '../DecidingQuestions/actions';
+import { getServiceId } from '../Shop/actions';
 
-const Shop: React.FC<any> = () => {
+const ShopNow: React.FC<any> = ({route}) => {
+  const { fromHome } = route?.params || {};  
   const { services } = useSelector((state: RootState) => state.shopReducer);
-  const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const navigation = useTypedNavigation();
   const dispatch = useDispatch();
+
+
+  const productData = [
+    {
+      id: 1,
+      image: require('../../Assets/Images/Product1.png'),
+      // text: 'Generic Sildenafil1',
+      text: 'Fight Hair Loss',
+      month: '$17/month',
+      serviceID: 2,
+    },
+    {
+      id: 2,
+      image: require('../../Assets/Images/Product2.png'),
+      text: 'Boost Sex Performance',
+      // text: 'Viagra',
+      month: '$17/month',
+      serviceID: 3,
+    },
+    {
+      id: 3,
+      image: require('../../Assets/Images/Product3.png'),
+      text: 'Weight Loss',
+      // text: 'Generic Tadalfil',
+      month: '$17/month',
+    },
+  ];
 
   const getImages = (index: number) => {
     switch (index) {
@@ -64,7 +90,7 @@ const Shop: React.FC<any> = () => {
             Linking.openURL(weightLossUrl);
           } else {
             dispatch(getServiceId(item?.id));
-            navigation.navigate('DecidingQuestions');
+            navigation.navigate('DecidingQuestions',{fromHome});
           }
         }}
       >
@@ -86,96 +112,15 @@ const Shop: React.FC<any> = () => {
         {item?.description && (
           <Text style={styles.descrption}>{item?.description}</Text>
         )}
-        {/* <Button
-        text={
-          item?.description
-            ? 'Learn More'
-            : item?.active
-            ? 'Already Active'
-            : 'Get Started'
-        }
-        customButtonStyles={[
-          styles.customButtonStyles,
-          {
-            backgroundColor: item?.active
-              ? Colors.PLACEHOLDER
-              : Colors.APP_COLOR,
-          },
-        ]}
-        customTextStyles={styles.customTextStyles}
-        onPressHandler={() => {
-          if(index === 2){
-              Linking.openURL(weightLossUrl)
-          }else{
-            navigation.navigate('DecidingQuestions',{serviceId:item?.id})
-          }
-        }}
-        noShadow
-      /> */}
       </Pressable>
     );
   };
 
-  const fetchServices = async () => {
-    setLoading(true);
-    try {
-      await dispatch(getServices())
-        .then((res: any) => {
-          const response = res?.value?.data;
-          console.log(response);
-
-          dispatch(getServiceListing(response));
-        })
-        .catch(error => {
-          console.log(error, 'error');
-        });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchServices();
-  }, []);
-
-  //   const handleLogout = async () => {
-  //   await AsyncStorage.removeItem('token');
-  //   dispatch(getToken(''));
-  //   dispatch(clearDecidingAnswer());
-  //   setShowLogoutModal(false);
-  //   navigation.reset({
-  //     index: 0,
-  //     routes: [{ name: 'BottomTab' }],
-  //   });
-  // };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <CustomLoader visible={!refreshing && loading} />
       <Header
         title="Shop"
-        hideBackButton
-        rightImage={
-          <>
-            {/* {token && ( */}
-            <LogoutIcon
-              name={'logout'}
-              size={20}
-              color={Colors.APP_COLOR}
-              style={styles.logoutIcon}
-              onPress={async () => {
-                await AsyncStorage.removeItem('token');
-                dispatch(clearDecidingAnswer());
-                dispatch(getToken(''));
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'HomeScreen' }],
-                });
-              }}
-            />
-            {/* )} */}
-          </>
-        }
       />
       <View style={styles.mainContainer}>
         <ScrollView
@@ -189,31 +134,17 @@ const Shop: React.FC<any> = () => {
         >
           <Text style={styles.title}>Services</Text>
 
-          {services?.length > 0 && (
             <FlatList
-              data={services}
+              data={productData}
               renderItem={renderItem}
-              refreshControl={
-                <RefreshControl
-                  colors={[Colors.APP_COLOR]}
-                  refreshing={refreshing}
-                  onRefresh={async () => {
-                    setRefreshing(true);
-                    await fetchServices();
-                    setRefreshing(false);
-                  }}
-                />
-              }
               keyExtractor={item => item.id.toString()}
-              // columnWrapperStyle={{ justifyContent: 'space-between' }}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: h(10), marginTop: h(20) }}
               style={{ flexGrow: 1 }}
             />
-          )}
         </ScrollView>
       </View>
     </SafeAreaView>
   );
 };
-export default Shop;
+export default ShopNow;

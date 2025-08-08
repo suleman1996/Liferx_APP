@@ -30,7 +30,7 @@ const ProductCard: React.FC<Props> = ({ item, index }) => {
         if (index === 2) {
           Linking.openURL(weightLossUrl);
         } else {
-          await AsyncStorage.setItem('serviceId',JSON.stringify(item?.serviceID))
+          // await AsyncStorage.setItem('serviceId',JSON.stringify(item?.serviceID))
           dispatch(getServiceId(item?.serviceID));
           navigation.navigate('DecidingQuestions');
         }

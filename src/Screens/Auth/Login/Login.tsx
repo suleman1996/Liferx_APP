@@ -22,6 +22,7 @@ import EyeIcon from 'react-native-vector-icons/Entypo';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../Components/LoaderModal/LoaderModal';
 import {
+  clearDecidingAnswer,
   getSessionId,
   saveDecidingAnswers,
   setStartSession,
@@ -30,7 +31,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getToken, getUserData } from '../Register/actions';
 import Header from '../../../Components/Header/Header';
 
-const Login: React.FC<any> = ({route}) => {
+const Login: React.FC<any> = ({ route }) => {
   const dispatch = useDispatch();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { userData, token } = useSelector(
@@ -46,7 +47,7 @@ const Login: React.FC<any> = ({route}) => {
     (state: RootState) => state?.decidingQuestionAnswer,
   );
   const navigation = useTypedNavigation();
-  const {fromHome} = route?.params || {};
+  const { fromHome } = route?.params || {};
 
   const addDecidingAnswers = async () => {
     const session_id = await fetchSessionID();
@@ -62,7 +63,7 @@ const Login: React.FC<any> = ({route}) => {
         ({ serviceId, userId, ...rest }) => rest,
       ),
       session_id,
-    };    
+    };
     dispatch(saveDecidingAnswers(updatedDecidingAnswers))
       .then((response: any) => {
         if (response?.payload?.status === 200) {
@@ -79,8 +80,8 @@ const Login: React.FC<any> = ({route}) => {
           text2: err,
         });
       });
-  };
-
+  };  
+  
   const handleLogin = () => {
     if (!email) {
       dispatch(setError('email'));
@@ -96,6 +97,8 @@ const Login: React.FC<any> = ({route}) => {
     };
     dispatch(createLogin(body))
       .then(async (res: any) => {
+        console.log(res,'res');
+        
         const response = res?.payload;
         const token = response?.data?.token?.access;
         const user = response?.data?.user;
@@ -113,6 +116,22 @@ const Login: React.FC<any> = ({route}) => {
             //     index: 0,
             //     routes: [{ name: 'DrawerStack' }],
             //   });
+          } else if (
+            fromHome === false &&
+            token &&
+            user?.is_email_verified === true &&
+            user?.is_profile_completed === false
+          ) {
+            dispatch(clearDecidingAnswer());
+            navigation.navigate('ShopNow', { fromHome });
+          } else if (
+            fromHome === false &&
+            token &&
+            user?.is_email_verified === false &&
+            user?.is_profile_completed === false
+          ) {
+            dispatch(clearDecidingAnswer());
+            navigation.navigate('TwoStepVerifiction', { token, fromHome });
           } else if (
             token &&
             user?.is_email_verified === true &&
@@ -173,7 +192,7 @@ const Login: React.FC<any> = ({route}) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <Header/>
+      <Header />
       <CustomLoader visible={loading} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}

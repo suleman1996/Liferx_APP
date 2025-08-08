@@ -32,7 +32,8 @@ import { setOnBoarding } from '../Onboarding/action';
 const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   const prevRouteName = usePreviousRouteName();
   const navigation = useTypedNavigation();
-  const { token } = route?.params;
+  const { token } = route?.params || {};
+  const {fromHome} = route?.params || {};
   const { email, password } = useSelector(
     (state: RootState) => state?.registerReducer,
   );
@@ -79,6 +80,9 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
   }, [token]);
 
 
+  console.log(fromHome);
+  
+
   const handleTwoStepAuthentication = () => {
     if (code?.length !== 6) {
       Toast.show({
@@ -100,20 +104,30 @@ const TwoStepVerifiction: React.FC<any> = ({ route }) => {
               password,
             }),
           ).then((res: any) => {
+            console.log(res, 'normal res');
             const user = res?.payload?.data?.user;
-            console.log(user,'user');
-            
-             if(token && user?.is_email_verified === true){
-              skipOnBoarding(dispatch);
-             }
             dispatch(getUserData(user));
-          }),
-            Toast.show({
-              type: 'success',
-              text2: res?.payload?.data,
-            });
-          navigation.navigate('SelectState');
-          dispatch(setCode(''));
+            if (
+              token &&
+              user?.is_profile_completed === false &&
+              user?.is_email_verified === true &&
+              fromHome === false
+            ) {
+              console.log('else if matched');
+              dispatch(clearDecidingAnswer());
+              navigation.navigate('ShopNow', { fromHome });
+            } else if (token && user?.is_email_verified === true) {
+              console.log('first if matched');
+              skipOnBoarding(dispatch);
+              navigation.navigate('SelectState');
+            }
+
+            dispatch(setCode(''));
+          });
+          Toast.show({
+            type: 'success',
+            text2: res?.payload?.data,
+          });
         } else {
           Toast.show({
             type: 'error',

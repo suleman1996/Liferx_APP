@@ -66,7 +66,7 @@ const SelectState: React.FC<any> = () => {
       index: 0,
       routes: [{ name: 'BottomTab' }],
     });
-  };
+  };  
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
