@@ -155,7 +155,7 @@ const Shop: React.FC<any> = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <CustomLoader visible={!refreshing && loading} />
+      {/* <CustomLoader visible={!refreshing && loading} /> */}
       <Header
         title="Shop"
         hideBackButton

@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   image: {
-    height: h(160),
-    width:w(160),
+    height: h(120),
+    width:w(120),
     alignSelf: 'center',
     resizeMode: 'contain',
   },

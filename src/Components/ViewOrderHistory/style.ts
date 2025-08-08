@@ -5,8 +5,8 @@ import { FONTS } from '../../Assets/Fonts/Fonts';
 
 const styles = StyleSheet.create({
   image: {
-    height: h(160),
-    width:w(160),
+    height: h(120),
+    width:w(120),
     alignSelf: 'center',
     resizeMode: 'contain',
   },

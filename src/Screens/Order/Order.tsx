@@ -50,7 +50,7 @@ const Order: React.FC<any> = () => {
           data={ordersList}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item?.id.toString()}
-          renderItem={({ item }) => <OrderCard item={item} />}
+          renderItem={({ item }) => <OrderCard item={item} setImageLoading={setloading}/>}
           contentContainerStyle={{
             paddingHorizontal: w(5),
             paddingBottom: Platform.select({

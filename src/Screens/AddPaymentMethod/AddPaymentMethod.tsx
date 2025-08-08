@@ -12,7 +12,7 @@ import styles from './style';
 import Header from '../../Components/Header/Header';
 import { h, useTypedNavigation, w } from '../../utils/Helper/Helper';
 import Button from '../../Components/Button/Button';
-import { useRoute } from '@react-navigation/native';
+import { CommonActions, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../Store';
 import CustomLoader from '../../Components/LoaderModal/LoaderModal';
@@ -94,20 +94,9 @@ const AddPaymentMethod: React.FC<any> = () => {
           if (response?.payload?.status === 201) {
             dispatch(getCreateOrderData(response?.payload?.data));
             dispatch(setIsProfileCompleted());
-            navigation.reset({
-  index: 1,
-  routes: [
-    { name: 'Order' }, // This navigates to Order tab
-    {
-      name: 'OrderTracking',
-      params: { orderId: response?.payload?.data?.id },
-    },
-  ],
-});
-
-            // navigation.navigate('OrderTracking', {
-            //   orderId: response?.payload?.data?.id,
-            // });
+            navigation.replace('BottomTab', {
+              orderId: response?.payload?.data?.id,
+            });
           }
         });
       } else {
@@ -139,7 +128,7 @@ const AddPaymentMethod: React.FC<any> = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: Platform.select({
-              ios: h(150),
+              ios: h(50),
               android: h(80),
             }),
           }}

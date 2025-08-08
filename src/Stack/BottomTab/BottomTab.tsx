@@ -49,6 +49,7 @@ const BottomTabs: React.FC = () => {
         tabBarActiveTintColor: Colors.WHITE,
         tabBarInactiveTintColor: Colors.GRAY,
       }}
+      initialRouteName="Order"
     >
       {/* <Tab.Screen
         name="Home"
@@ -70,34 +71,12 @@ const BottomTabs: React.FC = () => {
       />
       <Tab.Screen
         name="Order"
-        component={OrderStack}
+        component={Order}
         options={{
           tabBarIcon: ({ color, size }) => (
             <ProfileIcon name="person" size={25} color={color} />
           ),
         }}
-        listeners={({ navigation }: any) => ({
-          tabPress: (e: any) => {
-            e.preventDefault();
-            navigation.navigate('Order', {
-              screen: 'OrderScreen',
-            });
-
-            // navigation.dispatch(
-            //   CommonActions.reset({
-            //     index: 0,
-            //     routes: [
-            //       {
-            //         name: 'Order',
-            //         params: {
-            //           screen: 'OrderScreen',
-            //         },
-            //       },
-            //     ],
-            //   }),
-            // );
-          },
-        })}
       />
       {/* <Tab.Screen
         name="Profile"

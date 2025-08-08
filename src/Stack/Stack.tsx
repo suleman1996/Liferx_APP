@@ -28,6 +28,7 @@ import SelectPlans from '../Screens/SelectPlans/SelectPlans';
 import AddPaymentMethod from '../Screens/AddPaymentMethod/AddPaymentMethod';
 import Oboarding from '../Screens/Auth/Onboarding/Onboarding';
 import ShopNow from '../Screens/ShopNow/ShopNow';
+import Order from '../Screens/Order/Order';
 LogBox.ignoreAllLogs();
 
 export type RootStackParamList = {
@@ -71,6 +72,7 @@ export type RootStackParamList = {
   ShopNow?: {
     fromHome?: boolean;
   };
+  Order?:undefined
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -197,6 +199,12 @@ const AppStack: React.FC = () => {
           component={ShopNow}
           options={{ headerShown: false }}
         />
+            <Stack.Screen
+          name="Order"
+          component={Order}
+          options={{ headerShown: false }}
+        />
+
 
         {/* 
         <Stack.Screen

@@ -14,6 +14,7 @@ import Colors from '../../utils/Colors/Colors';
 import CustomDialog from '../CustomDialog/CustomDialog';
 import ViewOrderHistory from '../ViewOrderHistory/ViewOrderHistory';
 import moment from 'moment';
+import ImageWithLoader from '../ImageWithLoader/ImageWithLoader';
 
 // Types for product
 interface Product {
@@ -59,9 +60,10 @@ interface ProductItem {
 
 interface Props {
   item?: ProductItem;
+  setImageLoading?: any;
 }
 
-const OrderCard: React.FC<Props> = ({ item }) => {
+const OrderCard: React.FC<Props> = ({ item, setImageLoading }) => {
   const navigation = useTypedNavigation();
   const [visible, setIsVisible] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
@@ -95,7 +97,10 @@ const OrderCard: React.FC<Props> = ({ item }) => {
         }}
       >
         <View style={styles.imageView}>
-          <Image source={{ uri: rawImage }} style={styles.image} />
+          <ImageWithLoader
+            imageSource={{ uri: rawImage }}
+            style={styles.image}
+          />
         </View>
       </Pressable>
 
@@ -155,7 +160,9 @@ const OrderCard: React.FC<Props> = ({ item }) => {
           ]}
           noShadow
           onPressHandler={() => {
-            navigation.navigate('OrderTracking', { orderId:item?.latest_order?.id });
+            navigation.navigate('OrderTracking', {
+              orderId: item?.latest_order?.id,
+            });
           }}
         />
       </View>

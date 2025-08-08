@@ -51,29 +51,28 @@ const OrderTracking: React.FC<any> = ({}) => {
       : undefined;
   const imageData = imageUri ? [{ uri: imageUri }] : [];
 
-const steps = [
-  {
-    label: 'Your order is placed',
-    icon: require('../../../Assets/Images/orderPlaced.png'),
-    isActive: Boolean(tracking?.step_timestamps?.step_1_created_at),
-  },
-  {
-    label: 'Doctor Reviewed the Order',
-    icon: require('../../../Assets/Images/truck.png'),
-    isActive: Boolean(tracking?.step_timestamps?.step_2_doctor_approved_at),
-  },
-  {
-    label: 'Order Approved',
-    icon: require('../../../Assets/Images/routing.png'),
-    isActive: Boolean(tracking?.step_timestamps?.step_3_order_approved_at),
-  },
-  {
-    label: 'In Transit',
-    icon: require('../../../Assets/Images/truck.png'),
-    isActive: Boolean(tracking?.step_timestamps?.step_4_in_transit_at),
-  },
-];
-
+  const steps = [
+    {
+      label: 'Your order is placed',
+      icon: require('../../../Assets/Images/orderPlaced.png'),
+      isActive: Boolean(tracking?.step_timestamps?.step_1_created_at),
+    },
+    {
+      label: 'Doctor Reviewed the Order',
+      icon: require('../../../Assets/Images/truck.png'),
+      isActive: Boolean(tracking?.step_timestamps?.step_2_doctor_approved_at),
+    },
+    {
+      label: 'Order Approved',
+      icon: require('../../../Assets/Images/routing.png'),
+      isActive: Boolean(tracking?.step_timestamps?.step_3_order_approved_at),
+    },
+    {
+      label: 'In Transit',
+      icon: require('../../../Assets/Images/truck.png'),
+      isActive: Boolean(tracking?.step_timestamps?.step_4_in_transit_at),
+    },
+  ];
 
   const orderTracking = async () => {
     setLoading(true);
@@ -119,66 +118,68 @@ const steps = [
   }, []);
 
   return (
- <SafeAreaView style={styles.safeAreaView}>
-    <Header title="Tracking" />
-    <CustomLoader visible={loading} />
+    <SafeAreaView style={styles.safeAreaView}>
+      <Header
+        title="Tracking"
+      />
+      <CustomLoader visible={loading} />
 
-    {!tracking ? null : (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainerStyle}
-      >
-        <View style={styles.mainContainer}>
-          <View style={styles.card}>
-            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-              {tracking?.product_details?.product?.name}
-            </Text>
-
-            <Pressable
-              style={styles.innerView}
-              onPress={() => {
-                setIsVisible(true);
-              }}
-            >
-              <View style={styles.imageView}>
-                <Image
-                  source={{ uri: tracking?.product_details?.image }}
-                  style={styles.image}
-                />
-              </View>
-            </Pressable>
-
-            <View style={styles.row}>
-              <Text style={styles.label}>Order Number :</Text>
-              <Text style={styles.value}>{`# ${tracking?.order_id}`}</Text>
-            </View>
-
-            <View style={styles.row}>
-              <Text style={styles.label}>Shipping Address :</Text>
-              <Text style={styles.value}>
-                {`${tracking?.shipping_address?.street_address || ''}, ${
-                  tracking?.shipping_address?.city || ''
-                }, ${tracking?.shipping_address?.state || ''}, ${
-                  tracking.shipping_address?.zip_code || ''
-                }, ${tracking?.shipping_address?.country || ''}`}
+      {!tracking ? null : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainerStyle}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.card}>
+              <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+                {tracking?.product_details?.product?.name}
               </Text>
+
+              <Pressable
+                style={styles.innerView}
+                onPress={() => {
+                  setIsVisible(true);
+                }}
+              >
+                <View style={styles.imageView}>
+                  <Image
+                    source={{ uri: tracking?.product_details?.image }}
+                    style={styles.image}
+                  />
+                </View>
+              </Pressable>
+
+              <View style={styles.row}>
+                <Text style={styles.label}>Order Number :</Text>
+                <Text style={styles.value}>{`# ${tracking?.order_id}`}</Text>
+              </View>
+
+              <View style={styles.row}>
+                <Text style={styles.label}>Shipping Address :</Text>
+                <Text style={styles.value}>
+                  {`${tracking?.shipping_address?.street_address || ''}, ${
+                    tracking?.shipping_address?.city || ''
+                  }, ${tracking?.shipping_address?.state || ''}, ${
+                    tracking.shipping_address?.zip_code || ''
+                  }, ${tracking?.shipping_address?.country || ''}`}
+                </Text>
+              </View>
+
+              <OrderTimeline steps={steps} />
             </View>
-
-            <OrderTimeline steps={steps} />
           </View>
-        </View>
 
-        <ImageView
-          images={imageData}
-          imageIndex={0}
-          visible={visible}
-          onRequestClose={() => setIsVisible(false)}
-          presentationStyle="fullScreen"
-          backgroundColor="#000000EE"
-        />
-      </ScrollView>
-    )}
-  </SafeAreaView>
+          <ImageView
+            images={imageData}
+            imageIndex={0}
+            visible={visible}
+            onRequestClose={() => setIsVisible(false)}
+            presentationStyle="fullScreen"
+            backgroundColor="#000000EE"
+          />
+        </ScrollView>
+      )}
+    </SafeAreaView>
   );
 };
 export default OrderTracking;
