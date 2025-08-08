@@ -111,11 +111,7 @@ const Login: React.FC<any> = ({ route }) => {
             user?.is_email_verified === true &&
             user?.is_profile_completed === true
           ) {
-            Alert.alert('comming soon');
-            //  navigation.reset({
-            //     index: 0,
-            //     routes: [{ name: 'DrawerStack' }],
-            //   });
+                navigation.navigate('BottomTab')
           } else if (
             fromHome === false &&
             token &&

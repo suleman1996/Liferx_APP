@@ -55,7 +55,7 @@ const Order: React.FC<any> = () => {
             paddingHorizontal: w(5),
             paddingBottom: Platform.select({
               ios: h(100),
-              android: h(50),
+              android: h(120),
             }),
           }}
           ItemSeparatorComponent={() => <View style={{ height: h(2) }} />}

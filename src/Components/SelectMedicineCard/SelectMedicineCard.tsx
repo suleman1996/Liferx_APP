@@ -68,7 +68,7 @@ const SelectMedicineCard: React.FC<Props> = ({
             <View>
               <Text
                 style={styles.medName}
-                numberOfLines={1}
+                numberOfLines={2}
                 ellipsizeMode="tail"
               >
                 {item?.name}

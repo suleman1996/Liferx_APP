@@ -115,14 +115,6 @@ const Oboarding: React.FC<any> = () => {
               noShadow
               onPressHandler={async () => {
                 navigation.navigate('HomeScreen');
-                // try {
-                //   if (token && userData?.data?.is_email_verified === true) {
-                //     await AsyncStorage.setItem('onBoard', 'true');
-                //     dispatch(setOnBoarding(true));
-                //   }
-                // } catch (err) {
-                //   console.log('Failed to save onBoarding flag:', err);
-                // }
               }}
             />
             <Button
@@ -130,8 +122,7 @@ const Oboarding: React.FC<any> = () => {
               customButtonStyles={[styles.getStarted, { marginTop: h(15) }]}
               customTextStyles={styles.getStartedText}
               onPressHandler={async () => {
-                await AsyncStorage.setItem('onBoard', 'true');
-                dispatch(setOnBoarding(true));
+                await AsyncStorage.setItem('onboardingShown', 'true');
                 navigation.navigate('Login');
               }}
               noShadow

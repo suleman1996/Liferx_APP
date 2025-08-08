@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   customButtonStyles: {
     borderRadius: 10,
     marginTop: h(20),
-    height: h(35),
+    height: h(40),
     width: w('35%'),
   },
   customTextStyles: {

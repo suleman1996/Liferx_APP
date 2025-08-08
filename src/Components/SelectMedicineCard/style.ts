@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.MONTSERRAT_REGULAR,
     fontSize: w(16),
     marginLeft: w(15),
-    width: w(250),
+    maxWidth: w(200),
   },
   price: {
     marginLeft: w(15),
